@@ -1,0 +1,20 @@
+spring:
+  jackson:
+    time-zone: Europe/Warsaw
+  datasource:
+    url: jdbc:postgresql://ep-dawn-pine-a29ln0ec.eu-central-1.aws.neon.tech/poszkole?sslmode=require
+    username: poszkole_owner
+    password: B9LPJTMOHj6b
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        use_sql_comments: false
+        ddl-auto: none
