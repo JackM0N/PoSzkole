@@ -1,6 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.model.Subject;
 import pl.poszkole.PoSzkole.repository.SubjectRepository;
@@ -8,10 +8,9 @@ import pl.poszkole.PoSzkole.repository.SubjectRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SubjectService {
-
-    @Autowired
-    private SubjectRepository subjectRepository;
+    private final SubjectRepository subjectRepository;
 
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();

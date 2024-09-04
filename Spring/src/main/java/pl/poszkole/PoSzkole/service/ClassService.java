@@ -1,7 +1,7 @@
 package pl.poszkole.PoSzkole.service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.model.Class;
 import pl.poszkole.PoSzkole.repository.ClassRepository;
@@ -9,9 +9,9 @@ import pl.poszkole.PoSzkole.repository.ClassRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClassService {
-    @Autowired
-    private ClassRepository classRepository;
+    private final ClassRepository classRepository;
 
     @Transactional
     public void saveClass(Class c) {

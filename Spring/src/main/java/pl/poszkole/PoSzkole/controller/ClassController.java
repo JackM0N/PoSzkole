@@ -1,6 +1,6 @@
 package pl.poszkole.PoSzkole.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -13,29 +13,18 @@ import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.model.Class;
 import pl.poszkole.PoSzkole.repository.UserRepository;
 import pl.poszkole.PoSzkole.service.*;
-;
 import java.time.LocalDate;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ClassController {
+    private final StudentService studentService;
+    private final SubjectService subjectService;
+    private final RequestService requestService;
+    private final TeacherService teacherService;
+    private final ClassService classService;
 
-    @Autowired
-    private StudentService studentService;
-
-    @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private RequestService requestService;
-
-    @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
-    private ClassService classService;
-
-    @Autowired
     UserRepository userRepository;
 
     @GetMapping("/classes/{username}")

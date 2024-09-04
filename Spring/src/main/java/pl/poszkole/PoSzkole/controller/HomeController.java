@@ -1,5 +1,6 @@
 package pl.poszkole.PoSzkole.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,14 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.repository.UserRepository;
 
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
-
     UserRepository userRepository;
 
     public HomeController(UserRepository userRepository) {

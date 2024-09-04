@@ -1,9 +1,9 @@
 package pl.poszkole.PoSzkole.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -18,27 +18,15 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/requests")
+@RequiredArgsConstructor
 public class RequestController {
+    private final RequestService requestService;
+    private final StudentService studentService;
+    private final SubjectService subjectService;
+    private final TeacherService teacherService;
+    private final ClassService classService;
+    private final StudentClassService studentClassService;
 
-    @Autowired
-    RequestService requestService;
-
-    @Autowired
-    private StudentService studentService;
-
-    @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
-    private ClassService classService;
-
-    @Autowired
-    private StudentClassService studentClassService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @GetMapping

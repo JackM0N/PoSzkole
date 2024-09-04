@@ -1,8 +1,7 @@
 package pl.poszkole.PoSzkole.service;
 
 import jakarta.transaction.Transactional;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.model.Request;
 import pl.poszkole.PoSzkole.model.Teacher;
@@ -17,18 +16,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RequestService {
-    @Autowired
-    private RequestRepository requestRepository;
-
-    @Autowired
-    private TeacherRepository teacherRepository;
-
-    @Autowired
-    private TeacherRequestRepository teacherRequestRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final RequestRepository requestRepository;
+    private final TeacherRepository teacherRepository;
+    private final TeacherRequestRepository teacherRequestRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void saveRequest(Request request) {

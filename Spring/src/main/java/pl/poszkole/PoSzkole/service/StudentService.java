@@ -1,6 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.model.Student;
 import pl.poszkole.PoSzkole.model.Users;
@@ -9,10 +9,9 @@ import pl.poszkole.PoSzkole.repository.StudentRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class StudentService {
-
-    @Autowired
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
