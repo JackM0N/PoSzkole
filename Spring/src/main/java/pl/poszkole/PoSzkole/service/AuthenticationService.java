@@ -36,6 +36,32 @@ public class AuthenticationService {
         return new AuthenticationResponse(token);
     }
 
+    public AuthenticationResponse registerTeacher(Users request){
+        Users user = new Users();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Role role = roleRepository.findByRoleName("TEACHER")
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        user.setRoles((Collections.singleton(role)));
+        userRepository.save(user);
+        String token = jwtService.generateToken(user);
+        return new AuthenticationResponse(token);
+    }
+
+    public AuthenticationResponse registerManager(Users request){
+        Users user = new Users();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Role role = roleRepository.findByRoleName("MANAGER")
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        user.setRoles((Collections.singleton(role)));
+        userRepository.save(user);
+        String token = jwtService.generateToken(user);
+        return new AuthenticationResponse(token);
+    }
+
     public AuthenticationResponse login(Users request){
         Users user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Incorrect username or password"));
