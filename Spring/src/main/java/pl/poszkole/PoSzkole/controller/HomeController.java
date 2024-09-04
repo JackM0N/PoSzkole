@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.poszkole.PoSzkole.model.*;
-import pl.poszkole.PoSzkole.repository.UserRepository;
+import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
-    UserRepository userRepository;
+    WebsiteUserRepository websiteUserRepository;
 
-    public HomeController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public HomeController(WebsiteUserRepository websiteUserRepository) {
+        this.websiteUserRepository = websiteUserRepository;
     }
 
     @GetMapping("/home")
@@ -40,7 +40,7 @@ public class HomeController {
             username = principal.toString();
         }
 
-        Users user = userRepository.findByUsername(username)
+        WebsiteUser user = websiteUserRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException(username));
         if (user == null) {
             throw new UsernameNotFoundException(username);
@@ -48,16 +48,6 @@ public class HomeController {
 
         model.addAttribute("users", user);
         model.addAttribute("roles", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
-        return "home";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String loginPost(@RequestParam String username, @RequestParam String password, Model model) {
         return "home";
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.model.Class;
-import pl.poszkole.PoSzkole.repository.UserRepository;
+import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 import pl.poszkole.PoSzkole.service.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -26,11 +26,11 @@ public class ClassController {
     private final TeacherService teacherService;
     private final ClassService classService;
 
-    UserRepository userRepository;
+    WebsiteUserRepository websiteUserRepository;
 
     @GetMapping("/classes/{username}")
     public String classes(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String username, Model model) throws BadRequestException {
-        Users user = userRepository.findByUsername(userDetails.getUsername())
+        WebsiteUser user = websiteUserRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new BadRequestException("Username " + username + " not found"));
         Student student = studentService.getStudentByIdUser(user);
         List<Class> classes = classService.getClassesForStudent(student.getId());

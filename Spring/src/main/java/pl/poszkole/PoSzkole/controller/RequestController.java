@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.model.Class;
-import pl.poszkole.PoSzkole.repository.UserRepository;
+import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 import pl.poszkole.PoSzkole.service.*;
 
 import java.time.LocalDate;
@@ -28,7 +28,7 @@ public class RequestController {
     private final ClassService classService;
     private final StudentClassService studentClassService;
 
-    private UserRepository userRepository;
+    private WebsiteUserRepository websiteUserRepository;
 
     @GetMapping
     public String getRequests(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -59,9 +59,9 @@ public class RequestController {
     public ResponseEntity<String> approveRequest(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         try {
             Request request = requestService.findById(id);
-            Users users = userRepository.findByUsername(userDetails.getUsername())
+            WebsiteUser websiteUser = websiteUserRepository.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-            Teacher teacher = teacherService.getTeacherByIdUser(users);
+            Teacher teacher = teacherService.getTeacherByIdUser(websiteUser);
 
             System.out.println(request.getAdmissionDate());
 

@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.model.Request;
 import pl.poszkole.PoSzkole.model.Teacher;
 import pl.poszkole.PoSzkole.model.TeacherRequest;
-import pl.poszkole.PoSzkole.model.Users;
+import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.RequestRepository;
 import pl.poszkole.PoSzkole.repository.TeacherRepository;
 import pl.poszkole.PoSzkole.repository.TeacherRequestRepository;
-import pl.poszkole.PoSzkole.repository.UserRepository;
+import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +21,7 @@ public class RequestService {
     private final RequestRepository requestRepository;
     private final TeacherRepository teacherRepository;
     private final TeacherRequestRepository teacherRequestRepository;
-    private final UserRepository userRepository;
+    private final WebsiteUserRepository websiteUserRepository;
 
     @Transactional
     public void saveRequest(Request request) {
@@ -38,7 +38,7 @@ public class RequestService {
 
     @Transactional
     public List<Request> getRequestsForTeacher(String username) {
-        Users user = userRepository.findByUsername(username)
+        WebsiteUser user = websiteUserRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Teacher teacher = teacherRepository.findByIdUser(user)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));

@@ -3,7 +3,7 @@ package pl.poszkole.PoSzkole.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.model.Student;
-import pl.poszkole.PoSzkole.model.Users;
+import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.StudentRepository;
 
 import java.util.List;
@@ -22,8 +22,8 @@ public class StudentService {
                 .orElseThrow(() -> new RuntimeException("Student not found"));
     }
 
-    public Student getStudentByIdUser(Users users) {
-        return studentRepository.findByIdUser(users)
+    public Student getStudentByIdUser(WebsiteUser websiteUser) {
+        return studentRepository.findByIdUser(websiteUser)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
     }
 }

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.model.Subject;
 import pl.poszkole.PoSzkole.model.Teacher;
-import pl.poszkole.PoSzkole.model.Users;
+import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.TeacherRepository;
 
 import java.util.List;
@@ -20,8 +20,8 @@ public class TeacherService {
         return teacherRepository.findTeachersBySubject(subject);
     }
 
-    public Teacher getTeacherByIdUser(Users users) {
-        return teacherRepository.findByIdUser(users)
+    public Teacher getTeacherByIdUser(WebsiteUser websiteUser) {
+        return teacherRepository.findByIdUser(websiteUser)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
 }

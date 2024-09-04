@@ -27,10 +27,18 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/requests").hasRole("TEACHER")
+                        .requestMatchers("/registration/manager")
+                        .hasRole("OWNER")
 
-                        .requestMatchers("/login", "/home", "/details",
-                                "/css/**", "/classes/**").permitAll()
+                        .requestMatchers("/registration/teacher")
+                        .hasAnyRole("MANAGER", "OWNER")
+
+                        .requestMatchers("/requests")
+                        .hasRole("TEACHER")
+
+                        .requestMatchers("/login", "/details",
+                                "/css/**", "/classes/**")
+                        .permitAll()
 
                         .anyRequest()
                         .authenticated())
