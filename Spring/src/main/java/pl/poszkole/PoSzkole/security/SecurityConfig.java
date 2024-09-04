@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/requests")
                         .hasRole("TEACHER")
 
-                        .requestMatchers("/login", "/details",
+                        .requestMatchers("/login", "/register", "/details",
                                 "/css/**", "/classes/**")
                         .permitAll()
 
