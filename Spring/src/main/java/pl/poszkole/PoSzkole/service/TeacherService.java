@@ -21,6 +21,7 @@ public class TeacherService {
     }
 
     public Teacher getTeacherByIdUser(Users users) {
-        return teacherRepository.findByIdUser(users);
+        return teacherRepository.findByIdUser(users)
+                .orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
 }

@@ -23,6 +23,7 @@ public class StudentService {
     }
 
     public Student getStudentByIdUser(Users users) {
-        return studentRepository.findByIdUser(users);
+        return studentRepository.findByIdUser(users)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
     }
 }

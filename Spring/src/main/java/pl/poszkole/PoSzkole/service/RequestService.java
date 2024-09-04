@@ -38,8 +38,10 @@ public class RequestService {
 
     @Transactional
     public List<Request> getRequestsForTeacher(String username) {
-        Users user = userRepository.findByUsername(username);
-        Teacher teacher = teacherRepository.findByIdUser(user);
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Teacher teacher = teacherRepository.findByIdUser(user)
+                .orElseThrow(() -> new RuntimeException("Teacher not found"));
         return requestRepository.findAllByTeacherId(teacher.getId());
     }
 

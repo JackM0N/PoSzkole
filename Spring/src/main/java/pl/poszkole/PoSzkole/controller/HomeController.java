@@ -40,7 +40,8 @@ public class HomeController {
             username = principal.toString();
         }
 
-        Users user = userRepository.findByUsername(username);
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException(username));
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }

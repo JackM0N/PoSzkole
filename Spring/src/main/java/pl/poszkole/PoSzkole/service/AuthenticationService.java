@@ -37,7 +37,8 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login(Users request){
-        Users user = userRepository.findByUsername(request.getUsername());
+        Users user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("Incorrect username or password"));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

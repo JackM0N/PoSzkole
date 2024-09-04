@@ -1,6 +1,7 @@
 package pl.poszkole.PoSzkole.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,9 @@ public class ClassController {
     UserRepository userRepository;
 
     @GetMapping("/classes/{username}")
-    public String classes(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String username, Model model) {
-        Users user = userRepository.findByUsername(userDetails.getUsername());
+    public String classes(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String username, Model model) throws BadRequestException {
+        Users user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new BadRequestException("Username " + username + " not found"));
         Student student = studentService.getStudentByIdUser(user);
         List<Class> classes = classService.getClassesForStudent(student.getId());
         model.addAttribute("classes", classes);
