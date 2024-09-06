@@ -56,8 +56,8 @@ public class ClassController {
 
         // Stwórz nowy request
         Request newRequest = new Request();
-        newRequest.setIdStudent(student);
-        newRequest.setIdSubject(subject);
+        newRequest.setStudent(student);
+        newRequest.setSubject(subject);
         newRequest.setIssueDate(LocalDate.now());
 
         // Zapisz request do bazy danych

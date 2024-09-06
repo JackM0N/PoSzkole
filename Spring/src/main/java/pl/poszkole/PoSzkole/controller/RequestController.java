@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import pl.poszkole.PoSzkole.dto.RequestDTO;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.model.Class;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/requests")
+@RequestMapping("/request")
 @RequiredArgsConstructor
 public class RequestController {
     private final RequestService requestService;
@@ -30,7 +31,7 @@ public class RequestController {
 
     private WebsiteUserRepository websiteUserRepository;
 
-    @GetMapping
+    @GetMapping("/list")
     public String getRequests(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         List<Request> requests = requestService.getRequestsForTeacher(username);
@@ -39,19 +40,24 @@ public class RequestController {
 
         for (Request request : requests) {
             Student student = students.stream()
-                    .filter(s -> s.getId().equals(request.getIdStudent().getId()))
+                    .filter(s -> s.getId().equals(request.getStudent().getId()))
                     .findFirst()
                     .orElse(null);
             Subject subject = subjects.stream()
-                    .filter(sub -> sub.getId().equals(request.getIdSubject().getId()))
+                    .filter(sub -> sub.getId().equals(request.getSubject().getId()))
                     .findFirst()
                     .orElse(null);
-            request.setIdStudent(student);
-            request.setIdSubject(subject);
+            request.setStudent(student);
+            request.setSubject(subject);
         }
 
         model.addAttribute("requests", requests);
         return "requests";
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) {
+        return ResponseEntity.ok(requestService.createRequest(requestDTO));
     }
 
     @PostMapping("/approve/{id}")
@@ -67,22 +73,22 @@ public class RequestController {
 
             // Set the admission date and teacher
             request.setAdmissionDate(LocalDate.now());
-            request.setIdTeacher(teacher);
+            request.setTeacher(teacher);
 
             System.out.println(request.getAdmissionDate());
 
             // Create a new class
             Class newClass = new Class();
             newClass.setIdTeacher(teacher);
-            newClass.setIdSubject(request.getIdSubject());
-            newClass.setName(request.getIdSubject().getName() + " - " + request.getIdStudent().getLastName());
+            newClass.setIdSubject(request.getSubject());
+            newClass.setName(request.getSubject().getName() + " - " + request.getStudent().getLastName());
 
             // Save the new class
             classService.saveClass(newClass);
 
             // Create a new student_class record
             StudentClass studentClass = new StudentClass();
-            studentClass.setIdStudent(request.getIdStudent());
+            studentClass.setIdStudent(request.getStudent());
             studentClass.setIdClass(newClass);
 
             // Save the student_class record

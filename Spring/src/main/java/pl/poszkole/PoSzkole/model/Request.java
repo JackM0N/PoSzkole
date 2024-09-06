@@ -18,11 +18,11 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_student", nullable = false)
-    private Student idStudent;
+    private Student Student;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_subject", nullable = false)
-    private Subject idSubject;
+    private Subject Subject;
 
     @Column(name = "issue_date", nullable = false)
     private LocalDate issueDate;
@@ -32,6 +32,6 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_teacher")
-    private Teacher idTeacher;
+    private Teacher Teacher;
 
 }
