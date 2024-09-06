@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,11 +19,11 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_student", nullable = false)
-    private Student Student;
+    private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_subject", nullable = false)
-    private Subject Subject;
+    private Subject subject;
 
     @Column(name = "issue_date", nullable = false)
     private LocalDate issueDate;
@@ -32,6 +33,6 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_teacher")
-    private Teacher Teacher;
+    private Teacher teacher;
 
 }

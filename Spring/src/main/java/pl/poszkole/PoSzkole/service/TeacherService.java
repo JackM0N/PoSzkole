@@ -17,11 +17,11 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
 
     public List<Teacher> getTeachersBySubject(Subject subject) {
-        return teacherRepository.findTeachersBySubject(subject);
+        return teacherRepository.findBySubjectsId(subject.getId());
     }
 
     public Teacher getTeacherByIdUser(WebsiteUser websiteUser) {
-        return teacherRepository.findByIdUser(websiteUser)
+        return teacherRepository.findByUser(websiteUser)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
 }

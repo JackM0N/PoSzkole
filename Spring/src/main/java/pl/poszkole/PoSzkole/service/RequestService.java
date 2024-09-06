@@ -12,6 +12,7 @@ import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,21 +30,38 @@ public class RequestService {
     public List<Request> getRequestsForTeacher(String username) {
         WebsiteUser user = websiteUserRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        Teacher teacher = teacherRepository.findByIdUser(user)
+        Teacher teacher = teacherRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
         return requestRepository.findAllByTeacherId(teacher.getId());
     }
 
     @Transactional
     public RequestDTO createRequest(RequestDTO requestDTO) {
-        Request request = requestMapper.toEntity(requestDTO);
+        //Manually creating new request because toEntity in a simple mapper won't be useful here
+        Request request = new Request();
 
+        //Set manually needed data
         request.setStudent(studentRepository.findById(requestDTO.getStudent().getId())
                 .orElseThrow(() -> new RuntimeException("Student not found")));
         request.setSubject(subjectRepository.findById(requestDTO.getSubject().getId())
                 .orElseThrow(() -> new RuntimeException("Subject not found")));
+        request.setIssueDate(LocalDate.now());
+        requestRepository.save(request);
 
-        return requestMapper.toDto(requestRepository.save(request));
+        //Create lists of teachers and requests
+        List<Teacher> teachers = teacherRepository.findBySubjectsId(request.getSubject().getId());
+        List<TeacherRequest> teacherRequests = new ArrayList<>();
+
+        //Create requests for all teachers that teach given subject
+        for (Teacher teacher : teachers) {
+            TeacherRequest teacherRequest = new TeacherRequest();
+            teacherRequest.setTeacher(teacher);
+            teacherRequest.setRequest(request);
+            teacherRequests.add(teacherRequest);
+        }
+        teacherRequestRepository.saveAll(teacherRequests);
+
+        return requestMapper.toDto(request);
     }
 
     @Transactional
@@ -54,8 +72,8 @@ public class RequestService {
     @Transactional
     public void addTeacherRequest(Request request, Teacher teacher) {
         TeacherRequest teacherRequest = new TeacherRequest();
-        teacherRequest.setIdRequest(request);
-        teacherRequest.setIdTeacher(teacher);
+        teacherRequest.setRequest(request);
+        teacherRequest.setTeacher(teacher);
         teacherRequestRepository.save(teacherRequest);
     }
 

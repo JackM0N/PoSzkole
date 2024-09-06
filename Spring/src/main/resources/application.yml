@@ -18,3 +18,11 @@ spring:
         format_sql: true
         use_sql_comments: false
         ddl-auto: none
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web:
+          filter:
+            OncePerRequestFilter: DEBUG

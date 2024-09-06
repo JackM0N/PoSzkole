@@ -16,10 +16,10 @@ public class TeacherRequest {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_request", nullable = false)
-    private Request idRequest;
+    private Request request;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_teacher", nullable = false)
-    private Teacher idTeacher;
+    private Teacher teacher;
 
 }
