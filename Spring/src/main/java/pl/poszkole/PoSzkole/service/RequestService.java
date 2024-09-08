@@ -2,18 +2,19 @@ package pl.poszkole.PoSzkole.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.RequestDTO;
 import pl.poszkole.PoSzkole.mapper.RequestMapper;
-import pl.poszkole.PoSzkole.model.Request;
-import pl.poszkole.PoSzkole.model.Teacher;
-import pl.poszkole.PoSzkole.model.TeacherRequest;
-import pl.poszkole.PoSzkole.model.WebsiteUser;
+import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.repository.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,18 +22,34 @@ public class RequestService {
     private final RequestRepository requestRepository;
     private final TeacherRepository teacherRepository;
     private final TeacherRequestRepository teacherRequestRepository;
-    private final WebsiteUserRepository websiteUserRepository;
     private final RequestMapper requestMapper;
     private final StudentRepository studentRepository;
     private final SubjectRepository subjectRepository;
+    private final WebsiteUserService websiteUserService;
 
     @Transactional
-    public List<Request> getRequestsForTeacher(String username) {
-        WebsiteUser user = websiteUserRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Teacher teacher = teacherRepository.findByUser(user)
+    public Page<RequestDTO> getRequestsForTeacher(Subject subject, Pageable pageable) {
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+
+        Teacher teacher = teacherRepository.findByUser(currentUser)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
-        return requestRepository.findAllByTeacherId(teacher.getId());
+
+        List<TeacherRequest> teacherRequests = teacherRequestRepository.findAll((root, query, builder) ->
+                builder.equal(root.get("teacher"), teacher)
+        );
+
+        List<Long> requestIds = teacherRequests.stream()
+                .map(tr -> tr.getRequest().getId())
+                .collect(Collectors.toList());
+        Specification<Request> rSpec = (root, query, builder) -> root.get("id").in(requestIds);
+
+        if (subject.getId() != null) {
+            rSpec = rSpec.and((root, query, builder) -> builder.equal(root.get("subject").get("id"), subject.getId()));
+        }
+
+        Page<Request> requests = requestRepository.findAll(rSpec, pageable);
+
+        return requests.map(requestMapper::toDto);
     }
 
     @Transactional
@@ -77,12 +94,6 @@ public class RequestService {
         teacherRequestRepository.save(teacherRequest);
     }
 
-    @Transactional
-    public void approveRequest(Long requestId) {
-        Request request = requestRepository.findById(requestId).orElseThrow();
-        request.setAdmissionDate(LocalDate.now());
-        requestRepository.save(request);
-    }
 
     public Request findById(Long id) {
         return requestRepository.findById(id).orElseThrow();

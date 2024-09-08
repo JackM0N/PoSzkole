@@ -1,9 +1,10 @@
 package pl.poszkole.PoSzkole.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -16,15 +17,12 @@ import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 import pl.poszkole.PoSzkole.service.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Controller
 @RequestMapping("/request")
 @RequiredArgsConstructor
 public class RequestController {
     private final RequestService requestService;
-    private final StudentService studentService;
-    private final SubjectService subjectService;
     private final TeacherService teacherService;
     private final ClassService classService;
     private final StudentClassService studentClassService;
@@ -32,27 +30,8 @@ public class RequestController {
     private WebsiteUserRepository websiteUserRepository;
 
     @GetMapping("/list")
-    public String getRequests(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        String username = userDetails.getUsername();
-        List<Request> requests = requestService.getRequestsForTeacher(username);
-        List<Student> students = studentService.getAllStudents();
-        List<Subject> subjects = subjectService.getAllSubjects();
-
-        for (Request request : requests) {
-            Student student = students.stream()
-                    .filter(s -> s.getId().equals(request.getStudent().getId()))
-                    .findFirst()
-                    .orElse(null);
-            Subject subject = subjects.stream()
-                    .filter(sub -> sub.getId().equals(request.getSubject().getId()))
-                    .findFirst()
-                    .orElse(null);
-            request.setStudent(student);
-            request.setSubject(subject);
-        }
-
-        model.addAttribute("requests", requests);
-        return "requests";
+    public ResponseEntity<Page<RequestDTO>> getRequests(Subject subject, Pageable pageable) {
+        return ResponseEntity.ok(requestService.getRequestsForTeacher(subject, pageable));
     }
 
     @PostMapping("/create")

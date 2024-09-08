@@ -13,9 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
-    @Query("SELECT t FROM Teacher t JOIN t.subjects s WHERE s = :subject")
-    List<Teacher> findTeachersBySubject(@Param("subject") Subject subject);
-
-    Optional<Teacher> findByUser(WebsiteUser idUser);
+    Optional<Teacher> findByUser(WebsiteUser websiteUser);
     List<Teacher> findBySubjectsId(Long id);
 }
