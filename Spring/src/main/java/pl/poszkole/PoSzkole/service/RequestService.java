@@ -12,16 +12,12 @@ import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.repository.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RequestService {
     private final RequestRepository requestRepository;
     private final TeacherRepository teacherRepository;
-    private final TeacherRequestRepository teacherRequestRepository;
     private final RequestMapper requestMapper;
     private final StudentRepository studentRepository;
     private final SubjectRepository subjectRepository;
@@ -29,19 +25,14 @@ public class RequestService {
 
     @Transactional
     public Page<RequestDTO> getRequestsForTeacher(Subject subject, Pageable pageable) {
+        // Get currently logged-in user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
+        //Check if user is actually a teacher
         Teacher teacher = teacherRepository.findByUser(currentUser)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
 
-        List<TeacherRequest> teacherRequests = teacherRequestRepository.findAll((root, query, builder) ->
-                builder.equal(root.get("teacher"), teacher)
-        );
-
-        List<Long> requestIds = teacherRequests.stream()
-                .map(tr -> tr.getRequest().getId())
-                .collect(Collectors.toList());
-        Specification<Request> rSpec = (root, query, builder) -> root.get("id").in(requestIds);
+        Specification<Request> rSpec = (root, query, builder) -> root.get("subject").in(teacher.getSubjects());
 
         if (subject.getId() != null) {
             rSpec = rSpec.and((root, query, builder) -> builder.equal(root.get("subject").get("id"), subject.getId()));
@@ -65,19 +56,6 @@ public class RequestService {
         request.setIssueDate(LocalDate.now());
         requestRepository.save(request);
 
-        //Create lists of teachers and requests
-        List<Teacher> teachers = teacherRepository.findBySubjectsId(request.getSubject().getId());
-        List<TeacherRequest> teacherRequests = new ArrayList<>();
-
-        //Create requests for all teachers that teach given subject
-        for (Teacher teacher : teachers) {
-            TeacherRequest teacherRequest = new TeacherRequest();
-            teacherRequest.setTeacher(teacher);
-            teacherRequest.setRequest(request);
-            teacherRequests.add(teacherRequest);
-        }
-        teacherRequestRepository.saveAll(teacherRequests);
-
         return requestMapper.toDto(request);
     }
 
@@ -85,15 +63,6 @@ public class RequestService {
     public void saveRequest(Request request) {
         requestRepository.save(request);
     }
-
-    @Transactional
-    public void addTeacherRequest(Request request, Teacher teacher) {
-        TeacherRequest teacherRequest = new TeacherRequest();
-        teacherRequest.setRequest(request);
-        teacherRequest.setTeacher(teacher);
-        teacherRequestRepository.save(teacherRequest);
-    }
-
 
     public Request findById(Long id) {
         return requestRepository.findById(id).orElseThrow();

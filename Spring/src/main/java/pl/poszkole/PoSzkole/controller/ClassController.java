@@ -23,7 +23,6 @@ public class ClassController {
     private final StudentService studentService;
     private final SubjectService subjectService;
     private final RequestService requestService;
-    private final TeacherService teacherService;
     private final ClassService classService;
 
     WebsiteUserRepository websiteUserRepository;
@@ -64,10 +63,10 @@ public class ClassController {
         requestService.saveRequest(newRequest);
 
         // Dodaj nauczycieli uczących przedmiotu do tabeli pośredniczącej
-        List<Teacher> teachers = teacherService.getTeachersBySubject(subject);
-        for (Teacher teacher : teachers) {
-            requestService.addTeacherRequest(newRequest, teacher);
-        }
+//        List<Teacher> teachers = teacherService.getTeachersBySubject(subject);
+//        for (Teacher teacher : teachers) {
+//            requestService.addTeacherRequest(newRequest, teacher);
+//        }
 
         return "redirect:/home";
     }
