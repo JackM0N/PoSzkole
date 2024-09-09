@@ -16,10 +16,10 @@ public class StudentClass {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_student", nullable = false)
-    private Student idStudent;
+    private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_class", nullable = false)
-    private Class idClass;
+    private TutoringClass tutoringClass;
 
 }

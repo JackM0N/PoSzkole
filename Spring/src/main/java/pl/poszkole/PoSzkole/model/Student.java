@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -52,5 +55,27 @@ public class Student {
 
     @Column(name = "issue_an_invoice", nullable = false)
     private Boolean issueAnInvoice = false;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_class",
+            joinColumns = @JoinColumn(name = "id_student"),
+            inverseJoinColumns = @JoinColumn(name = "id_class")
+    )
+    private List<TutoringClass> classes = new ArrayList<>();
+
+    public void addClass(TutoringClass tutoringClass) {
+        if (!classes.contains(tutoringClass)) {
+            classes.add(tutoringClass);
+            tutoringClass.getStudents().add(this);
+        }
+    }
+
+    public void removeClass(TutoringClass tutoringClass) {
+        if (classes.contains(tutoringClass)) {
+            classes.remove(tutoringClass);
+            tutoringClass.getStudents().remove(this);
+        }
+    }
 
 }
