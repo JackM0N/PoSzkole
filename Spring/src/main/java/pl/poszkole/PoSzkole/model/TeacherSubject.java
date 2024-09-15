@@ -11,15 +11,15 @@ import lombok.Setter;
 public class TeacherSubject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_teacher_subject", nullable = false)
+    @Column(name = "teacher_subject_id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_teacher", nullable = false)
-    private Teacher idTeacher;
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private WebsiteUser teacher;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_subject", nullable = false)
-    private Subject idSubject;
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
 
 }

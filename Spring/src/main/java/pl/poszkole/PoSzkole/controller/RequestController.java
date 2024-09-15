@@ -10,6 +10,8 @@ import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.service.*;
 
+import java.nio.file.AccessDeniedException;
+
 
 @RestController
 @RequestMapping("/request")
@@ -18,7 +20,7 @@ public class RequestController {
     private final RequestService requestService;
 
     @GetMapping("/list")
-    public ResponseEntity<Page<RequestDTO>> getRequests(Subject subject, Pageable pageable) {
+    public ResponseEntity<Page<RequestDTO>> getRequests(Subject subject, Pageable pageable) throws AccessDeniedException {
         return ResponseEntity.ok(requestService.getRequestsForTeacher(subject, pageable));
     }
 

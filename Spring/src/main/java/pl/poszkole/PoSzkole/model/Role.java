@@ -10,7 +10,7 @@ import lombok.Setter;
 @Table(name = "role")
 public class Role {
     @Id
-    @Column(name = "id_role", nullable = false)
+    @Column(name = "role_id", nullable = false)
     private Long id;
 
     @Column(name = "role_name", nullable = false, length = Integer.MAX_VALUE)

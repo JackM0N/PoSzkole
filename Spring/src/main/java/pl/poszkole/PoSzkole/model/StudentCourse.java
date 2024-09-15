@@ -7,11 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "student_class")
-public class StudentClass {
+@Table(name = "student_course")
+public class StudentCourse {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_class_id", nullable = false)
+    @Column(name = "student_course_id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -19,7 +18,7 @@ public class StudentClass {
     private WebsiteUser student;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "class_id", nullable = false)
-    private TutoringClass tutoringClass;
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
 
 }

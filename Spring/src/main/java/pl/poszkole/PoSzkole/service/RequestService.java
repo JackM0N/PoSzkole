@@ -13,31 +13,32 @@ import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.repository.*;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
 public class RequestService {
     private final RequestRepository requestRepository;
-    private final TeacherRepository teacherRepository;
     private final RequestMapper requestMapper;
-    private final StudentRepository studentRepository;
     private final SubjectRepository subjectRepository;
     private final WebsiteUserService websiteUserService;
     private final TutoringClassMapper tutoringClassMapper;
     private final TutoringClassRepository tutoringClassRepository;
+    private final WebsiteUserRepository websiteUserRepository;
 
     @Transactional
-    public Page<RequestDTO> getRequestsForTeacher(Subject subject, Pageable pageable) {
+    public Page<RequestDTO> getRequestsForTeacher(Subject subject, Pageable pageable) throws AccessDeniedException {
         // Get currently logged-in user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
         //Check if user is actually a teacher
-        Teacher teacher = teacherRepository.findByUser(currentUser)
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+        if(currentUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))) {
+            throw new AccessDeniedException("You do not have permission to access this resource");
+        }
 
         //Find request that this teacher teaches and were not admitted yet
-        Specification<Request> rSpec = (root, query, builder) -> root.get("subject").in(teacher.getSubjects());
+        Specification<Request> rSpec = (root, query, builder) -> root.get("subject").in(currentUser.getSubjects());
         rSpec = rSpec.and((root, query, builder) -> builder.equal(root.get("admission_date"), null));
 
         //Filter subjects if needed
@@ -51,15 +52,19 @@ public class RequestService {
 
     @Transactional
     public RequestDTO createRequest(RequestDTO requestDTO) {
-        //Manually creating new request because toEntity in a simple mapper won't be useful here
-        Request request = new Request();
+        //Creating new request
+        Request request = requestMapper.toEntity(requestDTO);
 
         //Set manually needed data
-        request.setStudent(studentRepository.findById(requestDTO.getStudent().getId())
-                .orElseThrow(() -> new RuntimeException("Student not found")));
+        WebsiteUser studentUser = websiteUserRepository.findById(requestDTO.getStudent().getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if(studentUser.getRoles().stream().noneMatch(role -> "STUDENT".equals(role.getRoleName()))) {
+            throw new RuntimeException("You can't create a class for a user that's not a student");
+        }
+
+        request.setStudent(studentUser);
         request.setSubject(subjectRepository.findById(requestDTO.getSubject().getId())
                 .orElseThrow(() -> new RuntimeException("Subject not found")));
-        request.setIssueDate(LocalDate.now());
         requestRepository.save(request);
 
         return requestMapper.toDto(request);
@@ -73,20 +78,18 @@ public class RequestService {
         //Admit chosen request
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
-        request.setAdmissionDate(LocalDate.now());
-        request.setTeacher(teacherRepository.findByUser(currentUser)
-                .orElseThrow(() -> new RuntimeException("Teacher not found")));
+        request.setAcceptanceDate(LocalDate.now());
+        request.setTeacher(currentUser);
         requestRepository.save(request);
 
         //Create new class
         TutoringClass tutoringClass = tutoringClassMapper.toEntity(tutoringClassDTO);
-        tutoringClass.setTeacher(teacherRepository.findByUser(currentUser)
-                .orElseThrow(() -> new RuntimeException("Teacher not found")));
+        tutoringClass.setTeacher(currentUser);
         tutoringClass.setSubject(request.getSubject());
         tutoringClassRepository.save(tutoringClass);
 
         //Add student to created class
-        Student student = studentRepository.findById(request.getStudent().getId())
+        WebsiteUser student = websiteUserRepository.findById(request.getStudent().getId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
         student.addClass(tutoringClass);
 

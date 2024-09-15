@@ -7,19 +7,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user_role")
-public class UserRole {
+@Table(name = "user_availability")
+public class UserAvailability {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_role_id", nullable = false)
+    @Column(name = "user_availability_id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private WebsiteUser idUser;
+    private WebsiteUser user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role idRole;
+    @JoinColumn(name = "user_busy_day_id", nullable = false)
+    private UserBusyDay userBusyDay;
 
 }
