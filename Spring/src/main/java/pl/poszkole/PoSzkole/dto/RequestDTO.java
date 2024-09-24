@@ -15,9 +15,9 @@ import java.time.LocalDate;
 @Getter
 public class RequestDTO implements Serializable {
     Long id;
-    StudentDTO student;
+    WebsiteUserDTO student;
     SubjectDTO subject;
     LocalDate issueDate;
-    LocalDate admissionDate;
-    TeacherDTO teacher;
+    LocalDate acceptanceDate;
+    WebsiteUserDTO teacher;
 }

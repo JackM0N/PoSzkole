@@ -25,8 +25,8 @@ public class TutoringClass {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
-    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
-    private String name;
+    @Column(name = "class_name", nullable = false, length = Integer.MAX_VALUE)
+    private String className;
 
     @ManyToMany(mappedBy = "classes")
     private List<WebsiteUser> students = new ArrayList<>();

@@ -16,8 +16,8 @@ public class Subject {
     @Column(name = "subject_id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
-    private String name;
+    @Column(name = "subject_name", nullable = false, length = Integer.MAX_VALUE)
+    private String subjectName;
 
     @ManyToMany(mappedBy = "subjects")
     private Set<WebsiteUser> teachers;

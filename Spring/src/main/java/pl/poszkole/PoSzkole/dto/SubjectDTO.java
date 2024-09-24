@@ -14,5 +14,5 @@ import java.io.Serializable;
 @Getter
 public class SubjectDTO implements Serializable {
     Long id;
-    String name;
+    String subjectName;
 }

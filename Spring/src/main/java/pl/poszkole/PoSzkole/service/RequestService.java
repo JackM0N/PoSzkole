@@ -37,17 +37,27 @@ public class RequestService {
             throw new AccessDeniedException("You do not have permission to access this resource");
         }
 
-        //Find request that this teacher teaches and were not admitted yet
-        Specification<Request> rSpec = (root, query, builder) -> root.get("subject").in(currentUser.getSubjects());
-        rSpec = rSpec.and((root, query, builder) -> builder.equal(root.get("admission_date"), null));
-
-        //Filter subjects if needed
-        if (subject.getId() != null) {
-            rSpec = rSpec.and((root, query, builder) -> builder.equal(root.get("subject").get("id"), subject.getId()));
+        // Check if the teacher has subjects assigned
+        if (currentUser.getSubjects() == null || currentUser.getSubjects().isEmpty()) {
+            throw new IllegalArgumentException("Teacher has no subjects assigned");
         }
+
+        //Find request that this teacher teaches and were not admitted yet
+        Specification<Request> rSpec = getRequestSpecification(subject, currentUser);
 
         Page<Request> requests = requestRepository.findAll(rSpec, pageable);
         return requests.map(requestMapper::toDto);
+    }
+
+    private static Specification<Request> getRequestSpecification(Subject subject, WebsiteUser currentUser) {
+        Specification<Request> rSpec = (root, query, builder) -> root.get("subject").in(currentUser.getSubjects());
+        rSpec = rSpec.and((root, query, builder) -> builder.isNull(root.get("acceptanceDate")));
+
+        //Filter subjects if needed
+        if (subject != null && subject.getId() != null) {
+            rSpec = rSpec.and((root, query, builder) -> builder.equal(root.get("subject").get("id"), subject.getId()));
+        }
+        return rSpec;
     }
 
     @Transactional
@@ -81,7 +91,7 @@ public class RequestService {
         request.setAcceptanceDate(LocalDate.now());
         request.setTeacher(currentUser);
         requestRepository.save(request);
-
+        
         //Create new class
         TutoringClass tutoringClass = tutoringClassMapper.toEntity(tutoringClassDTO);
         tutoringClass.setTeacher(currentUser);
