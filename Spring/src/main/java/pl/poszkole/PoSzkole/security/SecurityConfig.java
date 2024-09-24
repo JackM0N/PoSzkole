@@ -27,21 +27,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/registration/manager")
-                        .hasRole("OWNER")
-
-                        .requestMatchers("/registration/teacher", "/request/create")
-                        .hasAnyRole("MANAGER", "OWNER")
-
-                        .requestMatchers("/request/list")
-                        .hasRole("TEACHER")
-
-                        .requestMatchers("/login", "/register", "/details",
-                                "/css/**", "/classes/**")
-                        .permitAll()
-
-                        .anyRequest()
-                        .authenticated())
+                        .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
