@@ -24,6 +24,9 @@ public class Request {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
+    @Column(name = "repeat_until")
+    private LocalDate repeatUntil;
+
     @Column(name = "issue_date", nullable = false)
     private LocalDate issueDate;
 

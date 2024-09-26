@@ -17,6 +17,7 @@ public class RequestDTO implements Serializable {
     Long id;
     WebsiteUserDTO student;
     SubjectDTO subject;
+    LocalDate repeatUntil;
     LocalDate issueDate;
     LocalDate acceptanceDate;
     WebsiteUserDTO teacher;
