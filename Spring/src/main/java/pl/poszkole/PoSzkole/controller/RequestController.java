@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.poszkole.PoSzkole.dto.RequestDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
@@ -20,19 +19,16 @@ import java.nio.file.AccessDeniedException;
 public class RequestController {
     private final RequestService requestService;
 
-    @PreAuthorize("hasRole('TEACHER')")
-    @GetMapping("")
+    @GetMapping("/list")
     public ResponseEntity<Page<RequestDTO>> getRequests(Subject subject, Pageable pageable) throws AccessDeniedException {
         return ResponseEntity.ok(requestService.getRequestsForTeacher(subject, pageable));
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
-    @PostMapping("")
+    @PostMapping("/create")
     public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) {
         return ResponseEntity.ok(requestService.createRequest(requestDTO));
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/admit/{id}")
     @ResponseBody
     public ResponseEntity<RequestDTO> approveRequest(
