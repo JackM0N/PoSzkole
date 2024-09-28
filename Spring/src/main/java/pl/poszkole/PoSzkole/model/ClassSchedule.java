@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,6 +12,7 @@ import java.time.Instant;
 @Table(name = "class_schedule")
 public class ClassSchedule {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "class_schedule_id", nullable = false)
     private Long id;
 
@@ -23,8 +24,11 @@ public class ClassSchedule {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @Column(name = "class_date", nullable = false)
-    private Instant classDate;
+    @Column(name = "class_date_from", nullable = false)
+    private LocalDateTime classDateFrom;
+
+    @Column(name = "class_date_to", nullable = false)
+    private LocalDateTime classDateTo;
 
     @Column(name = "is_online", nullable = false)
     private Boolean isOnline = false;

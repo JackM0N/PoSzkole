@@ -2,10 +2,12 @@ package pl.poszkole.PoSzkole.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
 import pl.poszkole.PoSzkole.dto.RequestDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
 import pl.poszkole.PoSzkole.mapper.RequestMapper;
@@ -26,6 +28,7 @@ public class RequestService {
     private final TutoringClassMapper tutoringClassMapper;
     private final TutoringClassRepository tutoringClassRepository;
     private final WebsiteUserRepository websiteUserRepository;
+    private final ClassScheduleService classScheduleService;
 
     @Transactional
     public Page<RequestDTO> getRequestsForTeacher(Subject subject, Pageable pageable) throws AccessDeniedException {
@@ -61,9 +64,13 @@ public class RequestService {
     }
 
     @Transactional
-    public RequestDTO createRequest(RequestDTO requestDTO) {
+    public RequestDTO createRequest(RequestDTO requestDTO) throws BadRequestException {
         //Creating new request
         Request request = requestMapper.toEntity(requestDTO);
+
+        if (!request.getRepeatUntil().isAfter(LocalDate.now())){
+            throw new BadRequestException("You cant plan classes into the past");
+        }
 
         //Set manually needed data
         WebsiteUser studentUser = websiteUserRepository.findById(requestDTO.getStudent().getId())
@@ -81,7 +88,9 @@ public class RequestService {
     }
 
     @Transactional
-    public RequestDTO admitRequest(Long id, TutoringClassDTO tutoringClassDTO) {
+    public RequestDTO admitRequest(Long id, TutoringClassDTO tutoringClassDTO,
+                                   DayAndTimeDTO dayAndTimeDTO, Boolean isOnline) {
+        //TODO: MAYBE, JUST MAYBE SOMEDAY ADD INSTANT ROOM RESERVATION... that would be a 3rd dto tho...
         //Get current user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
@@ -102,7 +111,15 @@ public class RequestService {
         WebsiteUser student = websiteUserRepository.findById(request.getStudent().getId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
         student.addClass(tutoringClass);
+        websiteUserRepository.save(student);
 
+        //Create class schedule
+        if(request.getRepeatUntil() == null) {
+            classScheduleService.createSingleClassSchedule(dayAndTimeDTO, tutoringClass, isOnline);
+        }else{
+            classScheduleService
+                    .createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, request.getRepeatUntil());
+        }
         return requestMapper.toDto(request);
     }
 }

@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "payment_for_class")
 public class PaymentForClass {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id", nullable = false)
     private Long id;
 

@@ -10,6 +10,7 @@ import lombok.Setter;
 @Table(name = "schedule_changes_log")
 public class ScheduleChangesLog {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "change_id", nullable = false)
     private Long id;
 
