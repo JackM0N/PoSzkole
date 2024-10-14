@@ -24,7 +24,7 @@ public class ClassScheduleService {
 
     public void createRepeatingClassSchedule(DayAndTimeDTO dayAndTimeDTO, TutoringClass tutoringClass,
                                                       boolean isOnline, LocalDate repeatUntil) {
-        //TODO: MAYBE add intervals (every 2 or 3 weeks)
+        //TODO: MAYBE add intervals to easily create classes every 2 weeks for example
         LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.nextOrSame(dayAndTimeDTO.getDay()));
         if (!firstDate.isAfter(LocalDate.now()) || firstDate.isAfter(repeatUntil)) {
             throw new RuntimeException("Date couldn't be found");
@@ -39,7 +39,7 @@ public class ClassScheduleService {
         ClassSchedule classSchedule = new ClassSchedule();
         classSchedule.setClassDateFrom(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeFrom()));
         classSchedule.setClassDateTo(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeTo()));
-        classSchedule.setClassField(tutoringClass);
+        classSchedule.setTutoringClass(tutoringClass);
         classSchedule.setIsOnline(isOnline);
         classScheduleRepository.save(classSchedule);
     }

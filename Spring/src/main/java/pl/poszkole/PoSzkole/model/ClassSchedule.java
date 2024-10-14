@@ -18,7 +18,7 @@ public class ClassSchedule {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "class_id", nullable = false)
-    private TutoringClass classField;
+    private TutoringClass tutoringClass;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
