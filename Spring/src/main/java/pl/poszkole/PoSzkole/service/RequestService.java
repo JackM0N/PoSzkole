@@ -91,6 +91,8 @@ public class RequestService {
     public RequestDTO admitRequest(Long id, TutoringClassDTO tutoringClassDTO,
                                    DayAndTimeDTO dayAndTimeDTO, Boolean isOnline) {
         //TODO: MAYBE, JUST MAYBE SOMEDAY ADD INSTANT ROOM RESERVATION... that would be a 3rd dto tho...
+        //TODO: Ask if classes are usually a group ones. If so should it be possible to add student to existing class
+        //TODO: If so maybe add wants_individual to requests maybe
         //Get current user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
@@ -99,13 +101,16 @@ public class RequestService {
                 .orElseThrow(() -> new RuntimeException("Request not found"));
         request.setAcceptanceDate(LocalDate.now());
         request.setTeacher(currentUser);
-        requestRepository.save(request);
         
         //Create new class
         TutoringClass tutoringClass = tutoringClassMapper.toEntity(tutoringClassDTO);
         tutoringClass.setTeacher(currentUser);
         tutoringClass.setSubject(request.getSubject());
         tutoringClassRepository.save(tutoringClass);
+
+        //Save request and created class
+        request.setTutoringClass(tutoringClass);
+        requestRepository.save(request);
 
         //Add student to created class
         WebsiteUser student = websiteUserRepository.findById(request.getStudent().getId())

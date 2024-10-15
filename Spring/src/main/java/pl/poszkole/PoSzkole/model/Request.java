@@ -37,4 +37,8 @@ public class Request {
     @JoinColumn(name = "teacher_id")
     private WebsiteUser teacher;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private TutoringClass tutoringClass;
+
 }

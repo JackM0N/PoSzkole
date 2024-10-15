@@ -17,6 +17,10 @@ public class PaymentForClass {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
+    private WebsiteUser student;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "class_schedule_id", nullable = false)
     private ClassSchedule classSchedule;
 

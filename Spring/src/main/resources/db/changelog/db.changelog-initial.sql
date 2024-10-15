@@ -184,7 +184,8 @@ CREATE TABLE request
     repeat_until    DATE,
     issue_date      DATE   NOT NULL,
     acceptance_date DATE,
-    teacher_id      BIGINT REFERENCES website_user (user_id)
+    teacher_id      BIGINT REFERENCES website_user (user_id),
+    class_id        BIGINT REFERENCES tutoring_class(class_id),
     CONSTRAINT  check_repeat_until CHECK ( repeat_until > CURRENT_DATE )
 );
 
