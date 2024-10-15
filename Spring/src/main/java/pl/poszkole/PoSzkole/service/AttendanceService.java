@@ -1,5 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -59,6 +60,10 @@ public class AttendanceService {
     }
 
     public Boolean createForClassSchedule(Long classScheduleId) {
+        if (checkIfExists(classScheduleId)) {
+            throw new EntityExistsException("Class Schedule already exists");
+        }
+
         //Check if classSchedule exists
         ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
                 .orElseThrow(EntityNotFoundException::new);
