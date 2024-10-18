@@ -1,0 +1,13 @@
+package pl.poszkole.PoSzkole.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import pl.poszkole.PoSzkole.model.ClassSchedule;
+import pl.poszkole.PoSzkole.model.ScheduleChangesLog;
+
+import java.util.Optional;
+
+@Repository
+public interface ScheduleChangesLogRepository extends JpaRepository<ScheduleChangesLog, Long> {
+    Optional<ScheduleChangesLog> findByClassSchedule(ClassSchedule classSchedule);
+}

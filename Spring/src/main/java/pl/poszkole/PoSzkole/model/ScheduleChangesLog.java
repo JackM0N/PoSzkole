@@ -3,6 +3,7 @@ package pl.poszkole.PoSzkole.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import pl.poszkole.PoSzkole.enums.Reason;
 
 @Getter
 @Setter
@@ -23,7 +24,8 @@ public class ScheduleChangesLog {
     private WebsiteUser user;
 
     @Column(name = "reason", nullable = false, length = 100)
-    private String reason;
+    @Enumerated(EnumType.STRING)
+    private Reason reason;
 
     @Column(name = "explanation", nullable = false, length = Integer.MAX_VALUE)
     private String explanation;
