@@ -60,6 +60,7 @@ public class TutoringClassService {
     }
 
     //TODO: Ask if teacher should be able to make an account for a student for his class
+    //TODO: Same payments problem. Schedule or monthly based. What about February or December for example?
     public TutoringClassDTO createTutoringClass(Long studentId, TutoringClassDTO tutoringClassDTO,
                                                 DayAndTimeDTO dayAndTimeDTO, Boolean isOnline, LocalDate repeatUntil) {
         //Get needed users

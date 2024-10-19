@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .requestMatchers("/registration/teacher", "/request/create")
                         .hasAnyRole("MANAGER", "OWNER")
 
-                        .requestMatchers("/class/add-student")
+                        .requestMatchers("/class/add-student", "/class/create")
                         .hasAnyRole("MANAGER", "TEACHER")
 
                         .requestMatchers("/request/list", "/request/admit/**", "/attendance/**")

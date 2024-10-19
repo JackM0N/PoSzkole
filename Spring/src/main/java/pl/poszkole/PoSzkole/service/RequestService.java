@@ -93,6 +93,7 @@ public class RequestService {
         //TODO: MAYBE, JUST MAYBE SOMEDAY ADD INSTANT ROOM RESERVATION... that would be a 3rd dto tho...
         //TODO: Ask if classes are usually a group ones. If so should it be possible to add student to existing class
         //TODO: If so maybe add wants_individual to requests maybe
+        //TODO: Ask what to do with payments, should it be schedule based or monthly based. If monthly then what if there are months with less classes (bc of holidays for example)
         //Get current user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
