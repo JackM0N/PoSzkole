@@ -79,6 +79,14 @@ public class WebsiteUser {
     )
     private List<TutoringClass> classes = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses = new ArrayList<>();
+
     public void addClass(TutoringClass tutoringClass) {
         if (!classes.contains(tutoringClass)) {
             classes.add(tutoringClass);
@@ -90,6 +98,20 @@ public class WebsiteUser {
         if (classes.contains(tutoringClass)) {
             classes.remove(tutoringClass);
             tutoringClass.getStudents().remove(this);
+        }
+    }
+
+    public void addCourse(Course course) {
+        if (!courses.contains(course)) {
+            courses.add(course);
+            course.getStudents().add(this);
+        }
+    }
+
+    public void removeCourse(Course course) {
+        if (!courses.contains(course)) {
+            courses.add(course);
+            course.getStudents().remove(this);
         }
     }
 

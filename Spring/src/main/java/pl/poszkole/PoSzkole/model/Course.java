@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +27,6 @@ public class Course {
     @Column(name = "max_participants", nullable = false)
     private Integer maxParticipants;
 
+    @ManyToMany(mappedBy = "courses")
+    private List<WebsiteUser> students = new ArrayList<>();
 }
