@@ -91,4 +91,6 @@ public class TutoringClassService {
 
         return tutoringClassMapper.toDto(tutoringClass);
     }
+
+    //TODO: Add removal of student from a class
 }
