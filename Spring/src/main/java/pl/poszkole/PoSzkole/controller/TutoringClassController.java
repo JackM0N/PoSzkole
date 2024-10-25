@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
-import pl.poszkole.PoSzkole.dto.RequestAndDateDTO;
 import pl.poszkole.PoSzkole.dto.StudentAndClassDTO;
+import pl.poszkole.PoSzkole.dto.StudentRequestAndDateDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
 import pl.poszkole.PoSzkole.service.*;
 
@@ -31,11 +31,12 @@ public class TutoringClassController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<TutoringClassDTO> create(@RequestBody RequestAndDateDTO requestAndDateDTO, Long studentId) {
-        TutoringClassDTO tutoringClassDTO = requestAndDateDTO.getTutoringClassDTO();
-        DayAndTimeDTO dayAndTimeDTO = requestAndDateDTO.getDayAndTimeDTO();
-        LocalDate repeatUntil = requestAndDateDTO.getRepeatUntil();
-        Boolean isOnline = requestAndDateDTO.isOnline();
+    public ResponseEntity<TutoringClassDTO> create(@RequestBody StudentRequestAndDateDTO srdDTO) {
+        Long studentId = srdDTO.getStudentId();
+        TutoringClassDTO tutoringClassDTO = srdDTO.getTutoringClassDTO();
+        DayAndTimeDTO dayAndTimeDTO = srdDTO.getDayAndTimeDTO();
+        LocalDate repeatUntil = srdDTO.getRepeatUntil();
+        Boolean isOnline = srdDTO.getIsOnline();
 
         return ResponseEntity.ok(
                 tutoringClassService.createTutoringClass(studentId,tutoringClassDTO,dayAndTimeDTO,isOnline,repeatUntil)

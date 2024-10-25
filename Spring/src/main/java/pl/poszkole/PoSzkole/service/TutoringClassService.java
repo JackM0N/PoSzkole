@@ -92,5 +92,5 @@ public class TutoringClassService {
         return tutoringClassMapper.toDto(tutoringClass);
     }
 
-    //TODO: Add removal of student from a class
+    //TODO: Add removal of student from a class and ask what should that entail. Just canceling rest of the payments? Canceling rest of payments starting next month? Something else?
 }

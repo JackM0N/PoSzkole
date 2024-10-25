@@ -9,9 +9,10 @@ import java.time.LocalDate;
 @Data
 @Getter
 @Setter
-public class RequestAndDateDTO {
+public class StudentRequestAndDateDTO {
+    private Long studentId;
     private TutoringClassDTO tutoringClassDTO;
     private DayAndTimeDTO dayAndTimeDTO;
-    private boolean isOnline;
+    private Boolean isOnline;
     private LocalDate repeatUntil;
 }

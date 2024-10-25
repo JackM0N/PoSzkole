@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
-import pl.poszkole.PoSzkole.dto.RequestAndDateDTO;
 import pl.poszkole.PoSzkole.dto.RequestDTO;
+import pl.poszkole.PoSzkole.dto.StudentRequestAndDateDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.service.*;
@@ -36,11 +36,11 @@ public class RequestController {
     @ResponseBody
     public ResponseEntity<RequestDTO> approveRequest(
             @PathVariable Long id,
-            @RequestBody RequestAndDateDTO requestAndDateDTO
+            @RequestBody StudentRequestAndDateDTO srdDTO
     ) {
-        TutoringClassDTO tutoringClassDTO = requestAndDateDTO.getTutoringClassDTO();
-        DayAndTimeDTO dayAndTimeDTO = requestAndDateDTO.getDayAndTimeDTO();
-        boolean isOnline = requestAndDateDTO.isOnline();
+        TutoringClassDTO tutoringClassDTO = srdDTO.getTutoringClassDTO();
+        DayAndTimeDTO dayAndTimeDTO = srdDTO.getDayAndTimeDTO();
+        Boolean isOnline = srdDTO.getIsOnline();
         return ResponseEntity.ok(requestService.admitRequest(id, tutoringClassDTO, dayAndTimeDTO, isOnline));
     }
 }
