@@ -20,6 +20,7 @@ public class UserBusyDayService {
     private final UserBusyDayRepository userBusyDayRepository;
     private final WebsiteUserRepository websiteUserRepository;
     private final UserBusyDayMapper userBusyDayMapper;
+    private final AuthorizationService authorizationService;
 
     public List<UserBusyDayDTO> getUserBusyDays(Long userId) {
         WebsiteUser websiteUser = websiteUserRepository.findById(userId)
@@ -39,12 +40,19 @@ public class UserBusyDayService {
         UserBusyDay userBusyDay = userBusyDayMapper.toEntity(userBusyDayDTO);
         userBusyDay.setUser(websiteUser);
 
+        if (authorizationService.cantModifyEntity(userBusyDay)){
+            throw new RuntimeException("You do not have permission to create this schedule");
+        }
+
         return userBusyDayMapper.toDto(userBusyDayRepository.save(userBusyDay));
     }
 
     public UserBusyDayDTO updateUserBusyDay(Long bdId, UserBusyDayDTO userBusyDayDTO) {
         UserBusyDay userBusyDay = userBusyDayRepository.findById(bdId)
                 .orElseThrow(() -> new EntityNotFoundException("User schedule not found"));
+        if (authorizationService.cantModifyEntity(userBusyDay)){
+            throw new RuntimeException("You do not have permission to edit this schedule");
+        }
         if (isOverlapping(userBusyDay.getUser(), userBusyDayDTO)) {
             throw new RuntimeException("Chosen schedule is overlapping with already existing one");
         }
@@ -53,7 +61,11 @@ public class UserBusyDayService {
     }
 
     public void deleteUserBusyDay(Long bdId) {
-        //TODO: Check if current user can make this operation
+        UserBusyDay userBusyDay = userBusyDayRepository.findById(bdId)
+                .orElseThrow(() -> new EntityNotFoundException("User schedule not found"));
+        if (authorizationService.cantModifyEntity(userBusyDay)){
+            throw new RuntimeException("You do not have permission to delete this schedule");
+        }
         userBusyDayRepository.deleteById(bdId);
     }
 

@@ -3,6 +3,7 @@ package pl.poszkole.PoSzkole.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import pl.poszkole.PoSzkole.interfaces.HasUser;
 
 import java.time.LocalTime;
 
@@ -10,7 +11,7 @@ import java.time.LocalTime;
 @Setter
 @Entity
 @Table(name = "user_busy_day")
-public class UserBusyDay {
+public class UserBusyDay implements HasUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_busy_day_id", nullable = false)
