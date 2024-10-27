@@ -21,7 +21,7 @@ public class ClassScheduleController {
         return ResponseEntity.ok(classScheduleService.getAllClassSchedulesForCurrentStudent(pageable));
     }
 
-    @PostMapping("/edit/{scheduleId}")
+    @PutMapping("/edit/{scheduleId}")
     public ResponseEntity<ClassScheduleDTO> editClassSchedule(
             @PathVariable Long scheduleId,
             @RequestBody ClassAndChangeLogDTO classAndChangeLogDTO) {

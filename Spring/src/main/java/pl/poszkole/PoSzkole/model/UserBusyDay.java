@@ -16,6 +16,10 @@ public class UserBusyDay {
     @Column(name = "user_busy_day_id", nullable = false)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private WebsiteUser user;
+
     @Column(name = "day_of_the_week", nullable = false, length = 20)
     private String dayOfTheWeek;
 

@@ -40,10 +40,16 @@ public class SecurityConfig {
                         .requestMatchers("/request/list", "/request/admit/**", "/attendance/**")
                         .hasRole("TEACHER")
 
+                        .requestMatchers("/busy-days/create", "/busy-days/edit/**", "/busy-days/delete/**")
+                        .hasAnyAuthority("TEACHER", "STUDENT")
+
                         .requestMatchers("/class/my-classes", "/course/bought-courses")
                         .hasRole("STUDENT")
 
-                        .requestMatchers("/login", "/register", "/details", "/css/**", "/course/list")
+                        .requestMatchers("/course/list", "/busy-days/list/**")
+                        .hasAnyRole("OWNER", "MANAGER", "TEACHER", "STUDENT")
+
+                        .requestMatchers("/login", "/register", "/details", "/css/**")
                         .permitAll()
 
                         .anyRequest()
