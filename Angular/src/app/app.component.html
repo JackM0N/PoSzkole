@@ -1,0 +1,48 @@
+<header class="header">
+  <div class="container">
+    <nav class="vertical-navbar">
+      <ul>
+        <div class="logo-container">
+          <img src="../assets/logo/logo.png" class="logo-image">
+          <p class="logo-text">PoSzkole</p>
+        </div>
+        <hr class="divider">
+        <div class="student-navbar">
+          <p>Uczeń</p>
+          <li><a routerLink="/student-harmonogram">Harmonogram</a></li>
+          <li><a routerLink="/student-courses">Kursy</a></li>
+          <li><a routerLink="/student-finances">Finanse</a></li>
+          <li><a routerLink="/attendance">Obecność</a></li>
+        </div>
+        <div class="teacher-navbar">
+          <p>Nauczyciel</p>
+          <li><a routerLink="/teacher-harmonogram">Harmonogram</a></li>
+          <li><a routerLink="/requests">Decyzje</a></li>
+        </div>
+        <div class="manager-navbar">
+          <p>Kierownik</p>
+          <li><a routerLink="/new-class">Nowe zajęcia</a></li>
+          <li><a routerLink="/teachers">Nauczyciele</a></li>
+          <li><a routerLink="/students">Uczniowie</a></li>
+          <li><a routerLink="/manager-courses">Kursy</a></li>
+          <li><a routerLink="/manager-finances">Finanse</a></li>
+          <li><a routerLink="/price-list">Cenniki</a></li>
+        </div>
+      </ul>
+      <div class="auth-links">
+        <ul>
+          <li><a routerLink="/account">Konto</a></li>
+          <li><a routerLink="/logout">Wyloguj</a></li>
+          <li><a routerLink="/login">Zaloguj się</a></li>
+          <li><a routerLink="/register">Zarejestruj się</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="grow flex flex-col justify-between">
+  <div class="main-container">
+    <router-outlet></router-outlet>
+  </div>
+</main>

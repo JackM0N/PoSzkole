@@ -1,0 +1,123 @@
+/* app.component.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .header {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 250px;
+    background-color: white;
+    border: 1px solid #cccccc;
+    border-top: none;
+    position: fixed;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+  
+  /* Navbar */
+  .vertical-navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0 0 0;
+    height: 100%;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 10px;
+  }
+  
+  .logo-image {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+  }
+  
+  .logo-text {
+    color: #4a4a4a;
+    font-size: 38px;
+    margin: 0;
+  }
+  
+  .vertical-navbar hr.divider {
+    width: 100%;
+    margin: 20px 0;
+    border: 1px solid #cccccc;
+  }
+  
+  .vertical-navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .vertical-navbar ul div {
+    width: 100%;
+  }
+  
+  .vertical-navbar li {
+    margin-top: 5px;
+  }
+  
+  .vertical-navbar a {
+    display: block;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+    background-color: #3366cc;
+    text-align: center;
+    border-radius: 3px;
+  }
+  
+  .vertical-navbar a:hover {
+    background-color: #6699ff;
+  }
+  
+  /* Navbar Sections */
+  .student-navbar, .teacher-navbar, .manager-navbar {
+    margin-bottom: 20px;
+  }
+  
+  .student-navbar p, .teacher-navbar p, .manager-navbar p {
+    color: #4a4a4a;
+    font-weight: bold;
+    margin: 0 0 10px 10px;
+  }
+  
+  /* Auth Links */
+  .auth-links {
+    width: 100%;
+    text-align: center;
+    margin-top: auto;
+  }
+  
+  .auth-links ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .auth-links li {
+    margin: 5px 0;
+  }
+  
+  .main-container {
+    flex-grow: 1;
+    padding-left: 250px;
+  }
+  
