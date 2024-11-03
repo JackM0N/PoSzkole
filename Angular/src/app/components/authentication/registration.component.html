@@ -1,0 +1,89 @@
+<div class="login-container">
+  <div class="login-form">
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      
+      <div>
+        <label for="username">Nazwa użytkownika*</label>
+        <input type="text" id="username" formControlName="username" placeholder="Wpisz nazwę użytkownika">
+        <div *ngIf="registrationForm.get('username')?.invalid && registrationForm.get('username')?.touched" class="error-message">
+          Nazwa użytkownika jest wymagana (min. 3 znaki).
+        </div>
+      </div>
+      
+      <div>
+        <label for="email">Email*</label>
+        <input type="text" id="email" formControlName="email" placeholder="Wpisz adres email">
+        <div *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" class="error-message">
+          Wprowadź poprawny adres e-mail.
+        </div>
+      </div>
+
+      <div>
+        <label for="password">Hasło*</label>
+        <input type="password" id="password" formControlName="password" placeholder="Wpisz hasło">
+      </div>
+      
+      <div>
+        <label for="confirmPassword">Potwierdź hasło*</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Potwierdź hasło">
+        <div *ngIf="registrationForm.hasError('passwordsMismatch') && registrationForm.get('confirmPassword')?.touched" class="error-message">
+          Hasła muszą być zgodne.
+        </div>
+      </div>
+
+      <div>
+        <label for="firstName">Imię*</label>
+        <input type="text" id="firstName" formControlName="firstName" placeholder="Wpisz imię">
+      </div>
+      
+      <div>
+        <label for="lastName">Nazwisko*</label>
+        <input type="text" id="lastName" formControlName="lastName" placeholder="Wpisz nazwisko">
+      </div>
+
+      <div>
+        <label for="gender">Płeć*</label>
+        <select id="gender" formControlName="gender">
+          <option *ngFor="let gender of genders" [value]="gender[0]">{{ gender[1] }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="phone">Telefon*</label>
+        <input type="text" id="phone" formControlName="phone" placeholder="Wpisz numer telefonu">
+      </div>
+
+      <div>
+        <label for="level">Poziom kształcenia*</label>
+        <select id="level" formControlName="level">
+          <option *ngFor="let level of educationLevels" [value]="level[0]">{{ level[1] }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="guardianPhone">Telefon opiekuna</label>
+        <input type="text" id="guardianPhone" formControlName="guardianPhone" placeholder="Wpisz telefon opiekuna">
+      </div>
+
+      <div>
+        <label for="guardianEmail">Email opiekuna</label>
+        <input type="text" id="guardianEmail" formControlName="guardianEmail" placeholder="Wpisz email opiekuna">
+      </div>
+
+      <div>
+        <label for="isCashPayment">
+          <input type="checkbox" id="isCashPayment" formControlName="isCashPayment"> Płatność gotówką
+        *</label>
+      </div>
+
+      <div>
+        <label for="issueInvoice">
+          <input type="checkbox" id="issueInvoice" formControlName="issueInvoice"> Wystawienie faktury
+        *</label>
+      </div>
+
+      <button type="submit" [disabled]="registrationForm.invalid">Zarejestruj</button>
+      
+    </form>
+  </div>
+</div>

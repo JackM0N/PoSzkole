@@ -1,4 +1,3 @@
-/* Kontener główny dla wyśrodkowania formularza */
 .login-container {
   display: flex;
   align-items: center;
@@ -14,7 +13,7 @@
   justify-content: center;
   background-color: #f4f4f4;
   width: 100%;
-  max-width: 300px; /* Ograniczenie szerokości kontenera formularza */
+  max-width: 300px;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -37,14 +36,15 @@
 }
 
 .login-form input[type="text"],
-.login-form input[type="password"] {
-  width: 100%; /* Dopasowanie szerokości do kontenera */
+.login-form input[type="password"],
+.login-form select {
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box; /* Uwzględnienie paddingu w szerokości elementu */
+  box-sizing: border-box;
 }
 
 .login-form button {

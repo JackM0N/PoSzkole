@@ -5,6 +5,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.poszkole.PoSzkole.dto.WebsiteUserDTO;
+import pl.poszkole.PoSzkole.mapper.WebsiteUserMapper;
 import pl.poszkole.PoSzkole.model.Role;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.RoleRepository;
@@ -22,11 +24,18 @@ public class AuthenticationService {
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RoleRepository roleRepository;
+    private final WebsiteUserMapper websiteUserMapper;
 
-    public AuthenticationResponse registerStudent(WebsiteUser request){
-        WebsiteUser user = new WebsiteUser();
+    public AuthenticationResponse registerStudent(WebsiteUserDTO request){
+        WebsiteUser user = websiteUserMapper.toEntity(request);
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Long minId = 10000L;
+        Long maxId = 99999L;
+        Long highestId = websiteUserRepository.findHighestIdInRange(minId, maxId);
+
+        user.setId(highestId + 1);
 
         Role role = roleRepository.findByRoleName("STUDENT")
                 .orElseThrow(() -> new RuntimeException("Role not found"));
@@ -36,7 +45,7 @@ public class AuthenticationService {
         return new AuthenticationResponse(token);
     }
 
-    public AuthenticationResponse registerTeacher(WebsiteUser request){
+    public AuthenticationResponse registerTeacher(WebsiteUserDTO request){
         WebsiteUser user = new WebsiteUser();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -49,7 +58,7 @@ public class AuthenticationService {
         return new AuthenticationResponse(token);
     }
 
-    public AuthenticationResponse registerManager(WebsiteUser request){
+    public AuthenticationResponse registerManager(WebsiteUserDTO request){
         WebsiteUser user = new WebsiteUser();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -62,7 +71,7 @@ public class AuthenticationService {
         return new AuthenticationResponse(token);
     }
 
-    public AuthenticationResponse login(WebsiteUser request){
+    public AuthenticationResponse login(WebsiteUserDTO request){
         WebsiteUser user = websiteUserRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Incorrect username or password"));
         authenticationManager.authenticate(
