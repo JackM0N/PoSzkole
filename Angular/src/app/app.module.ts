@@ -10,6 +10,7 @@ import { LoginComponent } from './components/authentication/login.component';
 import { RegistrationComponent } from './components/authentication/registration.component';
 import { RequestComponent } from './components/manager/request/request.component';
 import { RequestFormComponent } from './components/manager/request-form/request-form.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 @NgModule({
@@ -27,7 +28,9 @@ import { RequestFormComponent } from './components/manager/request-form/request-
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
