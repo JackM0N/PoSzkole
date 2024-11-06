@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 
 import { LoginComponent } from './components/authentication/login.component';
 import { RegistrationComponent } from './components/authentication/registration.component';
+import { RequestComponent } from './components/manager/request/request.component';
+import { RequestFormComponent } from './components/manager/request-form/request-form.component';
 
 
 @NgModule({
@@ -15,6 +17,8 @@ import { RegistrationComponent } from './components/authentication/registration.
     AppComponent,
     LoginComponent,
     RegistrationComponent,
+    RequestComponent,
+    RequestFormComponent,
   ],
   imports: [
     BrowserModule,
