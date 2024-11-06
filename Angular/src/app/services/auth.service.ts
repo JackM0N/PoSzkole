@@ -24,6 +24,10 @@ export class AuthService {
   }
 
   //Token decoding methods
+  getToken(): string | null{
+    return localStorage.getItem(environment.tokenKey);
+  }
+
   private getDecodedToken() {
     const token = localStorage.getItem(environment.tokenKey);
     if (token) {

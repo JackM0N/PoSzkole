@@ -1,16 +1,27 @@
+//General
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+//Material
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+
+//App
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+//Components
 import { LoginComponent } from './components/authentication/login.component';
 import { RegistrationComponent } from './components/authentication/registration.component';
 import { RequestComponent } from './components/manager/request/request.component';
 import { RequestFormComponent } from './components/manager/request-form/request-form.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 
 @NgModule({
@@ -27,9 +38,20 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+
+    MatInputModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatButtonModule,
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
