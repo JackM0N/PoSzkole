@@ -3,6 +3,7 @@ package pl.poszkole.PoSzkole.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import pl.poszkole.PoSzkole.enums.ClassLocation;
 
 import java.time.LocalDate;
 
@@ -26,6 +27,13 @@ public class Request {
 
     @Column(name = "repeat_until")
     private LocalDate repeatUntil;
+
+    @Column(name = "prefers_individual", nullable = false)
+    private Boolean prefersIndividual = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "prefers_location", nullable = false, length = 20)
+    private ClassLocation prefersLocation;
 
     @Column(name = "issue_date", nullable = false)
     private LocalDate issueDate;

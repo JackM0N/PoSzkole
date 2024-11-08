@@ -10,7 +10,7 @@
         @if (authService.hasRole('STUDENT')){
           <div class="student-navbar">
             <p>Uczeń</p>
-            <li><a routerLink="/student-harmonogram">Harmonogram</a></li>
+            <li><a routerLink="/student-harmonogram">Harmonogram nauczyciela</a></li>
             <li><a routerLink="/student-courses">Kursy</a></li>
             <li><a routerLink="/student-finances">Finanse</a></li>
             <li><a routerLink="/attendance">Obecność</a></li>
@@ -19,7 +19,7 @@
         @if (authService.hasRole('TEACHER')){
           <div class="teacher-navbar">
             <p>Nauczyciel</p>
-            <li><a routerLink="/teacher-harmonogram">Harmonogram</a></li>
+            <li><a routerLink="/teacher-harmonogram">Harmonogram nauczyciela</a></li>
             <li><a routerLink="/requests">Decyzje</a></li>
           </div>
         }

@@ -4,23 +4,23 @@ import { environment } from '../../environment/environment.prod';
 import { Observable } from 'rxjs';
 import { WebsiteUser } from '../models/website-user.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = environment.apiUrl;
   private jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   //Login methods
   login(userData: {username: string, password: string}): Observable<{ token: string}>{
-    return this.http.post<{token: string}>(this.baseUrl + '/login', userData);
+    return this.http.post<{token: string}>(environment.apiUrl + '/login', userData);
   }
 
   register(userData: WebsiteUser): Observable<any> {
-    return this.http.post<any>(this.baseUrl + '/register', userData);
+    return this.http.post<any>(environment.apiUrl + '/register', userData);
   }
 
   //Token decoding methods
@@ -53,5 +53,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem(environment.tokenKey);
+    this.router.navigate(['/']);
   }
 }

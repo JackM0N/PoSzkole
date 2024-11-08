@@ -1,18 +1,69 @@
+/* Form container */
 .form-container {
+  background-color: white;
+  border: 1px solid #cccccc;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  max-width: 500px;
+  margin: 40px auto;
+  border-radius: 5px;
 }
 
-.full-width {
-  width: 100%;
-  max-width: 400px;
+/* Header */
+.form-container h1 {
+  color: #4a4a4a;
+  font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
+/* Fields */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+mat-checkbox {
+  margin: 10px 0;
+  color: #4a4a4a;
+}
+
+/* Labels and selects */
+.mat-form-field .mat-form-field-label {
+  color: #3366cc !important;
+}
+
+.mat-select {
+  background-color: white;
+}
+
+/* Cancel */
+.button-group button[type="button"] {
+  color: #3366cc;
+  border: 1px solid #3366cc;
+  background-color: white;
+  margin-right: 10px;
+}
+
+.button-group button[type="button"]:hover {
+  background-color: #e0e7ff;
+}
+
+/* Send */
+.button-group button[type="submit"] {
+  background-color: #3366cc;
+  color: white;
+}
+
+.button-group button[type="submit"]:hover {
+  background-color: #6699ff;
+}
+
+/* Buttons */
 .button-group {
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
 }

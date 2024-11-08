@@ -2,18 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-
-interface Student {
-  id: number;
-  firstName: string;
-  lastName: string;
-}
-
-interface Subject {
-  id: number;
-  subjectName: string;
-}
+import { Student } from '../../../models/student.model';
+import { Subject } from '../../../models/subject.model';
+import { WebsiteUserService } from '../../../services/website-user.service';
+import { SubjectService } from '../../../services/subject.service';
+import { RequestService } from '../../../services/request.service';
 
 @Component({
   selector: 'app-request-form',
@@ -27,11 +20,18 @@ export class RequestFormComponent implements OnInit {
   filteredStudents!: Observable<Student[]>;
   filteredSubjects!: Observable<Subject[]>;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder, 
+    private websiteUserService: WebsiteUserService,
+    private subjectService: SubjectService,
+    private requestService: RequestService) {
     this.requestForm = this.fb.group({
       student: new FormControl(''),
       subject: new FormControl(''),
-      repeat: new FormControl(false)
+      repeat: new FormControl(false),
+      repeatUntil: new FormControl(null),
+      prefersIndividual: new FormControl(false),
+      prefersLocation: new FormControl('')
     });
   }
 
@@ -51,13 +51,13 @@ export class RequestFormComponent implements OnInit {
   }
 
   loadStudents() {
-    this.http.get<Student[]>('http://localhost:8080/user/all-students').subscribe(data => {
+    this.websiteUserService.loadStudents().subscribe(data => {
       this.students = data;
     });
   }
 
   loadSubjects() {
-    this.http.get<Subject[]>('http://localhost:8080/subject/all').subscribe(data => {
+    this.subjectService.loadSubjects().subscribe(data => {
       this.subjects = data;
     });
   }
@@ -89,8 +89,20 @@ export class RequestFormComponent implements OnInit {
   onSubmit() {
     if (this.requestForm.valid) {
       const formValue = this.requestForm.value;
+      
+      if (!formValue.repeat) {
+        formValue.repeatUntil = null;
+      }
+
       console.log('Form Value:', formValue);
-      // handle sending
+      this.requestService.createRequest(formValue).subscribe({
+        next: response => {
+          console.log('Request creation success', response)
+        },
+        error: error => {
+          console.error('Request creation error', error);
+        }
+      });
     }
   }
 

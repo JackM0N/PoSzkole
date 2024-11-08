@@ -2,6 +2,7 @@ package pl.poszkole.PoSzkole.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
 import pl.poszkole.PoSzkole.dto.RequestDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
+import pl.poszkole.PoSzkole.enums.ClassLocation;
 import pl.poszkole.PoSzkole.mapper.RequestMapper;
 import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
 import pl.poszkole.PoSzkole.model.*;
@@ -63,12 +65,13 @@ public class RequestService {
         return rSpec;
     }
 
+    //TODO: ASK if prefers online and prefers individual are necessary
     @Transactional
     public RequestDTO createRequest(RequestDTO requestDTO) throws BadRequestException {
         //Creating new request
         Request request = requestMapper.toEntity(requestDTO);
 
-        if (!request.getRepeatUntil().isAfter(LocalDate.now())){
+        if (request.getRepeatUntil() != null && !request.getRepeatUntil().isAfter(LocalDate.now())){
             throw new BadRequestException("You cant plan classes into the past");
         }
 
@@ -91,7 +94,6 @@ public class RequestService {
     public RequestDTO admitRequest(Long id, TutoringClassDTO tutoringClassDTO,
                                    DayAndTimeDTO dayAndTimeDTO, Boolean isOnline) {
         //TODO: MAYBE, JUST MAYBE SOMEDAY ADD INSTANT ROOM RESERVATION... that would be a 3rd dto tho...
-        //TODO: Ask if classes are usually a group ones. If so should it be possible to add student to existing class
         //TODO: If so maybe add wants_individual to requests maybe
         //TODO: Ask what to do with payments, should it be schedule based or monthly based. If monthly then what if there are months with less classes (bc of holidays for example)
         //Get current user

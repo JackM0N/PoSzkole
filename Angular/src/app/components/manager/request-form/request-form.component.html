@@ -2,10 +2,9 @@
   <h1>Wyślij prośbę do nauczycieli</h1>
   <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
     
-    <!-- Pole wyboru ucznia -->
     <mat-form-field>
-      <input type="text" matInput placeholder="Wybierz ucznia"
-             [matAutocomplete]="studentAuto" formControlName="student">
+      <input type="text" matInput placeholder="Wybierz ucznia*"
+             [matAutocomplete]="studentAuto" formControlName="student" required>
       <mat-autocomplete #studentAuto="matAutocomplete" [displayWith]="displayStudent">
         <mat-option *ngFor="let student of filteredStudents | async" [value]="student">
           {{ student.id }} - {{ student.firstName }} {{ student.lastName }}
@@ -13,10 +12,9 @@
       </mat-autocomplete>
     </mat-form-field>
     
-    <!-- Pole wyboru przedmiotu -->
     <mat-form-field>
-      <input type="text" matInput placeholder="Wybierz przedmiot"
-             [matAutocomplete]="subjectAuto" formControlName="subject">
+      <input type="text" matInput placeholder="Wybierz przedmiot*"
+             [matAutocomplete]="subjectAuto" formControlName="subject" required>
       <mat-autocomplete #subjectAuto="matAutocomplete" [displayWith]="displaySubject">
         <mat-option *ngFor="let subject of filteredSubjects | async" [value]="subject">
           {{ subject.subjectName }}
@@ -24,10 +22,26 @@
       </mat-autocomplete>
     </mat-form-field>
     
-    <!-- Pole boolean: Powtarzać zajęcia? -->
     <mat-checkbox formControlName="repeat">Powtarzać zajęcia?</mat-checkbox>
+
+    <mat-form-field *ngIf="requestForm.get('repeat')?.value">
+      <input matInput [matDatepicker]="datepicker" placeholder="Wybierz datę zakończenia" formControlName="repeatUntil">
+      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="prefersIndividual">Preferuje indywidualne zajęcia</mat-checkbox>
+
+    <mat-form-field>
+      <mat-label>Preferencje lokalizacji zajęć</mat-label>
+      <mat-select formControlName="prefersLocation" required>
+        <mat-option [value]="'NONE'">Brak preferencji</mat-option>
+        <mat-option [value]="'ONLINE'">Preferuje zdalne</mat-option>
+        <mat-option [value]="'INDIVIDUAL'">Preferuje stacjonarne</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     
-    <!-- Przyciski: Anuluj, Wyślij -->
     <div class="button-group">
       <button mat-button type="button" (click)="resetForm()">Anuluj</button>
       <button mat-raised-button color="primary" type="submit">Wyślij</button>

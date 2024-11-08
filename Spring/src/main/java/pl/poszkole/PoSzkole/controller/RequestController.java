@@ -1,6 +1,7 @@
 package pl.poszkole.PoSzkole.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
 import pl.poszkole.PoSzkole.dto.RequestDTO;
 import pl.poszkole.PoSzkole.dto.StudentRequestAndDateDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
+import pl.poszkole.PoSzkole.enums.ClassLocation;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.service.*;
 
