@@ -13,6 +13,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTable, MatTableModule } from '@angular/material/table';
 
 //App
 import { AppRoutingModule } from './app-routing.module';
@@ -21,7 +23,7 @@ import { AppComponent } from './app.component';
 //Components
 import { LoginComponent } from './components/authentication/login.component';
 import { RegistrationComponent } from './components/authentication/registration.component';
-import { RequestComponent } from './components/manager/request/request.component';
+import { RequestListComponent } from './components/teacher/request/request-list.component';
 import { RequestFormComponent } from './components/manager/request-form/request-form.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 
@@ -31,7 +33,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    RequestComponent,
+    RequestListComponent,
     RequestFormComponent,
   ],
   imports: [
@@ -48,6 +50,9 @@ import { AuthInterceptor } from './services/auth.interceptor';
     MatButtonModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatPaginator,
+    MatTable,
+    MatTableModule,
   ],
   providers: [
     provideAnimationsAsync(),

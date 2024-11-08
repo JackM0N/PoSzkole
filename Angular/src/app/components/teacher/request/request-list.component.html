@@ -1,0 +1,48 @@
+<div class="table-container">
+  <h2>Lista próśb</h2>
+
+  <table mat-table [dataSource]="this.dataSource" matSort>
+
+    <ng-container matColumnDef="Uczeń">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Uczeń</th>
+      <td mat-cell *matCellDef="let request">{{ request.studentName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Przedmiot">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Przedmiot</th>
+      <td mat-cell *matCellDef="let request">{{ request.subjectName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Data zakończenia zajęć">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Data zakończenia zajęć</th>
+      <td mat-cell *matCellDef="let request">
+        {{ request.recurrenceEndDate ? (request.recurrenceEndDate | date: 'dd.MM.yyyy') : 'Jednorazowe' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Preferuje indywidualnie">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Preferuje indywidualnie</th>
+      <td mat-cell *matCellDef="let request">{{ request.prefersIndividual ? 'Tak' : 'Nie' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Preferowany tryb zajęć">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Preferowany tryb zajęć</th>
+      <td mat-cell *matCellDef="let request">
+        {{ request.prefersLocation === 'ONLINE' ? 'Zdalnie' : (request.prefersLocation === 'INDIVIDUAL' ? 'Stacjonarnie' : 'Brak preferencji') }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Akcje">
+      <th mat-header-cell *matHeaderCellDef>Akcje</th>
+      <td mat-cell *matCellDef="let request">
+        <button mat-button color="primary">Akceptuj</button>
+        <button mat-button color="warn">Odrzuć</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="UnadmittedDisplayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: UnadmittedDisplayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [length]="totalRequests" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadUnadmittedRequests()"></mat-paginator>
+</div>
