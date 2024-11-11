@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Request } from '../../../models/request.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,10 +11,10 @@ import { Observer } from 'rxjs';
   templateUrl: './request-list.component.html',
   styleUrl: '../../../styles/request-list.component.css'
 })
-export class RequestListComponent {
+export class RequestListComponent implements AfterViewInit{
   protected dataSource: MatTableDataSource<Request> = new MatTableDataSource<Request>([]);
   protected totalRequests: number = 0;
-  protected UnadmittedDisplayedColumns: string[] = ['Uczeń', 'Przedmiot', 'Data zakończenia zajęć', 'Preferuje indywidualnie', 'Preferowany tryb zajęć', 'Akcje'];
+  protected UnadmittedDisplayedColumns: string[] = ['student', 'subject.subjectName', 'repeatUntil', 'prefersIndividual', 'prefersLocation', 'issueDate', 'action'];
   protected noRequests = false;
 
   @ViewChild('paginator') protected paginator!: MatPaginator;
@@ -23,6 +23,30 @@ export class RequestListComponent {
   constructor(
     private requestService: RequestService,
   ){}
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.loadUnadmittedRequests();
+
+    this.sort.sortChange.subscribe(() => {
+      this.loadUnadmittedRequests();
+    });
+  }
+
+  ngOnInit() {
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      const propertyAccessors: { [key: string]: any } = {
+        'Uczeń': item.student!.firstName + ' ' + item.student!.lastName,
+        'Przedmiot': item.subject!.subjectName,
+        'Data zakończenia zajęć': item.repeatUntil,
+        'Preferuje indywidualnie': item.prefersIndividual,
+        'Preferowany tryb zajęć': item.prefersLocation,
+        'Data utworzenia': item.issueDate
+      };
+      return propertyAccessors[property] || item[property as keyof Request];
+    };
+  }
 
   loadUnadmittedRequests(){
     const page = this.paginator.pageIndex + 1;
@@ -33,7 +57,7 @@ export class RequestListComponent {
     const observer: Observer<any> = {
       next: response => {
         if (response) {
-          this.totalRequests = response.totalRequests;
+          this.totalRequests = response.totalElements;
           this.dataSource = new MatTableDataSource<Request>(response.content);
           this.noRequests = (this.dataSource.data.length == 0);
         }else{
@@ -45,6 +69,6 @@ export class RequestListComponent {
       },
       complete: () => {}
     };
-    this.requestService.getUnadmittedRequests(page, size, sortBy, sortDir).subscribe(observer);
+    this.requestService.getNotAdmittedRequests(page, size, sortBy, sortDir).subscribe(observer);
   }
 }

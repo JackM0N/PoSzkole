@@ -16,13 +16,12 @@ export class RequestService {
     return this.http.post<any>(`${this.baseUrl}/create`, requestForm)
   }
 
-  getUnadmittedRequests(page: number, size: number, sortBy: string, sortDir: string): Observable<Request[]>{
+  getNotAdmittedRequests(page: number, size: number, sortBy: string, sortDir: string): Observable<Request[]>{
     var params = new HttpParams()
       .set('page', (page - 1).toString())
       .set('size', size.toString())
       .set('sort', sortBy + ',' + sortDir
     );
-
-    return this.http.get<Request[]>(`${this.baseUrl}/list`, { params })
+    return this.http.get<Request[]>(`${this.baseUrl}/list/not-admitted`, { params })
   }
 }

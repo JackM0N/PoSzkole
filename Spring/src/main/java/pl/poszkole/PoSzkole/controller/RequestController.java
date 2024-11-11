@@ -24,7 +24,7 @@ import java.nio.file.AccessDeniedException;
 public class RequestController {
     private final RequestService requestService;
 
-    @GetMapping("/list")
+    @GetMapping("/list/not-admitted")
     public ResponseEntity<Page<RequestDTO>> getRequests(Subject subject, Pageable pageable) throws AccessDeniedException {
         return ResponseEntity.ok(requestService.getRequestsForTeacher(subject, pageable));
     }

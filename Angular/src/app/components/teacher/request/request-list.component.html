@@ -3,40 +3,46 @@
 
   <table mat-table [dataSource]="this.dataSource" matSort>
 
-    <ng-container matColumnDef="Uczeń">
+    <ng-container matColumnDef="student">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Uczeń</th>
-      <td mat-cell *matCellDef="let request">{{ request.studentName }}</td>
+      <td mat-cell *matCellDef="let request"><button mat-button>{{ request.student.id }} - {{ request.student.firstName }} {{ request.student.lastName }}</button></td>
     </ng-container>
 
-    <ng-container matColumnDef="Przedmiot">
+    <ng-container matColumnDef="subject.subjectName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Przedmiot</th>
-      <td mat-cell *matCellDef="let request">{{ request.subjectName }}</td>
+      <td mat-cell *matCellDef="let request">{{ request.subject.subjectName }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="Data zakończenia zajęć">
+    <ng-container matColumnDef="repeatUntil">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Data zakończenia zajęć</th>
       <td mat-cell *matCellDef="let request">
-        {{ request.recurrenceEndDate ? (request.recurrenceEndDate | date: 'dd.MM.yyyy') : 'Jednorazowe' }}
+        {{ request.repeatUntil ? (request.repeatUntil | date: 'dd.MM.yyyy') : 'Jednorazowe' }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="Preferuje indywidualnie">
+    <ng-container matColumnDef="prefersIndividual">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Preferuje indywidualnie</th>
       <td mat-cell *matCellDef="let request">{{ request.prefersIndividual ? 'Tak' : 'Nie' }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="Preferowany tryb zajęć">
+    <ng-container matColumnDef="prefersLocation">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Preferowany tryb zajęć</th>
       <td mat-cell *matCellDef="let request">
         {{ request.prefersLocation === 'ONLINE' ? 'Zdalnie' : (request.prefersLocation === 'INDIVIDUAL' ? 'Stacjonarnie' : 'Brak preferencji') }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="Akcje">
+    <ng-container matColumnDef="issueDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Data utworzenia</th>
+      <td mat-cell *matCellDef="let request">
+        {{ request.issueDate | date: 'dd.MM.yyyy' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef>Akcje</th>
       <td mat-cell *matCellDef="let request">
         <button mat-button color="primary">Akceptuj</button>
-        <button mat-button color="warn">Odrzuć</button>
       </td>
     </ng-container>
 
@@ -44,5 +50,5 @@
     <tr mat-row *matRowDef="let row; columns: UnadmittedDisplayedColumns;"></tr>
   </table>
 
-  <mat-paginator [length]="totalRequests" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadUnadmittedRequests()"></mat-paginator>
+  <mat-paginator [length]="totalRequests" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadUnadmittedRequests()" #paginator></mat-paginator>
 </div>
