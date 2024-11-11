@@ -24,4 +24,13 @@ export class RequestService {
     );
     return this.http.get<Request[]>(`${this.baseUrl}/list/not-admitted`, { params })
   }
+
+  getAdmittedRequests(page: number, size: number, sortBy: string, sortDir: string): Observable<Request[]>{
+    var params = new HttpParams()
+      .set('page', (page - 1).toString())
+      .set('size', size.toString())
+      .set('sort', sortBy + ',' + sortDir
+    );
+    return this.http.get<Request[]>(`${this.baseUrl}/list/admitted`, { params })
+  }
 }

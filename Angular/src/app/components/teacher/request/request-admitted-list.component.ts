@@ -1,20 +1,19 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Request } from '../../../models/request.model';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { RequestService } from '../../../services/request.service';
-import { Observer } from 'rxjs';
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { RequestService } from "../../../services/request.service";
+import { Observer } from "rxjs";
 
 @Component({
-  selector: 'app-request-list',
-  templateUrl: './request-list.component.html',
+  selector: 'app-request-admitted-list',
+  templateUrl: './request-admitted-list.component.html',
   styleUrl: '../../../styles/request-list.component.css'
 })
-export class RequestListComponent implements AfterViewInit{
+export class RequestAdmittedListComponent implements AfterViewInit{
   protected dataSource: MatTableDataSource<Request> = new MatTableDataSource<Request>([]);
   protected totalRequests: number = 0;
-  protected UnadmittedDisplayedColumns: string[] = ['student', 'subject.subjectName', 'repeatUntil', 'prefersIndividual', 'prefersLocation', 'issueDate', 'action'];
+  protected UnadmittedDisplayedColumns: string[] = ['student', 'subject.subjectName', 'repeatUntil', 'prefersIndividual', 'prefersLocation', 'issueDate', 'acceptanceDate'];
   protected noRequests = false;
 
   @ViewChild('paginator') protected paginator!: MatPaginator;
@@ -25,14 +24,14 @@ export class RequestListComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.loadNotAdmittedRequests();
+    this.loadAdmittedRequests();
 
     this.sort.sortChange.subscribe(() => {
-      this.loadNotAdmittedRequests();
+      this.loadAdmittedRequests();
     });
   }
 
-  loadNotAdmittedRequests(){
+  loadAdmittedRequests(){
     const page = this.paginator.pageIndex + 1;
     const size = this.paginator.pageSize;
     const sortBy = this.sort.active || 'id';
@@ -53,6 +52,6 @@ export class RequestListComponent implements AfterViewInit{
       },
       complete: () => {}
     };
-    this.requestService.getNotAdmittedRequests(page, size, sortBy, sortDir).subscribe(observer);
+    this.requestService.getAdmittedRequests(page, size, sortBy, sortDir).subscribe(observer);
   }
 }

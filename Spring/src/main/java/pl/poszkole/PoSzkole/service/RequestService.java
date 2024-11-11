@@ -33,12 +33,14 @@ public class RequestService {
     private final ClassScheduleService classScheduleService;
 
     @Transactional
-    public Page<RequestDTO> getRequestsForTeacher(Subject subject, Pageable pageable) throws AccessDeniedException {
+    public Page<RequestDTO> getRequestsForTeacher(Boolean gotAdmitted,
+                                                  Subject subject,
+                                                  Pageable pageable) throws AccessDeniedException {
         // Get currently logged-in user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
         //Check if user is actually a teacher
-        if(currentUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))) {
+        if (currentUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))) {
             throw new AccessDeniedException("You do not have permission to access this resource");
         }
 
@@ -48,16 +50,25 @@ public class RequestService {
         }
 
         //Find request that this teacher teaches and were not admitted yet
-        Specification<Request> rSpec = getRequestSpecification(subject, currentUser);
+        Specification<Request> rSpec = getRequestSpecification(subject, currentUser, gotAdmitted);
 
         Page<Request> requests = requestRepository.findAll(rSpec, pageable);
         return requests.map(requestMapper::toDto);
     }
 
-    private static Specification<Request> getRequestSpecification(Subject subject, WebsiteUser currentUser) {
+    private static Specification<Request> getRequestSpecification(Subject subject,
+                                                                  WebsiteUser currentUser,
+                                                                  boolean gotAdmitted) {
         Specification<Request> rSpec = (root, query, builder) -> root.get("subject").in(currentUser.getSubjects());
-        rSpec = rSpec.and((root, query, builder) -> builder.isNull(root.get("acceptanceDate")));
 
+        if (gotAdmitted) {
+            rSpec = rSpec.and((root, query, builder) -> builder.isNotNull(root.get("acceptanceDate")));
+            rSpec = rSpec.and((root, query, builder) -> builder.equal(
+                    root.get("teacher").get("id"), currentUser.getId())
+            );
+        } else {
+            rSpec = rSpec.and((root, query, builder) -> builder.isNull(root.get("acceptanceDate")));
+        }
         //Filter subjects if needed
         if (subject != null && subject.getId() != null) {
             rSpec = rSpec.and((root, query, builder) -> builder.equal(root.get("subject").get("id"), subject.getId()));
@@ -71,14 +82,14 @@ public class RequestService {
         //Creating new request
         Request request = requestMapper.toEntity(requestDTO);
 
-        if (request.getRepeatUntil() != null && !request.getRepeatUntil().isAfter(LocalDate.now())){
+        if (request.getRepeatUntil() != null && !request.getRepeatUntil().isAfter(LocalDate.now())) {
             throw new BadRequestException("You cant plan classes into the past");
         }
 
         //Set manually needed data
         WebsiteUser studentUser = websiteUserRepository.findById(requestDTO.getStudent().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if(studentUser.getRoles().stream().noneMatch(role -> "STUDENT".equals(role.getRoleName()))) {
+        if (studentUser.getRoles().stream().noneMatch(role -> "STUDENT".equals(role.getRoleName()))) {
             throw new RuntimeException("You can't create a class for a user that's not a student");
         }
 
@@ -104,7 +115,7 @@ public class RequestService {
                 .orElseThrow(() -> new RuntimeException("Request not found"));
         request.setAcceptanceDate(LocalDate.now());
         request.setTeacher(currentUser);
-        
+
         //Create new class
         TutoringClass tutoringClass = tutoringClassMapper.toEntity(tutoringClassDTO);
         tutoringClass.setTeacher(currentUser);
@@ -122,9 +133,9 @@ public class RequestService {
         websiteUserRepository.save(student);
 
         //Create class schedule
-        if(request.getRepeatUntil() == null) {
+        if (request.getRepeatUntil() == null) {
             classScheduleService.createSingleClassSchedule(dayAndTimeDTO, tutoringClass, isOnline);
-        }else{
+        } else {
             classScheduleService
                     .createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, request.getRepeatUntil());
         }

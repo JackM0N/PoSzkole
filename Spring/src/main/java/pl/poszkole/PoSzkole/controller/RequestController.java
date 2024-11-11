@@ -25,8 +25,13 @@ public class RequestController {
     private final RequestService requestService;
 
     @GetMapping("/list/not-admitted")
-    public ResponseEntity<Page<RequestDTO>> getRequests(Subject subject, Pageable pageable) throws AccessDeniedException {
-        return ResponseEntity.ok(requestService.getRequestsForTeacher(subject, pageable));
+    public ResponseEntity<Page<RequestDTO>> getNotAdmittedRequests(Subject subject, Pageable pageable) throws AccessDeniedException {
+        return ResponseEntity.ok(requestService.getRequestsForTeacher(false, subject, pageable));
+    }
+
+    @GetMapping("/list/admitted")
+    public ResponseEntity<Page<RequestDTO>> getAdmittedRequests(Subject subject, Pageable pageable) throws AccessDeniedException {
+        return ResponseEntity.ok(requestService.getRequestsForTeacher(true, subject, pageable));
     }
 
     @PostMapping("/create")
