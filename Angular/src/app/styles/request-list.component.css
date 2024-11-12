@@ -1,0 +1,82 @@
+/* Table container */
+.table-container {
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 1200px; 
+}
+
+/* Table header */
+.table-container h2 {
+  color: #4a4a4a;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Mat-table styling */
+table.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  color: #3366cc;
+  background-color: #f7f9fc;
+  padding: 10px;
+  text-align: center;
+}
+
+.mat-cell {
+  padding: 10px;
+  text-align: center;
+  color: #4a4a4a;
+}
+
+.mat-row {
+  border-bottom: 1px solid #cccccc;
+}
+
+.mat-row:hover {
+  background-color: #f1f5ff;
+}
+
+/* Sort arrow styling */
+.mat-sort-header-arrow {
+  color: #3366cc;
+}
+
+/* Button in cells */
+.table-container .mat-button {
+  color: #3366cc;
+}
+
+.table-container .mat-button:hover {
+  background-color: #e0e7ff;
+}
+
+/* Paginator styling */
+.mat-paginator {
+  color: #4a4a4a;
+}
+
+.mat-paginator .mat-form-field .mat-form-field-label {
+  color: #3366cc !important;
+}
+
+.mat-paginator .mat-paginator-range-label,
+.mat-paginator .mat-button {
+  color: #4a4a4a;
+}
+
+.mat-paginator .mat-button:hover {
+  background-color: #e0e7ff;
+}
+
+.mat-paginator .mat-select-value {
+  color: #3366cc;
+}

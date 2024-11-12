@@ -5,6 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { RequestService } from '../../../services/request.service';
 import { Observer } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { AdmitRequestPopUpComponent } from './admit-request-popup.component';
 
 @Component({
   selector: 'app-request-list',
@@ -20,7 +22,7 @@ export class RequestListComponent implements AfterViewInit{
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
 
-  constructor(private requestService: RequestService){}
+  constructor(private requestService: RequestService, private dialog: MatDialog){}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -54,5 +56,17 @@ export class RequestListComponent implements AfterViewInit{
       complete: () => {}
     };
     this.requestService.getNotAdmittedRequests(page, size, sortBy, sortDir).subscribe(observer);
+  }
+
+  openPopup(id: number, name: string){
+    this.dialog.open(AdmitRequestPopUpComponent,{
+      width:'50%',
+      enterAnimationDuration:'200ms',
+      exitAnimationDuration:'200ms',
+      data:{
+        studentId: id,
+        studentName: name
+      }
+    })
   }
 }

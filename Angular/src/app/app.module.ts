@@ -16,6 +16,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog' 
 
 //App
 import { AppRoutingModule } from './app-routing.module';
@@ -28,6 +29,8 @@ import { RequestListComponent } from './components/teacher/request/request-list.
 import { RequestAdmittedListComponent } from './components/teacher/request/request-admitted-list.component';
 import { RequestFormComponent } from './components/manager/request-form/request-form.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { PopUpDialogComponent } from './components/pop-up/pop-up-dialog.component';
+import { AdmitRequestPopUpComponent } from './components/teacher/request/admit-request-popup.component';
 
 
 @NgModule({
@@ -38,6 +41,8 @@ import { AuthInterceptor } from './services/auth.interceptor';
     RequestListComponent,
     RequestFormComponent,
     RequestAdmittedListComponent,
+    PopUpDialogComponent,
+    AdmitRequestPopUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +63,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
     MatTableModule,
     MatSort,
     MatSortModule,
+    MatDialogModule,
   ],
   providers: [
     provideAnimationsAsync(),
