@@ -58,15 +58,20 @@ export class RequestListComponent implements AfterViewInit{
     this.requestService.getNotAdmittedRequests(page, size, sortBy, sortDir).subscribe(observer);
   }
 
-  openPopup(id: number, name: string){
-    this.dialog.open(AdmitRequestPopUpComponent,{
+  openPopup(requestId: number, studentId: number, studentName: string){
+    const dialogRef = this.dialog.open(AdmitRequestPopUpComponent,{
       width:'50%',
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',
       data:{
-        studentId: id,
-        studentName: name
+        requestId: requestId,
+        studentId: studentId,
+        studentName: studentName
       }
-    })
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadNotAdmittedRequests();
+    });
   }
 }

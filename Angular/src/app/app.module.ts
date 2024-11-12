@@ -16,7 +16,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatDialogModule } from '@angular/material/dialog' 
+import { MatDialogModule } from '@angular/material/dialog';
 
 //App
 import { AppRoutingModule } from './app-routing.module';

@@ -3,6 +3,7 @@ import { environment } from "../../environment/environment";
 import { Request } from "../models/request.model";
 import { Observable } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
+import { RequestAdmit } from "../models/request-admit.model";
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,9 @@ export class RequestService {
       .set('sort', sortBy + ',' + sortDir
     );
     return this.http.get<Request[]>(`${this.baseUrl}/list/admitted`, { params })
+  }
+
+  admitRequest(requestId: number, requestForm: RequestAdmit): Observable<Request>{
+    return this.http.post<Request>(`${this.baseUrl}/admit/${requestId}`, requestForm)
   }
 }

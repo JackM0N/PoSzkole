@@ -1,13 +1,13 @@
-<h1 mat-dialog-title>Przyjmij prośbę ucznia {{data.studentName}}</h1>
+<h1 mat-dialog-title>Przyjmij prośbę ucznia {{data.studentId}} - {{data.studentName}}</h1>
 <div class="form-container" mat-dialog-content>
   <h1>Utwórz zajęcia</h1>
-  <form [formGroup]="admitRequestForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="admitRequestForm" (ngSubmit)="onSubmit(data.requestId)">
 
-    <mat-form-field>
+    <mat-form-field [formGroup]="tutoringClassFormGroup">
       <input type="text" matInput placeholder="Nazwa zajęć" formControlName="className" required>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field [formGroup]="dayAndTimeFormGroup">
       <mat-label>Dzień zajęć</mat-label>
       <mat-select formControlName="day" required>
         <mat-option *ngFor="let day of days" [value]="day">
@@ -16,16 +16,12 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
-      <input matInput placeholder="Od godziny" type="datetime-local" formControlName="timeFrom" required>
-      <mat-datepicker-toggle matSuffix [for]="timepickerFrom"></mat-datepicker-toggle>
-      <mat-datepicker #timepickerFrom time></mat-datepicker>
+    <mat-form-field [formGroup]="dayAndTimeFormGroup">
+      <input matInput type="time" placeholder="Od godziny" formControlName="timeFrom" required>
     </mat-form-field>
 
-    <mat-form-field>
-      <input matInput placeholder="Do godziny" type="datetime-local" formControlName="timeTo" required>
-      <mat-datepicker-toggle matSuffix [for]="timepickerTo"></mat-datepicker-toggle>
-      <mat-datepicker #timepickerTo time></mat-datepicker>
+    <mat-form-field [formGroup]="dayAndTimeFormGroup">
+      <input matInput type="time" placeholder="Do godziny" formControlName="timeTo" required>
     </mat-form-field>
 
     <mat-checkbox formControlName="isOnline">Czy zajęcia mają być zdalne?</mat-checkbox>
