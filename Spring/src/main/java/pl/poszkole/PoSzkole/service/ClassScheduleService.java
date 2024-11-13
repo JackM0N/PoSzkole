@@ -22,6 +22,8 @@ import pl.poszkole.PoSzkole.repository.ScheduleChangesLogRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class ClassScheduleService {
     private final RoomRepository roomRepository;
     private final ScheduleChangesLogMapper scheduleChangesLogMapper;
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
+    private final UserBusyDayService userBusyDayService;
 
     //TODO: (ZS) Possibly add either is_canceled to model or check for certain reasons (like teacher unavailable) that should always mean that the class is canceled
     //This cannot be universal since checking role here would do bad stuff for ppl with 2 roles (T and S)
@@ -58,33 +61,57 @@ public class ClassScheduleService {
     }
 
     //This is made for "I have an exam and I need to just pass it" type of classes
-    public void createSingleClassSchedule(DayAndTimeDTO dayAndTimeDTO, TutoringClass tutoringClass, boolean isOnline) {
+    public void createSingleClassSchedule(DayAndTimeDTO dayAndTimeDTO, TutoringClass tutoringClass,
+                                          boolean isOnline, Long studentId) {
+        //Get first calendar date chosen day of class
         LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.nextOrSame(dayAndTimeDTO.getDay()));
-        createSchedule(dayAndTimeDTO, tutoringClass, isOnline, firstDate);
 
+        //Create schedule
+        ClassSchedule classSchedule = createSchedule(dayAndTimeDTO, tutoringClass, isOnline, firstDate);
+
+        //Check for overlap with other class schedules
+        if (!classScheduleRepository.findOverlappingSchedulesForStudent(
+                studentId, classSchedule.getClassDateFrom(), classSchedule.getClassDateTo()).isEmpty()){
+            throw new RuntimeException("Class schedule overlaps with existing class");
+        }
+
+        classScheduleRepository.save(classSchedule);
     }
 
     //This is the standard "I need a whole year of additional math classes" type
     public void createRepeatingClassSchedule(DayAndTimeDTO dayAndTimeDTO, TutoringClass tutoringClass,
-                                                      boolean isOnline, LocalDate repeatUntil) {
+                                                      boolean isOnline, LocalDate repeatUntil, Long studentId) {
         //TODO: MAYBE add intervals to easily create classes every 2 weeks for example
         LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.nextOrSame(dayAndTimeDTO.getDay()));
+
         if (!firstDate.isAfter(LocalDate.now()) || firstDate.isAfter(repeatUntil)) {
             throw new RuntimeException("Date couldn't be found");
         }
+
+        List<ClassSchedule> classSchedules = new ArrayList<>();
         while (!firstDate.isAfter(repeatUntil)){
-            createSchedule(dayAndTimeDTO, tutoringClass, isOnline, firstDate);
+            //Create new ClassSchedule
+            ClassSchedule newClassSchedule = createSchedule(dayAndTimeDTO, tutoringClass, isOnline, firstDate);
+
+            //Check if this class schedule overlaps any existing one
+            if (!classScheduleRepository.findOverlappingSchedulesForStudent(
+                    studentId, newClassSchedule.getClassDateFrom(), newClassSchedule.getClassDateTo()).isEmpty()){
+                throw new RuntimeException("Class schedule overlaps with existing class");
+            }
+            //If it doesn't add it to list of class schedules
+            classSchedules.add(newClassSchedule);
             firstDate = firstDate.plusWeeks(1);
         }
+        classScheduleRepository.saveAll(classSchedules);
     }
 
-    private void createSchedule(DayAndTimeDTO dayAndTimeDTO, TutoringClass tutoringClass, boolean isOnline, LocalDate firstDate) {
+    private ClassSchedule createSchedule(DayAndTimeDTO dayAndTimeDTO, TutoringClass tutoringClass, boolean isOnline, LocalDate firstDate) {
         ClassSchedule classSchedule = new ClassSchedule();
         classSchedule.setClassDateFrom(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeFrom()));
         classSchedule.setClassDateTo(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeTo()));
         classSchedule.setTutoringClass(tutoringClass);
         classSchedule.setIsOnline(isOnline);
-        classScheduleRepository.save(classSchedule);
+        return classSchedule;
     }
 
 

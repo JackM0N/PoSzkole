@@ -19,6 +19,8 @@ import pl.poszkole.PoSzkole.repository.*;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +33,9 @@ public class RequestService {
     private final TutoringClassRepository tutoringClassRepository;
     private final WebsiteUserRepository websiteUserRepository;
     private final ClassScheduleService classScheduleService;
+    private final UserBusyDayRepository userBusyDayRepository;
+    private final UserBusyDayService userBusyDayService;
+    private final ClassScheduleRepository classScheduleRepository;
 
     @Transactional
     public Page<RequestDTO> getRequestsForTeacher(Boolean gotAdmitted,
@@ -140,13 +145,19 @@ public class RequestService {
         student.addClass(tutoringClass);
         websiteUserRepository.save(student);
 
+        if (userBusyDayService.isOverlapping(student, dayAndTimeDTO.getDay(), dayAndTimeDTO.getTimeFrom(), dayAndTimeDTO.getTimeTo())) {
+            throw new RuntimeException("You cannot admit class on users busy day");
+        }
+
         //Create class schedule
         if (request.getRepeatUntil() == null) {
-            classScheduleService.createSingleClassSchedule(dayAndTimeDTO, tutoringClass, isOnline);
+            classScheduleService.createSingleClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, student.getId());
         } else {
             classScheduleService
-                    .createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, request.getRepeatUntil());
+                    .createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, request.getRepeatUntil(), student.getId());
         }
         return requestMapper.toDto(request);
     }
+
+    //TODO (Maybe): Add method that returns classes that this student can be added to based on his schedule
 }

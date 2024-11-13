@@ -5,3 +5,10 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.toast-top-right {
+    top: 12px ;
+    right: 12px;
+    position: fixed;
+    z-index: 10000;
+}

@@ -5,6 +5,7 @@ import { RequestService } from '../../../services/request.service';
 import { DaysOfTheWeek } from '../../../enums/days-of-the-week.enum';
 import { RequestAdmit } from '../../../models/request-admit.model';
 import { timeOrderValidator } from '../../../validators/time-order.validator';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admit-request-pop-up',
@@ -25,7 +26,8 @@ export class AdmitRequestPopUpComponent implements OnInit{
       studentName: string;
     },
     private fb: FormBuilder, 
-    private requestService: RequestService) {
+    private requestService: RequestService,
+    private toastr: ToastrService) {
     this.admitRequestForm = this.fb.group({
       tutoringClassDTO: this.fb.group({
         className: new FormControl(''),
@@ -68,10 +70,15 @@ export class AdmitRequestPopUpComponent implements OnInit{
         this.requestService.admitRequest(requestId, requestAdmit).subscribe({
           next: () => {
             //TODO: Add some sort of refresh after admiting request
+            this.toastr.success("Request admitted successfully!");
             this.closePopup();
           },
           error: (error) => {
-            console.error("Error admitting request:", error);
+            if (error.error === "Class schedule overlaps with existing class") {
+              this.toastr.error("Nie można dodać zajęć. Wybrane godziny nakładają się z innymi zajęciami.", "Błąd przyjęcia zajęć");
+            } else {
+              this.toastr.error("Wystąpił nieoczekiwany błąd", "Błąd");
+            }
           }
         });
       }

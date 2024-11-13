@@ -50,6 +50,10 @@
     <tr mat-row *matRowDef="let row; columns: UnadmittedDisplayedColumns;"></tr>
   </table>
 
+  <div *ngIf="totalRequests == 0" class="no-data-message">
+    Nie ma aktualnie żadnych próśb o utworzenie zajęć z uczonych przez Ciebie przedmiotów
+  </div>
+
   <mat-paginator [length]="totalRequests" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadNotAdmittedRequests()" #paginator></mat-paginator>
 </div>
 <app-request-admitted-list></app-request-admitted-list>

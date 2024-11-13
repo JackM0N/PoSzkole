@@ -84,9 +84,9 @@ public class TutoringClassService {
 
         //Create class schedule
         if (repeatUntil == null) {
-            classScheduleService.createSingleClassSchedule(dayAndTimeDTO, tutoringClass, isOnline);
+            classScheduleService.createSingleClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, studentUser.getId());
         }else {
-            classScheduleService.createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, repeatUntil);
+            classScheduleService.createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, repeatUntil, studentUser.getId());
         }
 
         return tutoringClassMapper.toDto(tutoringClass);

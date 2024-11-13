@@ -45,6 +45,11 @@ table.mat-table {
   background-color: #f1f5ff;
 }
 
+.no-data-message {
+  text-align: center;
+  color: #4a4a4a;
+}
+
 /* Sort arrow styling */
 .mat-sort-header-arrow {
   color: #3366cc;
