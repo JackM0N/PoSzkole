@@ -24,6 +24,13 @@
       <input matInput type="time" placeholder="Do godziny" formControlName="timeTo" required>
     </mat-form-field>
 
+    <mat-error *ngIf="dayAndTimeFormGroup.hasError('timeOrderMismatch')">
+      Czas "Od godziny" musi być wcześniejszy niż "Do godziny".
+    </mat-error>
+    <mat-error *ngIf="dayAndTimeFormGroup.hasError('minTimeDifference')">
+      Zajęcia muszą trwać przynajmniej godzinę.
+    </mat-error>
+
     <mat-checkbox formControlName="isOnline">Czy zajęcia mają być zdalne?</mat-checkbox>
 
     <div class="button-group" mat-dialog-actions>

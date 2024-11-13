@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RequestService } from '../../../services/request.service';
 import { DaysOfTheWeek } from '../../../enums/days-of-the-week.enum';
 import { RequestAdmit } from '../../../models/request-admit.model';
+import { timeOrderValidator } from '../../../validators/time-order.validator';
 
 @Component({
   selector: 'app-admit-request-pop-up',
@@ -14,7 +15,6 @@ export class AdmitRequestPopUpComponent implements OnInit{
 
   admitRequestForm: FormGroup;
   tutoringClassFormGroup!: FormGroup;
-  dayAndTimeFormGroup!: FormGroup;
   days: DaysOfTheWeek[] = [];
 
   constructor(
@@ -34,12 +34,11 @@ export class AdmitRequestPopUpComponent implements OnInit{
         day: new FormControl(''),
         timeFrom: new FormControl(''),
         timeTo: new FormControl(''),
-      }),
+      }, {validators: timeOrderValidator}),
       isOnline: new FormControl(false),
     });
 
     this.tutoringClassFormGroup = this.admitRequestForm.get('tutoringClassDTO') as FormGroup;
-    this.dayAndTimeFormGroup = this.admitRequestForm.get('dayAndTimeDTO') as FormGroup;
   }
 
   ngOnInit(): void {
@@ -77,6 +76,10 @@ export class AdmitRequestPopUpComponent implements OnInit{
         });
       }
     }
+  }
+
+  get dayAndTimeFormGroup() {
+    return this.admitRequestForm.get('dayAndTimeDTO') as FormGroup;
   }
 
   closePopup(){

@@ -107,6 +107,14 @@ public class RequestService {
         //TODO: MAYBE, JUST MAYBE SOMEDAY ADD INSTANT ROOM RESERVATION... that would be a 3rd dto tho...
         //TODO: If so maybe add wants_individual to requests maybe
         //TODO: Ask what to do with payments, should it be schedule based or monthly based. If monthly then what if there are months with less classes (bc of holidays for example)
+
+        //Validation
+        if (dayAndTimeDTO.getTimeTo().isBefore(dayAndTimeDTO.getTimeFrom())){
+            throw new RuntimeException("Invalid time values");
+        }
+        if (dayAndTimeDTO.getTimeTo().minusMinutes(60).isBefore(dayAndTimeDTO.getTimeFrom())){
+            throw new RuntimeException("Class has to last at least 60 minutes");
+        }
         //Get current user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
