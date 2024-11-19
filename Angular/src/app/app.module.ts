@@ -33,6 +33,9 @@ import { RequestFormComponent } from './components/manager/request-form/request-
 import { AuthInterceptor } from './services/auth.interceptor';
 import { PopUpDialogComponent } from './components/pop-up/pop-up-dialog.component';
 import { AdmitRequestPopUpComponent } from './components/teacher/request/admit-request-popup.component';
+import { ScheduleComponent } from './components/shared/schedule/schedule.component';
+import { StudentScheduleComponent } from './components/student/schedule/student-schedule.component';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -45,6 +48,8 @@ import { AdmitRequestPopUpComponent } from './components/teacher/request/admit-r
     RequestAdmittedListComponent,
     PopUpDialogComponent,
     AdmitRequestPopUpComponent,
+    ScheduleComponent,
+    StudentScheduleComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +58,7 @@ import { AdmitRequestPopUpComponent } from './components/teacher/request/admit-r
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    CommonModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-top-right',

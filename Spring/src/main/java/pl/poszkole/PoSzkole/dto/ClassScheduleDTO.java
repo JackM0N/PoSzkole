@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 @Setter
 public class ClassScheduleDTO implements Serializable {
     Long id;
-    TutoringClassDTO classField;
+    String tutoringClassName;
     RoomDTO room;
     LocalDateTime classDateFrom;
-    LocalDateTime classDateTO;
+    LocalDateTime classDateTo;
     Boolean isOnline;
     Boolean isCompleted;
 }

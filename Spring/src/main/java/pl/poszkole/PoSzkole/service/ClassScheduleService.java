@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class ClassScheduleService {
 
     //TODO: (ZS) Possibly add either is_canceled to model or check for certain reasons (like teacher unavailable) that should always mean that the class is canceled
     //This cannot be universal since checking role here would do bad stuff for ppl with 2 roles (T and S)
-    public Page<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent(Pageable pageable) {
+    public List<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent() {
         //Get current user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
@@ -56,8 +57,8 @@ public class ClassScheduleService {
             return builder.isTrue(classJoin.in(currentUser.getClasses()));
         };
 
-        Page<ClassSchedule> classSchedules = classScheduleRepository.findAll(specification, pageable);
-        return classSchedules.map(classScheduleMapper::toDto);
+        List<ClassSchedule> classSchedules = classScheduleRepository.findAll(specification);
+        return classSchedules.stream().map(classScheduleMapper::toDto).collect(Collectors.toList());
     }
 
     //This is made for "I have an exam and I need to just pass it" type of classes
