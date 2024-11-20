@@ -36,4 +36,7 @@ public class ClassSchedule {
     @Column(name = "is_completed", nullable = false)
     private Boolean isCompleted = false;
 
+    @Column(name = "is_canceled", nullable = false)
+    private Boolean isCanceled = false;
+
 }

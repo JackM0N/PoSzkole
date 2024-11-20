@@ -1,6 +1,9 @@
 import { Component, computed, input, InputSignal, signal, Signal, WritableSignal } from "@angular/core";
 import { DateTime, Info, Interval } from "luxon";
 import { ClassSchedule } from "../../../models/class-schedule.model";
+import { Router } from "@angular/router";
+import { MatDialog } from "@angular/material/dialog";
+import { ClassDetailsComponent } from "./class-details.component";
 
 @Component({
   selector: 'app-schedule',
@@ -46,7 +49,7 @@ export class ScheduleComponent {
     });
   });
 
-  constructor(){}
+  constructor(private router: Router, private dialog: MatDialog){}
 
   goToPreviousMonth(): void{
     this.firstDayOfActiveMonth.set(
@@ -64,5 +67,24 @@ export class ScheduleComponent {
     this.firstDayOfActiveMonth.set(
       this.today().startOf('month')
     )
+  }
+
+  hasClassesForDay(day: DateTime): boolean {
+    return this.classes().some((classSchedule) =>
+      day.hasSame(DateTime.fromISO(classSchedule.classDateFrom as unknown as string), 'day')
+    );
+  }
+
+  trackByFn(index: number, item: ClassSchedule): number | undefined {
+    return item.id;
+  }
+
+  openDetailsDialog(selectedClass: ClassSchedule): void {
+    this.dialog.open(ClassDetailsComponent, {
+      width: '50%',
+      enterAnimationDuration:'200ms',
+      exitAnimationDuration:'200ms',
+      data: selectedClass,
+    });
   }
 }

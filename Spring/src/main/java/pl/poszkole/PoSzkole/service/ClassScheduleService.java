@@ -37,7 +37,6 @@ public class ClassScheduleService {
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
     private final UserBusyDayService userBusyDayService;
 
-    //TODO: (ZS) Possibly add either is_canceled to model or check for certain reasons (like teacher unavailable) that should always mean that the class is canceled
     //This cannot be universal since checking role here would do bad stuff for ppl with 2 roles (T and S)
     public List<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent() {
         //Get current user
@@ -85,6 +84,10 @@ public class ClassScheduleService {
         //TODO: MAYBE add intervals to easily create classes every 2 weeks for example
         LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.nextOrSame(dayAndTimeDTO.getDay()));
 
+        if (firstDate.equals(LocalDate.now())) {
+            firstDate = firstDate.plusWeeks(1);
+        }
+
         if (!firstDate.isAfter(LocalDate.now()) || firstDate.isAfter(repeatUntil)) {
             throw new RuntimeException("Date couldn't be found");
         }
@@ -112,6 +115,7 @@ public class ClassScheduleService {
         classSchedule.setClassDateTo(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeTo()));
         classSchedule.setTutoringClass(tutoringClass);
         classSchedule.setIsOnline(isOnline);
+        classSchedule.setIsCanceled(false);
         return classSchedule;
     }
 

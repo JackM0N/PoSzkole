@@ -8,4 +8,5 @@ export interface RawClassSchedule {
   classDateTo: number[];
   isOnline: boolean;
   isCompleted: boolean;
+  isCanceled: boolean;
 }

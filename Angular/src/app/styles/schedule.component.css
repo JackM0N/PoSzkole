@@ -1,10 +1,22 @@
 .calendar-container {
   display: flex;
+  justify-content: center; 
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100vh;
 }
 
 .calendar {
   padding-right: 10px;
-  min-width: 384px;
+  min-width: 480px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-right: 2rem;
 }
 
 .calendar-header {
@@ -12,14 +24,19 @@
   margin-bottom: 10px;
   justify-content: space-between;
   padding: 0 20px;
+  align-items: center;
 }
 
 .calendar-header-month {
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.calendar-header-controls {
-  display: flex;
+.calendar-header-controls button{
+  margin: 0 5px;
 }
 
 .calendar-header-control {
@@ -40,6 +57,11 @@
   font-size: 12px;
   margin-bottom: 10px;
   color: rgb(81, 81, 81);
+  font-weight: bold;
+  text-align: center;
+  color: #555555;
+  text-transform: uppercase;
+  margin-top: 1rem;
 }
 
 .calendar-weeks-grid-cell {
@@ -48,13 +70,14 @@
 
 .calendar-grid-cell-inactive {
   color: #9e9e9e;
+  background: #eaeaea;
+  pointer-events: none;
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  border-top: 1px solid rgb(190, 190, 190);
-  border-left: 1px solid rgb(190, 190, 190);
+  gap: 4px;
 }
 
 .calendar-grid-cell {
@@ -67,19 +90,61 @@
   cursor: pointer;
 }
 
+.calendar-grid-cell-has-classes {
+  background-color: #9fbffd;
+  font-weight: bold;
+  border: 1px solid #6699ff;
+}
+
+
 .calendar-grid-cell:hover {
-  background: #9ba3bf;
+  background: #6699ff;
 }
 
 .calendar-grid-cell-active {
-  background: #9ba3bf;
+  background: #3366cc;
 }
 
 .schedule {
-  margin-left: 10px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+  width: 25rem;
+}
+
+.schedule p{
+  text-align: center;
+  color: #555555;
 }
 
 .schedule-header {
   font-weight: 600;
   margin-bottom: 30px;
+}
+
+.class-card {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.class-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.class-canceled {
+  background-color: #ffe5e7;
+  border: 1px solid #d9534f;
+  color: #d32f2f;
+}
+
+.canceled-label {
+  font-weight: bold;
+  color: #d9534f;
 }

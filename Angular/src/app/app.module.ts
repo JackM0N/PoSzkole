@@ -19,6 +19,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCard, MatCardModule } from '@angular/material/card'
 
 //App
 import { AppRoutingModule } from './app-routing.module';
@@ -36,6 +37,7 @@ import { AdmitRequestPopUpComponent } from './components/teacher/request/admit-r
 import { ScheduleComponent } from './components/shared/schedule/schedule.component';
 import { StudentScheduleComponent } from './components/student/schedule/student-schedule.component';
 import { CommonModule } from '@angular/common';
+import { ClassDetailsComponent } from './components/shared/schedule/class-details.component';
 
 
 @NgModule({
@@ -50,6 +52,7 @@ import { CommonModule } from '@angular/common';
     AdmitRequestPopUpComponent,
     ScheduleComponent,
     StudentScheduleComponent,
+    ClassDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +81,8 @@ import { CommonModule } from '@angular/common';
     MatSort,
     MatSortModule,
     MatDialogModule,
+    MatCard,
+    MatCardModule
   ],
   providers: [
     provideAnimationsAsync(),

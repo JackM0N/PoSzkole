@@ -38,7 +38,6 @@ export class StudentScheduleComponent implements OnInit{
             minute: classSchedule.classDateTo[4],
           }),
         }));
-        console.log("Transformed classes:", this.classes);
       },
       error: (err) => {
         console.error('Błąd podczas pobierania harmonogramu:', err);

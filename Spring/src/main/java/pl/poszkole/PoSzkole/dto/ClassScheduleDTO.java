@@ -21,4 +21,5 @@ public class ClassScheduleDTO implements Serializable {
     LocalDateTime classDateTo;
     Boolean isOnline;
     Boolean isCompleted;
+    Boolean isCanceled;
 }

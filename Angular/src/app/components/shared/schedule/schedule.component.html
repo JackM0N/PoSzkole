@@ -5,13 +5,13 @@
           {{firstDayOfActiveMonth().monthShort}}
           {{firstDayOfActiveMonth().year}}
       </div>
-      <div class="calendar-header-controlls">
-        <div class="calendar-header-contol" (click)="goToPreviousMonth()">Poprzedni</div>
-        <div class="calendar-header-contol calendar-header-control-today" (click)="goToToday()">Dzisiaj</div>
-        <div class="calendar-header-contol" (click)="goToNextMonth()">Następny</div>
+      <div class="calendar-header-controls">
+        <button mat-raised-button color="primary" (click)="goToPreviousMonth()">Poprzedni</button>
+        <button mat-raised-button color="accent" (click)="goToToday()">Dzisiaj</button>
+        <button mat-raised-button color="primary" (click)="goToNextMonth()">Następny</button>
       </div>
     </div>
-    <div class="calnedar-weeks-grid">
+    <div class="calendar-weeks-grid">
       @for (weekDay of weekDays(); track $index) {
         <div class="calnedar-weeks-grid-cell">{{weekDay}}</div>
       }
@@ -20,34 +20,37 @@
       @for (dayOfMonth of daysOfMonth(); track $index) {
         <div [ngClass]="{ 
           'calendar-grid-cell': true, 
-        'calendar-calendar-grid-cell-active':
-          activeDay()?.toISODate() === dayOfMonth.toISODate(),
-        'calendar-calendar-grid-cell-inactive':
-          dayOfMonth.month !== firstDayOfActiveMonth().month}" (click)="activeDay.set(dayOfMonth)">{{dayOfMonth.day}}</div>
+          'calendar-grid-cell-active': activeDay()?.toISODate() === dayOfMonth.toISODate(),
+          'calendar-grid-cell-inactive': dayOfMonth.month !== firstDayOfActiveMonth().month,
+          'calendar-grid-cell-has-classes': hasClassesForDay(dayOfMonth)}" (click)="activeDay.set(dayOfMonth)">{{dayOfMonth.day}}</div>
       }
     </div>
   </div>
   <div class="schedule">
-    <div class="schedule-header">
-      @if(activeDay(); as activeDay){
-        <div>{{activeDay.toLocaleString(DATE_MED)}}</div>
-      } @else {
-        <div>Proszę wybrać datę</div>
-      }
+    <div *ngIf="activeDay(); else noDateSelected">
+      <h3>{{ activeDay()?.toLocaleString(DATE_MED) }}</h3>
+    
+      <div *ngIf="activeDayClasses().length === 0; else classesAvailable">
+        <p>Nie masz żadnych zajęć tego dnia</p>
+      </div>
+    
+      <ng-template #classesAvailable>
+        <mat-card 
+          *ngFor="let class of activeDayClasses(); trackBy: trackByFn"
+          class="class-card"
+          [ngClass]="{ 'class-canceled': class.isCanceled }"
+          (click) = 'openDetailsDialog(class)'>
+          <mat-card-title>{{ class.tutoringClassName }}</mat-card-title>
+          <mat-card-content>
+            <p>{{ class.classDateFrom.toFormat('HH:mm') }} - {{ class.classDateTo.toFormat('HH:mm') }}</p>
+            <p><strong>Online:</strong> {{ class.isOnline ? 'Tak' : 'Nie' }}</p>
+            <p *ngIf="class.isCanceled" class="canceled-label">Zajęcia odwołane</p>
+          </mat-card-content>
+        </mat-card>
+      </ng-template>
     </div>
-    <div>
-      @if (activeDay() && activeDayClasses().length === 0){
-        <div>Nie masz żanych zajęć tego dnia</div>
-      }
-
-      @if (activeDay() && activeDayClasses().length > 0){
-        @for (class of activeDayClasses(); track $index) {
-          <div>Zajęcia: {{ class.tutoringClassName }}</div>
-          <div>Od: {{ class.classDateFrom.toFormat('HH:mm') }}</div>
-          <div>Do: {{ class.classDateTo.toFormat('HH:mm') }}</div>
-          <div>Online: {{ class.isOnline ? 'Tak' : 'Nie' }}</div>
-        }
-      }
-    </div>
-  </div>
+    
+    <ng-template #noDateSelected>
+      <p>Proszę wybrać datę</p>
+    </ng-template>
 </div>

@@ -147,7 +147,8 @@ CREATE TABLE class_schedule
     class_date_from   TIMESTAMP(3) NOT NULL,
     class_date_to     TIMESTAMP(3) NOT NULL,
     is_online         BOOLEAN      NOT NULL,
-    is_completed      BOOLEAN      NOT NULL
+    is_completed      BOOLEAN      NOT NULL,
+    is_canceled       BOOLEAN      NOT NULL
 );
 
 --Obecnosc na zajeciach

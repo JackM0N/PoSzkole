@@ -9,4 +9,5 @@ export interface ClassSchedule {
   classDateTo: DateTime;
   isOnline: boolean;
   isCompleted: boolean;
+  isCanceled: boolean;
 }

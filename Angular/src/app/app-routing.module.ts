@@ -18,7 +18,7 @@ const routes: Routes = [
   //teacher
   {path: 'request-list', component: RequestListComponent},
   //student
-  {path: 'student-schedule', component: StudentScheduleComponent}
+  {path: 'student-schedule', component: StudentScheduleComponent},
 ];
 
 @NgModule({
