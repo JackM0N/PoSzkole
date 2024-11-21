@@ -94,7 +94,6 @@ export class RequestFormComponent implements OnInit {
         formValue.repeatUntil = null;
       }
 
-      console.log('Form Value:', formValue);
       this.requestService.createRequest(formValue).subscribe({
         next: response => {
           console.log('Request creation success', response)

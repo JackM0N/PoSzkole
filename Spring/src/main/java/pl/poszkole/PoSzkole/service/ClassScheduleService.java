@@ -1,6 +1,7 @@
 package pl.poszkole.PoSzkole.service;
 
 import jakarta.persistence.criteria.Join;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -124,10 +126,14 @@ public class ClassScheduleService {
     public ClassScheduleDTO updateClassSchedule(
             Long scheduleId, ClassScheduleDTO classScheduleDTO, ScheduleChangesLogDTO changesLogDTO
     ) {
-        //Check if class existsSchedule exists and if reason for change was given
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+        //Check if class existsSchedule exists, currently logged teacher can edit it and if reason for change was given
         //Currently im not checking if reason is adequate to the changes made
         ClassSchedule classSchedule = classScheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new RuntimeException("Class schedule not found"));
+        if (!Objects.equals(classSchedule.getTutoringClass().getTeacher().getId(), currentUser.getId())) {
+            throw new RuntimeException("You can only edit your own classes");
+        }
         if(changesLogDTO.getReason() == null) {
             throw new RuntimeException("You must provide a reason for making changes in this class");
         }
@@ -148,6 +154,37 @@ public class ClassScheduleService {
         //Create log entry
         ScheduleChangesLog log = scheduleChangesLogMapper.toEntity(changesLogDTO);
         log.setClassSchedule(classSchedule);
+        log.setUser(currentUser);
+        scheduleChangesLogRepository.save(log);
+
+        return classScheduleMapper.toDto(classSchedule);
+    }
+
+    @Transactional
+    public ClassScheduleDTO cancelClassSchedule(Long scheduleId, ScheduleChangesLogDTO changesLogDTO) {
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+        //Check if classSchedule exists
+        ClassSchedule classSchedule = classScheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Class schedule not found"));
+        //Assert that student is able to cancel it
+        if (classSchedule.getTutoringClass().getStudents().size() > 1){
+            throw new RuntimeException("You can only cancel individual classes");
+        }
+        if (classSchedule.getClassDateFrom().isBefore(LocalDateTime.now().plusDays(1))){
+            throw new RuntimeException("You cannot cancel a class that starts in less than 24 hours");
+        }
+
+        //Assert that he has given a reason for canceling
+        if (changesLogDTO.getReason() == null) {
+            throw new RuntimeException("You must provide a reason for making changes in this class");
+        }
+        //Cancel chosen schedule
+        classSchedule.setIsCanceled(true);
+
+        //Create log entry
+        ScheduleChangesLog log = scheduleChangesLogMapper.toEntity(changesLogDTO);
+        log.setClassSchedule(classSchedule);
+        log.setUser(currentUser);
         scheduleChangesLogRepository.save(log);
 
         return classScheduleMapper.toDto(classSchedule);

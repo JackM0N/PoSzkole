@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ClassSchedule } from '../../../models/class-schedule.model';
-import { CancelScheduleComponent } from './cancel-schedule.component';
+import { CancelScheduleComponent } from '../../student/schedule/cancel-schedule.component';
 
 @Component({
   selector: 'app-class-details',

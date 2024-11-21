@@ -8,7 +8,11 @@
     <p><strong>Piętro:</strong> {{ data.room.floor }}</p>
     <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
   </div>
-  <p *ngIf="data.isCanceled"><strong>Status:</strong> Odwołane</p>
+  <div *ngIf="data.isCanceled">
+    <p><strong>Status:</strong> Odwołane</p>
+    <p><strong>Powód:</strong>placeholder</p>
+    <p><strong>Wyjaśnienie:</strong>placeholder</p>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button *ngIf="!data.isCanceled" mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>

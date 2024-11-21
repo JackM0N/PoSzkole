@@ -37,13 +37,14 @@ public class SecurityConfig {
                         .requestMatchers("/class/add-student", "/class/create")
                         .hasAnyRole("MANAGER", "TEACHER")
 
-                        .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/**")
+                        .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/**", "/schedule/edit/**")
                         .hasRole("TEACHER")
 
-                        .requestMatchers("/busy-days/create", "/busy-days/edit/**", "/busy-days/delete/**")
+                        .requestMatchers("/busy-days/create", "/busy-days/edit/**", "/busy-days/delete/**",
+                                "/schedule/cancel/**")
                         .hasAnyAuthority("TEACHER", "STUDENT")
 
-                        .requestMatchers("/class/my-classes", "/course/bought-courses")
+                        .requestMatchers("/class/my-classes", "/course/bought-courses", "/schedule/my-classes/student")
                         .hasRole("STUDENT")
 
                         .requestMatchers("/course/list", "/busy-days/list/**", "/subject/all")

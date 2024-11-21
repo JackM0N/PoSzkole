@@ -16,7 +16,7 @@ import java.util.List;
 public class ClassScheduleController {
     private final ClassScheduleService classScheduleService;
 
-    @GetMapping("/my-classes")
+    @GetMapping("/my-classes/student")
     public ResponseEntity<List<ClassScheduleDTO>> getClassSchedulesForStudent() {
         return ResponseEntity.ok(classScheduleService.getAllClassSchedulesForCurrentStudent());
     }
@@ -28,5 +28,12 @@ public class ClassScheduleController {
         ClassScheduleDTO classScheduleDTO = classAndChangeLogDTO.getClassScheduleDTO();
         ScheduleChangesLogDTO changesLogDTO = classAndChangeLogDTO.getChangeLogDTO();
         return ResponseEntity.ok(classScheduleService.updateClassSchedule(scheduleId,classScheduleDTO,changesLogDTO));
+    }
+
+    @PutMapping("/cancel/{scheduleId}")
+    public ResponseEntity<ClassScheduleDTO> cancelClassSchedule(
+            @PathVariable Long scheduleId,
+            @RequestBody ScheduleChangesLogDTO scheduleChangesLogDTO) {
+        return ResponseEntity.ok(classScheduleService.cancelClassSchedule(scheduleId, scheduleChangesLogDTO));
     }
 }
