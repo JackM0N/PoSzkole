@@ -1,7 +1,9 @@
-<h2 mat-dialog-title>{{ data.tutoringClassName }}</h2>
+<h2 mat-dialog-title>{{ data.tutoringClass.className }}</h2>
 <mat-dialog-content>
+  <h3>Informacje ogólne:</h3>
   <p><strong>Data:</strong> {{ data.classDateFrom.toFormat('dd-MM-yyyy') }}</p>
   <p><strong>Czas:</strong> {{ data.classDateFrom.toFormat('HH:mm') }} - {{ data.classDateTo.toFormat('HH:mm') }}</p>
+  <p><strong>Przedmiot:</strong> {{data.tutoringClass.subject?.subjectName}}</p>
   <p><strong>Online:</strong> {{ data.isOnline ? 'Tak' : 'Nie' }}</p>
   <div *ngIf="data.room!=null">
     <p><strong>Budynek:</strong> {{ data.room.building }}</p>
@@ -9,12 +11,32 @@
     <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
   </div>
   <div *ngIf="data.isCanceled">
+    <br/>
     <p><strong>Status:</strong> Odwołane</p>
     <p><strong>Powód:</strong>placeholder</p>
     <p><strong>Wyjaśnienie:</strong>placeholder</p>
   </div>
+  <div *ngIf="hasRole('STUDENT')" class="teacher-container">
+    <br/>
+    <h3>Dane nauczyciela</h3>
+    <p><strong>Imię i nazwisko:</strong> {{data.tutoringClass.teacher?.firstName}} {{data.tutoringClass.teacher?.lastName}}</p>
+    <p><strong>Email:</strong> {{data.tutoringClass.teacher?.email}}</p>
+    <p><strong>Telefon:</strong> {{data.tutoringClass.teacher?.phone}}</p>
+  </div>
+  <div *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id" class="students-container">
+    <br/>
+    <h3>Uczniowie:</h3>
+    <ul *ngIf="students.length > 0; else noStudents" class="student-list">
+      <li *ngFor="let student of students">
+        <button class="unstyled-button" tabindex="-1">{{student.id}} - {{student.firstName}} {{student.lastName}}</button>
+      </li>
+    </ul>
+    <ng-template #noStudents>
+      <p>Brak uczniów zapisanych na zajęcia</p>
+    </ng-template>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button *ngIf="!data.isCanceled" mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>
+  <button *ngIf="hasRole('STUDENT') && !data.isCanceled" mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>
   <button mat-raised-button color="primary" (click)="close()">Zamknij</button>
 </mat-dialog-actions>

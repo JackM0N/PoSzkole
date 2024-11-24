@@ -7,6 +7,7 @@ import { Subject } from '../../../models/subject.model';
 import { WebsiteUserService } from '../../../services/website-user.service';
 import { SubjectService } from '../../../services/subject.service';
 import { RequestService } from '../../../services/request.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-request-form',
@@ -24,7 +25,8 @@ export class RequestFormComponent implements OnInit {
     private fb: FormBuilder, 
     private websiteUserService: WebsiteUserService,
     private subjectService: SubjectService,
-    private requestService: RequestService) {
+    private requestService: RequestService,
+    private toastr: ToastrService) {
     this.requestForm = this.fb.group({
       student: new FormControl(''),
       subject: new FormControl(''),
@@ -96,9 +98,11 @@ export class RequestFormComponent implements OnInit {
 
       this.requestService.createRequest(formValue).subscribe({
         next: response => {
-          console.log('Request creation success', response)
+          this.toastr.success("Pomyślnie utworzono prośbę o stworzenie nowych zajęć");
+          this.resetForm();
         },
         error: error => {
+          this.toastr.error("Coś poszło nie tak podczas próby stworzenia prośby");
           console.error('Request creation error', error);
         }
       });

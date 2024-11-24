@@ -40,9 +40,10 @@
           class="class-card"
           [ngClass]="{ 'class-canceled': class.isCanceled }"
           (click) = 'openDetailsDialog(class)'>
-          <mat-card-title>{{ class.tutoringClassName }}</mat-card-title>
+          <mat-card-title>{{ class.tutoringClass.className }}</mat-card-title>
           <mat-card-content>
             <p>{{ class.classDateFrom.toFormat('HH:mm') }} - {{ class.classDateTo.toFormat('HH:mm') }}</p>
+            <p>{{ class.tutoringClass.subject?.subjectName }}</p>
             <p><strong>Online:</strong> {{ class.isOnline ? 'Tak' : 'Nie' }}</p>
             <p *ngIf="class.isCanceled" class="canceled-label">Zajęcia odwołane</p>
           </mat-card-content>

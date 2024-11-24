@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 public class ClassScheduleDTO implements Serializable {
     Long id;
-    String tutoringClassName;
+    TutoringClassDTO tutoringClass;
     RoomDTO room;
     LocalDateTime classDateFrom;
     LocalDateTime classDateTo;

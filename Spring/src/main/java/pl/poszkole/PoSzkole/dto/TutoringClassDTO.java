@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Getter
 public class TutoringClassDTO implements Serializable {
     Long id;
-    WebsiteUserDTO teacher;
+    SimplifiedUserDTO teacher;
     SubjectDTO subject;
     String className;
 }

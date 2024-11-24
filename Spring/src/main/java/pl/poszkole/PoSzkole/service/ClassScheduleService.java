@@ -4,7 +4,9 @@ import jakarta.persistence.criteria.Join;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.ClassScheduleDTO;
@@ -56,6 +58,31 @@ public class ClassScheduleService {
 
             // Predicate to check if the class is in the current user's list of classes
             return builder.isTrue(classJoin.in(currentUser.getClasses()));
+        };
+
+        // Add sorting by date
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Sort.Order.asc("classDateFrom")));
+
+        Page<ClassSchedule> classSchedules = classScheduleRepository.findAll(specification, pageable);
+        return classSchedules.stream().map(classScheduleMapper::toDto).collect(Collectors.toList());
+    }
+
+    public List<ClassScheduleDTO> getAllClassSchedulesForCurrentTeacher() {
+        //Get current user
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+
+        //Check if user is actually a teacher
+        if(currentUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))) {
+            throw new RuntimeException("You can only view teacher classes here");
+        }
+
+        // Build specification to match the current teachers classes
+        Specification<ClassSchedule> specification = (root, query, builder) -> {
+            // Join between ClassSchedule and TutoringClass
+            Join<ClassSchedule, TutoringClass> classJoin = root.join("tutoringClass");
+
+            // Predicate to check if the class has current teacher in it
+            return builder.equal(classJoin.get("teacher").get("id"), currentUser.getId());
         };
 
         List<ClassSchedule> classSchedules = classScheduleRepository.findAll(specification);

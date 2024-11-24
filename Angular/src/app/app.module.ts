@@ -39,6 +39,7 @@ import { StudentScheduleComponent } from './components/student/schedule/student-
 import { CommonModule } from '@angular/common';
 import { ClassDetailsComponent } from './components/shared/schedule/class-details.component';
 import { CancelScheduleComponent } from './components/student/schedule/cancel-schedule.component';
+import { TeacherScheduleComponent } from './components/teacher/schedule/teacher-schedule.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { CancelScheduleComponent } from './components/student/schedule/cancel-sc
     ScheduleComponent,
     StudentScheduleComponent,
     ClassDetailsComponent,
-    CancelScheduleComponent
+    CancelScheduleComponent,
+    TeacherScheduleComponent,
   ],
   imports: [
     BrowserModule,

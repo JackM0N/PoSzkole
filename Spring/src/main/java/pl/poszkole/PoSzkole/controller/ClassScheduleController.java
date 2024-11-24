@@ -21,6 +21,11 @@ public class ClassScheduleController {
         return ResponseEntity.ok(classScheduleService.getAllClassSchedulesForCurrentStudent());
     }
 
+    @GetMapping("/my-classes/teacher")
+    public ResponseEntity<List<ClassScheduleDTO>> getClassSchedulesForTeacher() {
+        return ResponseEntity.ok(classScheduleService.getAllClassSchedulesForCurrentTeacher());
+    }
+
     @PutMapping("/edit/{scheduleId}")
     public ResponseEntity<ClassScheduleDTO> editClassSchedule(
             @PathVariable Long scheduleId,
@@ -34,6 +39,7 @@ public class ClassScheduleController {
     public ResponseEntity<ClassScheduleDTO> cancelClassSchedule(
             @PathVariable Long scheduleId,
             @RequestBody ScheduleChangesLogDTO scheduleChangesLogDTO) {
+        System.out.println(scheduleChangesLogDTO);
         return ResponseEntity.ok(classScheduleService.cancelClassSchedule(scheduleId, scheduleChangesLogDTO));
     }
 }

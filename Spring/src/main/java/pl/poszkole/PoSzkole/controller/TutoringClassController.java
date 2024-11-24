@@ -3,10 +3,7 @@ package pl.poszkole.PoSzkole.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
-import pl.poszkole.PoSzkole.dto.StudentAndClassDTO;
-import pl.poszkole.PoSzkole.dto.StudentRequestAndDateDTO;
-import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
+import pl.poszkole.PoSzkole.dto.*;
 import pl.poszkole.PoSzkole.service.*;
 
 import java.time.LocalDate;
@@ -21,6 +18,11 @@ public class TutoringClassController {
     @GetMapping("/my-classes")
     public ResponseEntity<List<TutoringClassDTO>> getClasses() {
         return ResponseEntity.ok(tutoringClassService.getTutoringClassesForStudent());
+    }
+
+    @GetMapping("/student-list/{classId}")
+    public ResponseEntity<List<SimplifiedUserDTO>> getStudentsForClass(@PathVariable Long classId) {
+        return ResponseEntity.ok(tutoringClassService.getStudentsForTutoringClass(classId));
     }
 
     @PostMapping("/add-student")

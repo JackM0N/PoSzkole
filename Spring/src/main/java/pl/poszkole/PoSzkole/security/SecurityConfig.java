@@ -34,17 +34,18 @@ public class SecurityConfig {
                                 "/course/edit/","/course/delete/", "/user/all-students")
                         .hasAnyRole("MANAGER", "OWNER")
 
-                        .requestMatchers("/class/add-student", "/class/create")
+                        .requestMatchers("/class/add-student", "/class/create", "/class/student-list/**")
                         .hasAnyRole("MANAGER", "TEACHER")
 
-                        .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/**", "/schedule/edit/**")
+                        .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/**", "/schedule/edit/**",
+                                "/schedule/my-classes/teacher")
                         .hasRole("TEACHER")
 
-                        .requestMatchers("/busy-days/create", "/busy-days/edit/**", "/busy-days/delete/**",
-                                "/schedule/cancel/**")
-                        .hasAnyAuthority("TEACHER", "STUDENT")
+                        .requestMatchers("/busy-days/create", "/busy-days/edit/**", "/busy-days/delete/**")
+                        .hasAnyRole("TEACHER", "STUDENT")
 
-                        .requestMatchers("/class/my-classes", "/course/bought-courses", "/schedule/my-classes/student")
+                        .requestMatchers("/class/my-classes", "/course/bought-courses", "/schedule/my-classes/student",
+                                "/schedule/cancel/**")
                         .hasRole("STUDENT")
 
                         .requestMatchers("/course/list", "/busy-days/list/**", "/subject/all")

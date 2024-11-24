@@ -8,7 +8,6 @@ import pl.poszkole.PoSzkole.model.ClassSchedule;
 public interface ClassScheduleMapper {
     ClassSchedule toEntity(ClassScheduleDTO classScheduleDTO);
 
-    @Mapping(source = "tutoringClass.className", target = "tutoringClassName")
     ClassScheduleDTO toDto(ClassSchedule classSchedule);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

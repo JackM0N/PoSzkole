@@ -1,16 +1,22 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ClassSchedule } from '../../../models/class-schedule.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ScheduleService } from '../../../services/class-schedule.service';
 import { ToastrService } from 'ngx-toastr';
 import { Reason } from '../../../enums/reason.enum';
 import { ScheduleChangesLog } from '../../../models/schedule-changes-log.model';
 
+function getEnumKeyByValue<T extends object>(enumObject: T, value: string): string | undefined {
+  return Object.keys(enumObject).find(key => enumObject[key as keyof T] === value);
+}
+
+
 @Component({
   selector: 'app-cancel-schedule',
   templateUrl: './cancel-schedule.component.html',
-  styleUrls: ['../../../styles/request-form.component.css']
+  styleUrls: ['../../../styles/request-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CancelScheduleComponent {
 
@@ -23,28 +29,30 @@ export class CancelScheduleComponent {
     private scheduleService: ScheduleService,
     private toastr: ToastrService) {
       this.scheduleChangeForm = this.fb.group({
-        reason: Reason.STUDENT_REQUEST,
-        explanation: new FormGroup('')
+        explanation: new FormControl('', {updateOn: 'blur'})
       });
     }
 
 
-    onSubmit(scheduleId: number) {
-      if (this.scheduleChangeForm.valid) {
-        const scheduleChangeLog: ScheduleChangesLog = this.scheduleChangeForm.value;
-    
-        this.scheduleService.cancelClassSchedule(scheduleId, scheduleChangeLog).subscribe({
-          next: response => {
-            this.toastr.success('Zajęcia zostały pomyślnie odwołane');
-            this.dialogRef.close(true);
-          },
-          error: error => {
-            console.error('Błąd podczas odwoływania zajęć', error);
-            this.toastr.error('Nie udało się odwołać zajęć');
-          }
-        });
-      }
+  onSubmit(scheduleId: number) {
+    if (this.scheduleChangeForm.valid) {
+      const scheduleChangeLog: ScheduleChangesLog = {
+        reason: getEnumKeyByValue(Reason, Reason.STUDENT_REQUEST) as Reason,
+        explanation: this.scheduleChangeForm.value.explanation,
+      };
+  
+      this.scheduleService.cancelClassSchedule(scheduleId, scheduleChangeLog).subscribe({
+        next: response => {
+          this.toastr.success('Zajęcia zostały pomyślnie odwołane');
+          this.dialogRef.close(true);
+        },
+        error: error => {
+          console.error('Błąd podczas odwoływania zajęć', error);
+          this.toastr.error('Nie udało się odwołać zajęć');
+        }
+      });
     }
+  }
 
   close(): void {
     this.dialogRef.close();

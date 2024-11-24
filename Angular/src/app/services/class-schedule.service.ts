@@ -18,7 +18,11 @@ export class ScheduleService {
     return this.http.get<RawClassSchedule[]>(`${this.baseUrl}/my-classes/student`);
   }
 
+  getClassSchedulesForTeacher(): Observable<RawClassSchedule[]> {
+    return this.http.get<RawClassSchedule[]>(`${this.baseUrl}/my-classes/teacher`);
+  }
+
   cancelClassSchedule(scheduleId: number, scheduleChangeLog: ScheduleChangesLog): Observable<ClassSchedule> {
-    return this.http.put<ClassSchedule>(`${this.baseUrl}/cancel/${scheduleId}`, {scheduleChangeLog})
+    return this.http.put<ClassSchedule>(`${this.baseUrl}/cancel/${scheduleId}`, scheduleChangeLog)
   }
 }

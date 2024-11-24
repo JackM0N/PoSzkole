@@ -19,6 +19,7 @@ public class JWTService {
         return Jwts
                 .builder()
                 .subject(user.getUsername())
+                .claim("id", user.getId())
                 .claim("roles", user.getRoles())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + SecurityConstants.JWT_TOKEN_EXPIRATION_TIME))

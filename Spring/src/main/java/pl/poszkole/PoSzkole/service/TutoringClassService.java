@@ -5,7 +5,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
+import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
+import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
 import pl.poszkole.PoSzkole.model.TutoringClass;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
@@ -26,8 +28,8 @@ public class TutoringClassService {
     private final WebsiteUserRepository websiteUserRepository;
     private final TutoringClassRepository tutoringClassRepository;
     private final ClassScheduleService classScheduleService;
+    private final SimplifiedUserMapper simplifiedUserMapper;
 
-    @Transactional
     public List<TutoringClassDTO> getTutoringClassesForStudent() {
         //Get current user
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
@@ -37,7 +39,13 @@ public class TutoringClassService {
         return tutoringClassList.stream().map(tutoringClassMapper::toDto).collect(Collectors.toList());
     }
 
-    @Transactional
+    public List<SimplifiedUserDTO> getStudentsForTutoringClass(Long tutoringClassId) {
+        TutoringClass tutoringClass = tutoringClassRepository.findById(tutoringClassId)
+                .orElseThrow(() -> new EntityNotFoundException("Tutoring class not found"));
+        List<WebsiteUser> tutoredStudents = tutoringClass.getStudents();
+        return tutoredStudents.stream().map(simplifiedUserMapper::toSimplifiedUserDTO).collect(Collectors.toList());
+    }
+
     public TutoringClassDTO addToTutoringClass(Long userId, Long classId) {
         //Find the student
         WebsiteUser studentUser = websiteUserRepository.findById(userId)
