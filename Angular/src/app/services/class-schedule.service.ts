@@ -5,11 +5,12 @@ import { Observable } from "rxjs";
 import { RawClassSchedule } from "../models/raw-class-schedule.model";
 import { ScheduleChangesLog } from "../models/schedule-changes-log.model";
 import { ClassSchedule } from "../models/class-schedule.model";
+import { ClassAndChangeLog } from "../models/class-and-change-log.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ScheduleService {
+export class ClassScheduleService {
   private baseUrl = environment.apiUrl + '/schedule'
 
   constructor(private http: HttpClient){}
@@ -24,5 +25,9 @@ export class ScheduleService {
 
   cancelClassSchedule(scheduleId: number, scheduleChangeLog: ScheduleChangesLog): Observable<ClassSchedule> {
     return this.http.put<ClassSchedule>(`${this.baseUrl}/cancel/${scheduleId}`, scheduleChangeLog)
+  }
+
+  updateClassSchedule(scheduleId: number, classAndChangeLog: ClassAndChangeLog) {
+    return this.http.put<ClassSchedule>(`${this.baseUrl}/edit/${scheduleId}`, classAndChangeLog);
   }
 }

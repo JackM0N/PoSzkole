@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ClassSchedule } from '../../../models/class-schedule.model';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ScheduleService } from '../../../services/class-schedule.service';
+import { ClassScheduleService } from '../../../services/class-schedule.service';
 import { ToastrService } from 'ngx-toastr';
 import { Reason } from '../../../enums/reason.enum';
 import { ScheduleChangesLog } from '../../../models/schedule-changes-log.model';
@@ -26,7 +26,7 @@ export class CancelScheduleComponent {
     public dialogRef: MatDialogRef<CancelScheduleComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClassSchedule,
     private fb: FormBuilder,
-    private scheduleService: ScheduleService,
+    private scheduleService: ClassScheduleService,
     private toastr: ToastrService) {
       this.scheduleChangeForm = this.fb.group({
         explanation: new FormControl('', {updateOn: 'blur'})

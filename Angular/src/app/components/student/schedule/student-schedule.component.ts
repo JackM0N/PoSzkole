@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ClassSchedule } from "../../../models/class-schedule.model";
-import { ScheduleService } from "../../../services/class-schedule.service";
+import { ClassScheduleService } from "../../../services/class-schedule.service";
 import { DateTime } from "luxon";
 import { RawClassSchedule } from "../../../models/raw-class-schedule.model";
 
@@ -12,7 +12,7 @@ import { RawClassSchedule } from "../../../models/raw-class-schedule.model";
 export class StudentScheduleComponent implements OnInit{
   classes: ClassSchedule[] = [];
 
-  constructor(private scheduleService: ScheduleService){}
+  constructor(private scheduleService: ClassScheduleService){}
 
   ngOnInit(): void {
     this.fetchClassSchedules();

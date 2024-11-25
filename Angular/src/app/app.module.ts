@@ -40,6 +40,7 @@ import { CommonModule } from '@angular/common';
 import { ClassDetailsComponent } from './components/shared/schedule/class-details.component';
 import { CancelScheduleComponent } from './components/student/schedule/cancel-schedule.component';
 import { TeacherScheduleComponent } from './components/teacher/schedule/teacher-schedule.component';
+import { EditClassComponent } from './components/shared/schedule/edit-class.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { TeacherScheduleComponent } from './components/teacher/schedule/teacher-
     ClassDetailsComponent,
     CancelScheduleComponent,
     TeacherScheduleComponent,
+    EditClassComponent,
   ],
   imports: [
     BrowserModule,

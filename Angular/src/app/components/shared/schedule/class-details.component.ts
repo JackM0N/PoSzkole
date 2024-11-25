@@ -7,6 +7,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Role } from '../../../models/role.model';
 import { TutoringClassService } from '../../../services/tutoring-class.service';
 import { SimplifiedUser } from '../../../models/simplified-user.model';
+import { EditClassComponent } from './edit-class.component';
 
 @Component({
   selector: 'app-class-details',
@@ -60,6 +61,16 @@ export class ClassDetailsComponent implements OnInit{
   openCancelSchedule(selectedClass: ClassSchedule): void {
     this.close();
     this.dialog.open(CancelScheduleComponent, {
+      width: '50%',
+      enterAnimationDuration:'200ms',
+      exitAnimationDuration:'200ms',
+      data: selectedClass,
+    });
+  }
+
+  openEditClass(selectedClass: ClassSchedule): void {
+    this.close();
+    this.dialog.open(EditClassComponent, {
       width: '50%',
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',

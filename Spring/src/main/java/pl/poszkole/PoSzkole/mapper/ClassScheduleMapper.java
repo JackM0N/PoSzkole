@@ -10,6 +10,8 @@ public interface ClassScheduleMapper {
 
     ClassScheduleDTO toDto(ClassSchedule classSchedule);
 
+    @Mapping(target = "tutoringClass.subject", ignore = true)
+    @Mapping(target = "tutoringClass.teacher", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     ClassSchedule partialUpdate(ClassScheduleDTO classScheduleDTO, @MappingTarget ClassSchedule classSchedule);
 }

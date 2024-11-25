@@ -21,6 +21,7 @@ import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 import pl.poszkole.PoSzkole.repository.RoomRepository;
 import pl.poszkole.PoSzkole.repository.ScheduleChangesLogRepository;
+import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public class ClassScheduleService {
     private final ScheduleChangesLogMapper scheduleChangesLogMapper;
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
     private final UserBusyDayService userBusyDayService;
+    private final TutoringClassRepository tutoringClassRepository;
 
     //This cannot be universal since checking role here would do bad stuff for ppl with 2 roles (T and S)
     public List<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent() {
@@ -149,9 +151,8 @@ public class ClassScheduleService {
     }
 
 
-    //TODO: Ask if it's possible to add substitute teacher to a schedule
     public ClassScheduleDTO updateClassSchedule(
-            Long scheduleId, ClassScheduleDTO classScheduleDTO, ScheduleChangesLogDTO changesLogDTO
+            Long scheduleId, ClassScheduleDTO classScheduleDTO, DayAndTimeDTO dayAndTimeDTO, ScheduleChangesLogDTO changesLogDTO
     ) {
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
         //Check if class existsSchedule exists, currently logged teacher can edit it and if reason for change was given
@@ -165,8 +166,30 @@ public class ClassScheduleService {
             throw new RuntimeException("You must provide a reason for making changes in this class");
         }
 
-        //To the changing
+        //Do the changing
         classScheduleMapper.partialUpdate(classScheduleDTO,classSchedule);
+
+        //Change the name of the tutoringClass if needed
+        if (!Objects.equals(classScheduleDTO.getTutoringClass().getClassName(), classSchedule.getTutoringClass().getClassName())){
+            TutoringClass tutoringClass = classSchedule.getTutoringClass();
+            tutoringClass.setClassName(classScheduleDTO.getTutoringClass().getClassName());
+            tutoringClassRepository.save(tutoringClass);
+        }
+
+        //Update class dates
+        if (dayAndTimeDTO != null){
+            LocalDateTime timeFrom = classSchedule.getClassDateFrom();
+            LocalDateTime timeTo = classSchedule.getClassDateTo();
+
+            if (dayAndTimeDTO.getDay() == null){
+                classSchedule.setClassDateFrom(timeFrom.withHour(dayAndTimeDTO.getTimeFrom().getHour()));
+                classSchedule.setClassDateTo(timeTo.withHour(dayAndTimeDTO.getTimeTo().getHour()));
+            }else {
+                LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.nextOrSame(dayAndTimeDTO.getDay()));
+                classSchedule.setClassDateFrom(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeTo()));
+                classSchedule.setClassDateTo(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeFrom()));
+            }
+        }
 
         //Change the room if it was changed since it's too hard of a task for the mapper
         if(classScheduleDTO.getRoom() != null

@@ -37,6 +37,9 @@
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
+  <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled">Sprawdź obecność</button>
+  <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled">Zarezerwuj salę</button>
+  <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id" (click)="openEditClass(data)">Edytuj zajęcia</button>
   <button *ngIf="hasRole('STUDENT') && !data.isCanceled" mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>
   <button mat-raised-button color="primary" (click)="close()">Zamknij</button>
 </mat-dialog-actions>
