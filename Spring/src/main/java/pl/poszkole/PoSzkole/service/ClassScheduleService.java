@@ -177,7 +177,7 @@ public class ClassScheduleService {
         }
 
         //Update class dates
-        if (dayAndTimeDTO != null){
+        if (dayAndTimeDTO.getTimeFrom() != null){
             LocalDateTime timeFrom = classSchedule.getClassDateFrom();
             LocalDateTime timeTo = classSchedule.getClassDateTo();
 

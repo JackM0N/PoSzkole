@@ -2,57 +2,65 @@
 <mat-dialog-content>
   <form [formGroup]="editForm">
     <h3>Informacje ogólne</h3>
-    <mat-form-field appearance="fill">
-      <mat-label>Nazwa zajęć</mat-label>
-      <input matInput formControlName="className"/>
-    </mat-form-field>
+    <div formGroupName="classSchedule">
+      <div formGroupName="tutoringClass">
+        <mat-form-field appearance="fill">
+          <mat-label>Nazwa zajęć</mat-label>
+          <input matInput formControlName="className" />
+        </mat-form-field>
+      </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Czy online?</mat-label>
-      <mat-select formControlName="isOnline">
-        <mat-option [value]="true">Tak</mat-option>
-        <mat-option [value]="false">Nie</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Czy online?</mat-label>
+        <mat-select formControlName="isOnline">
+          <mat-option [value]="true">Tak</mat-option>
+          <mat-option [value]="false">Nie</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Odwołane</mat-label>
-      <mat-select formControlName="isCanceled">
-        <mat-option [value]="true">Tak</mat-option>
-        <mat-option [value]="false">Nie</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Odwołane</mat-label>
+        <mat-select formControlName="isCanceled">
+          <mat-option [value]="true">Tak</mat-option>
+          <mat-option [value]="false">Nie</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
     <h3>Zmień termin zajęć</h3>
-    <mat-form-field appearance="fill">
-      <mat-label>Dzień tygodnia</mat-label>
-      <mat-select formControlName="day">
-        <mat-option *ngFor="let day of days" [value]="day">{{ day }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div formGroupName="dayAndTime">
+      <mat-form-field appearance="fill">
+        <mat-label>Dzień tygodnia</mat-label>
+        <mat-select formControlName="day">
+          <mat-option *ngFor="let day of days" [value]="day">{{ day }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Czas rozpoczęcia</mat-label>
-      <input matInput type="time" formControlName="timeFrom"/>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Czas rozpoczęcia</mat-label>
+        <input matInput type="time" formControlName="timeFrom" />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Czas zakończenia</mat-label>
-      <input matInput type="time" formControlName="timeTo"/>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Czas zakończenia</mat-label>
+        <input matInput type="time" formControlName="timeTo" />
+      </mat-form-field>
+    </div>
 
     <h3>Powód zmian</h3>
-    <mat-form-field appearance="fill">
-      <mat-label>Powód</mat-label>
-      <mat-select formControlName="reason">
-        <mat-option *ngFor="let reason of reasons" [value]="reason">{{ reason }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div formGroupName="scheduleChangesLog">
+      <mat-form-field appearance="fill">
+        <mat-label>Powód</mat-label>
+        <mat-select formControlName="reason">
+          <mat-option *ngFor="let reason of reasons" [value]="reason">{{ reason }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Wyjaśnienie</mat-label>
-      <textarea matInput formControlName="explanation"></textarea>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Wyjaśnienie</mat-label>
+        <textarea matInput formControlName="explanation"></textarea>
+      </mat-form-field>
+    </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>

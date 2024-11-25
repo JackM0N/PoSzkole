@@ -8,6 +8,10 @@ import { ClassAndChangeLog } from '../../../models/class-and-change-log.model';
 import { ClassScheduleService } from '../../../services/class-schedule.service';
 import { ToastrService } from 'ngx-toastr';
 
+function getEnumKeyByValue<T extends object>(enumObject: T, value: string): string | undefined {
+  return Object.keys(enumObject).find(key => enumObject[key as keyof T] === value);
+}
+
 @Component({
   selector: 'app-edit-class',
   templateUrl: './edit-class.component.html',
@@ -56,18 +60,21 @@ export class EditClassComponent {
     const formData = this.editForm.value;
 
     const payload: ClassAndChangeLog = {
-      classSchedule: {
+      classScheduleDTO: {
         ...formData.classSchedule,
         tutoringClass: {
           ...this.data.tutoringClass,
           className: formData.classSchedule.tutoringClass.className
         }
       },
-      dayAndTime: formData.dayAndTime,
-      scheduleChangesLog: formData.scheduleChangesLog
+      dayAndTimeDTO: formData.dayAndTime,
+      changeLogDTO: {
+        ...formData.scheduleChangesLog,
+        reason: getEnumKeyByValue(Reason, formData.scheduleChangesLog.reason) as Reason
+      }
     };
 
-    this.classScheduleService.updateClassSchedule(payload.classSchedule.id!, payload).subscribe({
+    this.classScheduleService.updateClassSchedule(payload.classScheduleDTO.id!, payload).subscribe({
       next: () => {
         this.toastr.success('Zajęcia zostały pomyślnie zaktualizowane.');
         this.dialogRef.close(true);
