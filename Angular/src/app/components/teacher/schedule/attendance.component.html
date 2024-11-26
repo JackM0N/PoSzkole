@@ -1,0 +1,14 @@
+<div mat-dialog-title>Obecność studentów</div>
+<div mat-dialog-content>
+  <form>
+    <div *ngFor="let attendance of attendances" class="attendance-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Student</mat-label>
+        <input matInput [value]="attendance.student.id + ' - ' + attendance.student.firstName + ' ' + attendance.student.lastName" readonly />
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Zamknij</button>
+</div>

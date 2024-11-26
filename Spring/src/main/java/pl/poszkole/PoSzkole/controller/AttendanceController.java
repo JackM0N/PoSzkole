@@ -1,7 +1,6 @@
 package pl.poszkole.PoSzkole.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +17,13 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
 
     @GetMapping("/list/{scheduleId}")
-    public ResponseEntity<Page<AttendanceDTO>> getAttendanceForClassSchedule(
-            @PathVariable("scheduleId") Long scheduleId, AttendanceFilter attendanceFilter, Pageable pageable
+    public ResponseEntity<List<AttendanceDTO>> getAttendanceForClassSchedule(
+            @PathVariable("scheduleId") Long scheduleId, AttendanceFilter attendanceFilter
     ) {
-        return ResponseEntity.ok(attendanceService.findAllForClassSchedule(scheduleId,attendanceFilter,pageable));
+        return ResponseEntity.ok(attendanceService.findAllForClassSchedule(scheduleId,attendanceFilter));
     }
 
-    @GetMapping("/check/{scheduleId}")
+    @GetMapping("/exists/{scheduleId}")
     public ResponseEntity<Boolean> getExistenceForClassSchedule(@PathVariable Long scheduleId){
         return ResponseEntity.ok(attendanceService.checkIfExists(scheduleId));
     }
@@ -34,7 +33,7 @@ public class AttendanceController {
         return ResponseEntity.ok(attendanceService.createForClassSchedule(scheduleId));
     }
 
-    @PutMapping("/edit/{scheduleId}")
+    @PutMapping("/check/{scheduleId}")
     public ResponseEntity<Boolean> checkAttendanceForClassSchedule(@PathVariable Long scheduleId, @RequestBody List<AttendanceDTO> attendanceDTOs){
         return ResponseEntity.ok(attendanceService.checkAttendanceForClassSchedule(scheduleId, attendanceDTOs));
     }

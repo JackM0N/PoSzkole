@@ -4,7 +4,9 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.AttendanceDTO;
@@ -16,6 +18,7 @@ import pl.poszkole.PoSzkole.repository.AttendanceRepository;
 import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +27,8 @@ public class AttendanceService {
     private final ClassScheduleRepository classScheduleRepository;
     private final AttendanceMapper attendanceMapper;
 
-    public Page<AttendanceDTO> findAllForClassSchedule(
-            Long classScheduleId, AttendanceFilter attendanceFilter, Pageable pageable
+    public List<AttendanceDTO> findAllForClassSchedule(
+            Long classScheduleId, AttendanceFilter attendanceFilter
     ) {
         //Check if classSchedule exists
         ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
@@ -49,9 +52,10 @@ public class AttendanceService {
                     criteriaBuilder.like(criteriaBuilder.lower(root.get("student").get("lastName")), likePattern)
             )));
         }
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Sort.Order.asc("student.firstName")));
         Page<Attendance> attendances = attendanceRepository.findAll(spec, pageable);
 
-        return attendances.map(attendanceMapper::toDto);
+        return attendances.stream().map(attendanceMapper::toDto).collect(Collectors.toList());
     }
 
     //This method is used to see if attendance exists for given classSchedule
@@ -61,12 +65,12 @@ public class AttendanceService {
 
     public Boolean createForClassSchedule(Long classScheduleId) {
         if (checkIfExists(classScheduleId)) {
-            throw new EntityExistsException("Class Schedule already exists");
+            throw new EntityExistsException("Class attendance already exists");
         }
 
         //Check if classSchedule exists
         ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("This class schedule does not exist"));
 
         //For each student create and save attendance
         classSchedule.getTutoringClass().getStudents().forEach(student -> {
@@ -86,7 +90,7 @@ public class AttendanceService {
         //Check attendance
         attendanceDTOs.forEach(attendanceDTO -> {
             Attendance attendance = attendanceRepository.findById(attendanceDTO.getId())
-                    .orElseThrow(EntityNotFoundException::new);
+                    .orElseThrow(() -> new EntityNotFoundException("This attendance does not exist"));
             attendance.setIsPresent(attendanceDTO.getIsPresent());
             attendanceRepository.save(attendance);
         });

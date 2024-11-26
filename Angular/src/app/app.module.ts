@@ -42,6 +42,7 @@ import { CancelScheduleComponent } from './components/student/schedule/cancel-sc
 import { TeacherScheduleComponent } from './components/teacher/schedule/teacher-schedule.component';
 import { EditClassComponent } from './components/shared/schedule/edit-class.component';
 import { ReserveRoomComponent } from './components/teacher/schedule/reserve-room.component';
+import { AttendanceComponent } from './components/teacher/schedule/attendance.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { ReserveRoomComponent } from './components/teacher/schedule/reserve-room
     TeacherScheduleComponent,
     EditClassComponent,
     ReserveRoomComponent,
+    AttendanceComponent,
   ],
   imports: [
     BrowserModule,

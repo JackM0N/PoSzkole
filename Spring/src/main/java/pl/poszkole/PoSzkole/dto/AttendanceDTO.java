@@ -15,6 +15,6 @@ import java.io.Serializable;
 public class AttendanceDTO implements Serializable {
     Long id;
     ClassScheduleDTO classSchedule;
-    WebsiteUserDTO student;
+    SimplifiedUserDTO student;
     Boolean isPresent;
 }

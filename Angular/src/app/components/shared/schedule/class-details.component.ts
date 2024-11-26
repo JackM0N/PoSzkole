@@ -9,6 +9,8 @@ import { TutoringClassService } from '../../../services/tutoring-class.service';
 import { SimplifiedUser } from '../../../models/simplified-user.model';
 import { EditClassComponent } from './edit-class.component';
 import { ReserveRoomComponent } from '../../teacher/schedule/reserve-room.component';
+import { AttendanceService } from '../../../services/attendance.service';
+import { AttendanceComponent } from '../../teacher/schedule/attendance.component';
 
 @Component({
   selector: 'app-class-details',
@@ -27,6 +29,7 @@ export class ClassDetailsComponent implements OnInit{
     private dialog: MatDialog,
     private authService: AuthService,
     private tutoringClassService: TutoringClassService,
+    private attendanceService: AttendanceService,
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +89,20 @@ export class ClassDetailsComponent implements OnInit{
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',
       data: selectedClass,
+    });
+  }
+
+  openAttendance(scheduleId: number): void {
+    const attendanceExists = this.attendanceService.getExistenceForClassSchedule(scheduleId);
+    if(!attendanceExists) {
+      this.attendanceService.createAttendanceForClassSchedule(scheduleId);
+    }
+    this.close();
+    this.dialog.open(AttendanceComponent, {
+      width: '50%',
+      enterAnimationDuration:'200ms',
+      exitAnimationDuration:'200ms',
+      data: scheduleId,
     });
   }
 

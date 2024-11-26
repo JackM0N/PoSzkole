@@ -5,16 +5,18 @@
   <p><strong>Czas:</strong> {{ data.classDateFrom.toFormat('HH:mm') }} - {{ data.classDateTo.toFormat('HH:mm') }}</p>
   <p><strong>Przedmiot:</strong> {{data.tutoringClass.subject?.subjectName}}</p>
   <p><strong>Online:</strong> {{ data.isOnline ? 'Tak' : 'Nie' }}</p>
-  <div *ngIf="data.room!=null">
-    <p><strong>Budynek:</strong> {{ data.room.building }}</p>
-    <p><strong>Piętro:</strong> {{ data.room.floor }}</p>
-    <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
-  </div>
   <div *ngIf="data.isCanceled">
     <br/>
     <p><strong>Status:</strong> Odwołane</p>
     <p><strong>Powód:</strong>placeholder</p>
     <p><strong>Wyjaśnienie:</strong>placeholder</p>
+  </div>
+  <div *ngIf="data.room!=null">
+    <br/>
+    <h3>Miejsce zajęć:</h3>
+    <p><strong>Budynek:</strong> {{ data.room.building }}</p>
+    <p><strong>Piętro:</strong> {{ data.room.floor }}</p>
+    <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
   </div>
   <div *ngIf="hasRole('STUDENT')" class="teacher-container">
     <br/>
@@ -37,7 +39,7 @@
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled">Sprawdź obecność</button>
+  <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled" (click)="openAttendance(data.id!)">Sprawdź obecność</button>
   <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled" (click)="openReserveRoom(data)">Zarezerwuj salę</button>
   <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id" (click)="openEditClass(data)">Edytuj zajęcia</button>
   <button *ngIf="hasRole('STUDENT') && !data.isCanceled" mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>

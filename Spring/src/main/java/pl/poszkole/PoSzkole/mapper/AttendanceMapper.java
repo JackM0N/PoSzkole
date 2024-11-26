@@ -4,7 +4,8 @@ import org.mapstruct.*;
 import pl.poszkole.PoSzkole.dto.AttendanceDTO;
 import pl.poszkole.PoSzkole.model.Attendance;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
+        uses = {SimplifiedUserMapper.class})
 public interface AttendanceMapper {
     Attendance toEntity(AttendanceDTO attendanceDTO);
 
