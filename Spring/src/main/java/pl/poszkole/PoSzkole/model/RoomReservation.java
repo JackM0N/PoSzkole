@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,9 +26,9 @@ public class RoomReservation {
     private WebsiteUser teacher;
 
     @Column(name = "reservation_from", nullable = false)
-    private Instant reservationFrom;
+    private LocalDateTime reservationFrom;
 
     @Column(name = "reservation_to", nullable = false)
-    private Instant reservationTo;
+    private LocalDateTime reservationTo;
 
 }

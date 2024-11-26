@@ -8,6 +8,7 @@ import { Role } from '../../../models/role.model';
 import { TutoringClassService } from '../../../services/tutoring-class.service';
 import { SimplifiedUser } from '../../../models/simplified-user.model';
 import { EditClassComponent } from './edit-class.component';
+import { ReserveRoomComponent } from '../../teacher/schedule/reserve-room.component';
 
 @Component({
   selector: 'app-class-details',
@@ -71,6 +72,16 @@ export class ClassDetailsComponent implements OnInit{
   openEditClass(selectedClass: ClassSchedule): void {
     this.close();
     this.dialog.open(EditClassComponent, {
+      width: '50%',
+      enterAnimationDuration:'200ms',
+      exitAnimationDuration:'200ms',
+      data: selectedClass,
+    });
+  }
+
+  openReserveRoom(selectedClass: ClassSchedule): void {
+    this.close();
+    this.dialog.open(ReserveRoomComponent, {
       width: '50%',
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',

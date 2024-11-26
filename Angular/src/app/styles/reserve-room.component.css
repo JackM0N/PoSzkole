@@ -1,0 +1,21 @@
+.room-container {
+  padding: 16px;
+}
+
+.no-rooms {
+  font-size: 18px;
+  color: #757575;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.room-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.room-card {
+  width: 300px;
+}
