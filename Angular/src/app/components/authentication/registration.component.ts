@@ -6,6 +6,7 @@ import { WebsiteUser } from "../../models/website-user.model";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
 import { Gender } from "../../enums/gender.enum";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-registration',
@@ -20,7 +21,8 @@ export class RegistrationComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService,
   ){
     this.registrationForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -58,12 +60,11 @@ export class RegistrationComponent {
 
       this.authService.register(userData).subscribe({
         next: () => {
-          //TODO: Ask about styles
-          //this.toastr.success('Registration was successful')
+          this.toastr.success('Rejestracja się powiodła! Możesz się teraz zalogować')
           this.router.navigate(['/login'])
         },
         error: (error) => {
-          //this.toastr.error('Error during registration. Please try again.')
+          this.toastr.error('Wystąpił błąd podczas rejestracji. Spróbuj ponownie później')
           console.error('Error during registration', error);
         }
       });

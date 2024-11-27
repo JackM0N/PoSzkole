@@ -19,6 +19,7 @@ export class MyAccountComponent implements OnInit{
   loadCurrentUser() {
     this.websiteUserService.loadCurrentUserProfile().subscribe({
       next: response => {
+        console.log("User", response)
         this.currentUser = response;
       },
       error: error => {

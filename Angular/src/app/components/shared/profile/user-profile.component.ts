@@ -24,6 +24,7 @@ export class UserAccountComponent implements OnInit{
     const userId = this.route.snapshot.paramMap.get('id');
     this.websiteUserService.loadUserProfile(+userId!).subscribe({
       next: response => {
+        console.log("User", response)
         this.user = response;
       },
       error: error => {

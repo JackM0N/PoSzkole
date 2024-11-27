@@ -24,4 +24,11 @@ export class AccountComponent {
     }
     return EducationLevel[level as keyof typeof EducationLevel]
   }
+
+  hasRole(roleName: string): boolean {
+    if (!this.account?.roles) {
+      return false;
+    }
+    return this.account.roles.some(role => role.roleName === roleName);
+  }
 }

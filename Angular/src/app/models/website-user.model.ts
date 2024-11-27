@@ -1,5 +1,6 @@
 import { PriceList } from "./price-list.model";
 import { Role } from "./role.model";
+import { Subject } from "./subject.model";
 
 export interface WebsiteUser {
   id?: number;
@@ -13,6 +14,7 @@ export interface WebsiteUser {
   phone?: string;
 
   hourlyRate?: number;
+  subjects?: Subject[];
 
   level?: string;
   guardianPhone?: string;

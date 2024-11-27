@@ -8,6 +8,10 @@
   margin: 40px auto;
 }
 
+.account-container h3{
+  margin-top: 20px;
+}
+
 /* Header */
 .account-container h1 {
   color: #4a4a4a;
@@ -24,6 +28,7 @@
   gap: 15px;
   color: #4a4a4a;
   font-size: 16px;
+  margin: 20px 0;
 }
 
 .user-info .info-row {
