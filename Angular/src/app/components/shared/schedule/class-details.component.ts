@@ -11,6 +11,7 @@ import { EditClassComponent } from './edit-class.component';
 import { ReserveRoomComponent } from '../../teacher/schedule/reserve-room.component';
 import { AttendanceService } from '../../../services/attendance.service';
 import { AttendanceComponent } from '../../teacher/schedule/attendance.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-class-details',
@@ -30,6 +31,7 @@ export class ClassDetailsComponent implements OnInit{
     private authService: AuthService,
     private tutoringClassService: TutoringClassService,
     private attendanceService: AttendanceService,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -93,16 +95,36 @@ export class ClassDetailsComponent implements OnInit{
   }
 
   openAttendance(scheduleId: number): void {
-    const attendanceExists = this.attendanceService.getExistenceForClassSchedule(scheduleId);
-    if(!attendanceExists) {
-      this.attendanceService.createAttendanceForClassSchedule(scheduleId);
-    }
-    this.close();
-    this.dialog.open(AttendanceComponent, {
-      width: '50%',
-      enterAnimationDuration:'200ms',
-      exitAnimationDuration:'200ms',
-      data: scheduleId,
+    this.attendanceService.getExistenceForClassSchedule(scheduleId).subscribe({
+      next: (attendanceExists: boolean) => {
+        if (!attendanceExists) {
+          this.attendanceService.createAttendanceForClassSchedule(scheduleId).subscribe({
+            next: () => {
+              this.dialog.open(AttendanceComponent, {
+                width: '50%',
+                enterAnimationDuration: '200ms',
+                exitAnimationDuration: '200ms',
+                data: scheduleId,
+              });
+            },
+            error: error => {
+              console.error('Błąd podczas tworzenia obecności', error);
+              this.toastr.error('Nie udało się utworzyć obecności');
+            }
+          });
+        } else {
+          this.dialog.open(AttendanceComponent, {
+            width: '50%',
+            enterAnimationDuration: '200ms',
+            exitAnimationDuration: '200ms',
+            data: scheduleId,
+          });
+        }
+      },
+      error: error => {
+        console.error('Błąd podczas sprawdzania obecności', error);
+        this.toastr.error('Nie udało się sprawdzić obecności');
+      }
     });
   }
 

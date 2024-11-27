@@ -35,4 +35,17 @@ export class AttendanceComponent implements OnInit{
     })
   }
 
+  onSubmit() {
+    this.attendanceService.checkAttendanceForClassSchedule(this.scheduleId, this.attendances).subscribe({
+      next: () => {
+        this.toastr.success('Obecność została zapisana!');
+        this.dialogRef.close();
+      },
+      error: error => {
+        console.error('Błąd podczas zapisywania obecności', error);
+        this.toastr.error('Nie udało się zapisać obecności');
+      },
+    });
+  }
+
 }

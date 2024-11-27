@@ -18,7 +18,7 @@ export class AttendanceService {
   }
 
   getExistenceForClassSchedule(scheduleId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.baseUrl}/check/${scheduleId}`);
+    return this.http.get<boolean>(`${this.baseUrl}/exists/${scheduleId}`);
   }
 
   createAttendanceForClassSchedule(scheduleId: number): Observable<boolean> {
