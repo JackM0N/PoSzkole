@@ -3,6 +3,7 @@ package pl.poszkole.PoSzkole.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.poszkole.PoSzkole.dto.WebsiteUserDTO;
@@ -15,6 +16,16 @@ import java.util.List;
 @RequestMapping("/user")
 public class WebsiteUserController {
     private final WebsiteUserService websiteUserService;
+
+    @GetMapping("/my-profile")
+    public ResponseEntity<WebsiteUserDTO> getMyProfile() {
+        return ResponseEntity.ok(websiteUserService.getCurrentUserProfile());
+    }
+
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<WebsiteUserDTO> getProfile(@PathVariable Long userId) {
+        return ResponseEntity.ok(websiteUserService.getUserProfile(userId));
+    }
 
     @GetMapping("/all-students")
     public ResponseEntity<List<WebsiteUserDTO>> getAllStudents() {

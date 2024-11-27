@@ -22,5 +22,5 @@ export interface WebsiteUser {
   isCashPayment?: boolean;
   issueInvoice?: boolean;
 
-  role?: Role;
+  roles?: Role[];
 }

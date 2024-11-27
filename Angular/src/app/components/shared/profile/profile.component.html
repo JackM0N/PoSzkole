@@ -1,0 +1,47 @@
+<div class="account-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ account?.firstName }} {{ account?.lastName }}</mat-card-title>
+      <mat-card-subtitle *ngFor="let role of account?.roles"> {{getRole(role.roleName)}} </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="!account">
+        <p>Nie znaleziono użytkownika o podanym ID.</p>
+      </div>
+      <div *ngIf="account?.username">
+        <strong>Nazwa użytkownika:</strong> {{ account?.username }}
+      </div>
+      <div *ngIf="account?.email">
+        <strong>Email:</strong> {{ account?.email }}
+      </div>
+      <div *ngIf="account?.phone">
+        <strong>Telefon:</strong> {{ account?.phone }}
+      </div>
+      <div *ngIf="account?.hourlyRate">
+        <strong>Stawka godzinowa:</strong> {{ account?.hourlyRate | currency:'PLN' }}
+      </div>
+      <div *ngIf="account?.level">
+        <strong>Poziom kształcenia:</strong> {{ getLevel(account?.level) }}
+      </div>
+      <div *ngIf="account?.guardianPhone">
+        <strong>Telefon opiekuna:</strong> {{ account?.guardianPhone }}
+      </div>
+      <div *ngIf="account?.guardianEmail">
+        <strong>Email opiekuna:</strong> {{ account?.guardianEmail }}
+      </div>
+      <div *ngIf="account?.priceList">
+        <strong>Cennik:</strong> {{ account?.priceList }}
+      </div>
+      <div *ngIf="account?.discountProcentage">
+        <strong>Zniżka:</strong> {{ account?.discountProcentage }}%
+      </div>
+      <div *ngIf="account?.isCashPayment !== null">
+        <strong>Forma płatności:</strong> {{ account?.isCashPayment ? 'Gotówka' : 'Karta' }}
+      </div>
+      <div *ngIf="account?.issueInvoice !== null">
+        <strong>Faktura:</strong> {{ account?.issueInvoice ? 'Tak' : 'Nie' }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

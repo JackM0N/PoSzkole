@@ -11,6 +11,7 @@ public interface WebsiteUserMapper {
     @Mapping(target = "classes", ignore = true)
     WebsiteUserDTO toDto(WebsiteUser websiteUser);
 
+    @Mapping(target = "username", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "discountPercentage", ignore = true)
     @Mapping(target = "issueInvoice", ignore = true)

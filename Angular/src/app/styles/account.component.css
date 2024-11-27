@@ -1,0 +1,39 @@
+/* Container */
+.account-container {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+/* Header */
+.account-container h1 {
+  color: #4a4a4a;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* User info */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  color: #4a4a4a;
+  font-size: 16px;
+}
+
+.user-info .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eaeaea;
+  padding: 10px 0;
+}
+
+.user-info .info-row:last-child {
+  border-bottom: none;
+}

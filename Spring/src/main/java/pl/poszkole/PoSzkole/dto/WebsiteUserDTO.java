@@ -3,12 +3,14 @@ package pl.poszkole.PoSzkole.dto;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import pl.poszkole.PoSzkole.model.Role;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * DTO for {@link pl.poszkole.PoSzkole.model.WebsiteUser}
@@ -35,6 +37,7 @@ public class WebsiteUserDTO implements Serializable {
     Integer discountPercentage;
     Boolean isCashPayment;
     Boolean issueInvoice;
+    Set<Role> roles;
     List<TutoringClassDTO> classes;
     Collection<SubjectDTO> subjects;
 }

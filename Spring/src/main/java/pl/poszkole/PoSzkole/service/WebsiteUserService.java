@@ -1,5 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -22,18 +23,38 @@ import java.util.stream.Collectors;
 public class WebsiteUserService {
     private final WebsiteUserRepository websiteUserRepository;
     private final AuthenticationFacade authenticationFacade;
-    private final RoleRepository roleRepository;
     private final WebsiteUserMapper websiteUserMapper;
+
+    public WebsiteUserDTO getCurrentUserProfile(){
+        WebsiteUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            throw new RuntimeException("Sorry, something went wrong");
+        }
+        return websiteUserMapper.toDto(currentUser);
+    }
+
+    public WebsiteUserDTO getUserProfile(Long websiteUserId){
+        WebsiteUser currentUser = getCurrentUser();
+        WebsiteUser websiteUser = websiteUserRepository.findById(websiteUserId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        //If user inputs his own id it should display the same thing as his own profile
+        if (currentUser.getId().equals(websiteUser.getId())) {
+            return websiteUserMapper.toDto(websiteUser);
+        }
+
+        return websiteUserMapper.toDtoWithoutSensitiveData(websiteUser);
+    }
+
+    public List<WebsiteUserDTO> getAllStudents(){
+        List<WebsiteUser> websiteUsers = websiteUserRepository.findByRoleName("STUDENT");
+        return websiteUsers.stream().map(websiteUserMapper::toDtoWithoutSensitiveData).collect(Collectors.toList());
+    }
 
     public WebsiteUser getCurrentUser() {
         Authentication authentication = authenticationFacade.getAuthentication();
         String username = authentication.getName();
         return websiteUserRepository.findByUsername(username)
                 .orElseThrow(() -> new BadCredentialsException("You are not logged in"));
-    }
-
-    public List<WebsiteUserDTO> getAllStudents(){
-        List<WebsiteUser> websiteUsers = websiteUserRepository.findByRoleName("STUDENT");
-        return websiteUsers.stream().map(websiteUserMapper::toDtoWithoutSensitiveData).collect(Collectors.toList());
     }
 }

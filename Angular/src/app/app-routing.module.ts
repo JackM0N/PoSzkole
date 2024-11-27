@@ -8,11 +8,17 @@ import { RequestFormComponent } from './components/manager/request-form/request-
 import { RequestListComponent } from './components/teacher/request/request-list.component';
 import { StudentScheduleComponent } from './components/student/schedule/student-schedule.component';
 import { TeacherScheduleComponent } from './components/teacher/schedule/teacher-schedule.component';
+import { UserAccountComponent } from './components/shared/profile/user-profile.component';
+import { MyAccountComponent } from './components/shared/profile/my-profile.component';
 
 const routes: Routes = [
   //auth
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
+
+  //profile
+  {path: 'profile/:id', component: UserAccountComponent},
+  {path: 'my-profile', component: MyAccountComponent},
 
   //manager
   {path: 'request-form', component: RequestFormComponent},

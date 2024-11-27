@@ -43,6 +43,9 @@ import { TeacherScheduleComponent } from './components/teacher/schedule/teacher-
 import { EditClassComponent } from './components/shared/schedule/edit-class.component';
 import { ReserveRoomComponent } from './components/teacher/schedule/reserve-room.component';
 import { AttendanceComponent } from './components/teacher/schedule/attendance.component';
+import { AccountComponent } from './components/shared/profile/profile.component';
+import { MyAccountComponent } from './components/shared/profile/my-profile.component';
+import { UserAccountComponent } from './components/shared/profile/user-profile.component';
 
 
 @NgModule({
@@ -63,6 +66,9 @@ import { AttendanceComponent } from './components/teacher/schedule/attendance.co
     EditClassComponent,
     ReserveRoomComponent,
     AttendanceComponent,
+    AccountComponent,
+    MyAccountComponent,
+    UserAccountComponent,
   ],
   imports: [
     BrowserModule,
