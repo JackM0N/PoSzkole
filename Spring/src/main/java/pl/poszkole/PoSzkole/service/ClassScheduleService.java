@@ -18,10 +18,7 @@ import pl.poszkole.PoSzkole.model.ClassSchedule;
 import pl.poszkole.PoSzkole.model.ScheduleChangesLog;
 import pl.poszkole.PoSzkole.model.TutoringClass;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
-import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
-import pl.poszkole.PoSzkole.repository.RoomRepository;
-import pl.poszkole.PoSzkole.repository.ScheduleChangesLogRepository;
-import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
+import pl.poszkole.PoSzkole.repository.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,11 +39,19 @@ public class ClassScheduleService {
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
     private final UserBusyDayService userBusyDayService;
     private final TutoringClassRepository tutoringClassRepository;
+    private final WebsiteUserRepository websiteUserRepository;
 
     //This cannot be universal since checking role here would do bad stuff for ppl with 2 roles (T and S)
-    public List<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent() {
-        //Get current user
-        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+    public List<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent(Long userId) {
+        WebsiteUser currentUser;
+
+        //Get current user if no user is sent or get schedule for chosen user
+        if (userId == null) {
+           currentUser = websiteUserService.getCurrentUser();
+        }else {
+           currentUser = websiteUserRepository.findById(userId)
+                   .orElseThrow(() -> new RuntimeException("User not found"));
+        }
 
         //Check if user is actually a student
         if(currentUser.getRoles().stream().noneMatch(role -> "STUDENT".equals(role.getRoleName()))) {
@@ -69,9 +74,16 @@ public class ClassScheduleService {
         return classSchedules.stream().map(classScheduleMapper::toDto).collect(Collectors.toList());
     }
 
-    public List<ClassScheduleDTO> getAllClassSchedulesForCurrentTeacher() {
-        //Get current user
-        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+    public List<ClassScheduleDTO> getAllClassSchedulesForCurrentTeacher(Long userId) {
+        WebsiteUser currentUser;
+
+        //Get current user if no user is sent or get schedule for chosen user
+        if (userId == null) {
+            currentUser = websiteUserService.getCurrentUser();
+        }else {
+            currentUser = websiteUserRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
 
         //Check if user is actually a teacher
         if(currentUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))) {

@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrl: '../../../styles/account.component.css'
+  styleUrl: '../../../styles/profile.component.css'
 })
 export class UserAccountComponent implements OnInit{
   user?: WebsiteUser;
@@ -24,7 +24,6 @@ export class UserAccountComponent implements OnInit{
     const userId = this.route.snapshot.paramMap.get('id');
     this.websiteUserService.loadUserProfile(+userId!).subscribe({
       next: response => {
-        console.log("User", response)
         this.user = response;
       },
       error: error => {

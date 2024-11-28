@@ -20,6 +20,7 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCard, MatCardModule } from '@angular/material/card'
+import { MatIcon } from '@angular/material/icon'
 
 //App
 import { AppRoutingModule } from './app-routing.module';
@@ -98,7 +99,8 @@ import { UserAccountComponent } from './components/shared/profile/user-profile.c
     MatSortModule,
     MatDialogModule,
     MatCard,
-    MatCardModule
+    MatCardModule,
+    MatIcon,
   ],
   providers: [
     provideAnimationsAsync(),

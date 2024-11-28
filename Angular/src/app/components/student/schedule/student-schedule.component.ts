@@ -1,8 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { ClassSchedule } from "../../../models/class-schedule.model";
 import { ClassScheduleService } from "../../../services/class-schedule.service";
 import { DateTime } from "luxon";
 import { RawClassSchedule } from "../../../models/raw-class-schedule.model";
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { AuthService } from "../../../services/auth.service";
 
 @Component({
   selector: 'app-student-schedule',
@@ -10,16 +12,30 @@ import { RawClassSchedule } from "../../../models/raw-class-schedule.model";
   styleUrl: '../../../styles/schedule.component.css'
 })
 export class StudentScheduleComponent implements OnInit{
+  @Input() userId: number | null = null;
   classes: ClassSchedule[] = [];
+  isReadOnly: boolean = false;
+  jwtHelper = new JwtHelperService();
 
-  constructor(private scheduleService: ClassScheduleService){}
+
+  constructor(private scheduleService: ClassScheduleService, private authService: AuthService){}
 
   ngOnInit(): void {
-    this.fetchClassSchedules();
+    if (!this.userId) {
+      const token = this.authService.getToken();
+      if (token && !this.jwtHelper.isTokenExpired(token)) {
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        this.userId = decodedToken.id;
+        this.fetchClassSchedules();
+      }
+    } else {
+      this.isReadOnly = true;
+      this.fetchClassSchedules();
+    }
   }
 
   fetchClassSchedules(): void {
-    this.scheduleService.getClassSchedulesForStudent().subscribe({
+    this.scheduleService.getClassSchedulesForStudent(this.userId!).subscribe({
       next: (data: RawClassSchedule[]) => {
         this.classes = data.map((classSchedule) => ({
           ...classSchedule,

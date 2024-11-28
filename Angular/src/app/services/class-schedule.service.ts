@@ -15,12 +15,12 @@ export class ClassScheduleService {
 
   constructor(private http: HttpClient){}
   
-  getClassSchedulesForStudent(): Observable<RawClassSchedule[]> {
-    return this.http.get<RawClassSchedule[]>(`${this.baseUrl}/my-classes/student`);
+  getClassSchedulesForStudent(studentId: number): Observable<RawClassSchedule[]> {
+    return this.http.get<RawClassSchedule[]>(`${this.baseUrl}/my-classes/student/${studentId}`);
   }
 
-  getClassSchedulesForTeacher(): Observable<RawClassSchedule[]> {
-    return this.http.get<RawClassSchedule[]>(`${this.baseUrl}/my-classes/teacher`);
+  getClassSchedulesForTeacher(teacherId: number): Observable<RawClassSchedule[]> {
+    return this.http.get<RawClassSchedule[]>(`${this.baseUrl}/my-classes/teacher/${teacherId}`);
   }
 
   cancelClassSchedule(scheduleId: number, scheduleChangeLog: ScheduleChangesLog): Observable<ClassSchedule> {

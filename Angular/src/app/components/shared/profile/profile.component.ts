@@ -6,7 +6,7 @@ import { Role } from '../../../enums/role.enum';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrl: '../../../styles/account.component.css'
+  styleUrl: '../../../styles/profile.component.css'
 })
 export class AccountComponent {
   @Input() account?: WebsiteUser;

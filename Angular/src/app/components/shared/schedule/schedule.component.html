@@ -6,9 +6,9 @@
           {{firstDayOfActiveMonth().year}}
       </div>
       <div class="calendar-header-controls">
-        <button mat-raised-button color="primary" (click)="goToPreviousMonth()">Poprzedni</button>
-        <button mat-raised-button color="accent" (click)="goToToday()">Dzisiaj</button>
-        <button mat-raised-button color="primary" (click)="goToNextMonth()">Następny</button>
+        <button mat-raised-button color="primary" (click)="goToPreviousMonth()"><mat-icon>arrow_back_ios_new</mat-icon></button>
+        <button mat-raised-button color="accent" (click)="goToToday()">{{firstDayOfActiveMonth().monthShort}}</button>
+        <button mat-raised-button color="primary" (click)="goToNextMonth()"><mat-icon>arrow_forward_ios_new</mat-icon></button>
       </div>
     </div>
     <div class="calendar-weeks-grid">
@@ -39,7 +39,7 @@
           *ngFor="let class of activeDayClasses(); trackBy: trackByFn"
           class="class-card"
           [ngClass]="{ 'class-canceled': class.isCanceled }"
-          (click) = 'openDetailsDialog(class)'>
+          (click) = '!isReadOnly && openDetailsDialog(class)'>
           <mat-card-title>{{ class.tutoringClass.className }}</mat-card-title>
           <mat-card-content>
             <p>{{ class.classDateFrom.toFormat('HH:mm') }} - {{ class.classDateTo.toFormat('HH:mm') }}</p>

@@ -5,7 +5,7 @@ import { WebsiteUserService } from '../../../services/website-user.service';
 @Component({
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
-  styleUrl: '../../../styles/account.component.css'
+  styleUrl: '../../../styles/profile.component.css'
 })
 export class MyAccountComponent implements OnInit{
   currentUser?: WebsiteUser;
@@ -19,7 +19,6 @@ export class MyAccountComponent implements OnInit{
   loadCurrentUser() {
     this.websiteUserService.loadCurrentUserProfile().subscribe({
       next: response => {
-        console.log("User", response)
         this.currentUser = response;
       },
       error: error => {

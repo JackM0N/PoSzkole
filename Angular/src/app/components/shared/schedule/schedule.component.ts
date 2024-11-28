@@ -1,7 +1,6 @@
-import { Component, computed, input, InputSignal, signal, Signal, WritableSignal } from "@angular/core";
+import { AfterViewInit, Component, computed, ElementRef, Input, input, InputSignal, OnInit, Renderer2, signal, Signal, WritableSignal } from "@angular/core";
 import { DateTime, Info, Interval } from "luxon";
 import { ClassSchedule } from "../../../models/class-schedule.model";
-import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
 import { ClassDetailsComponent } from "./class-details.component";
 
@@ -10,7 +9,8 @@ import { ClassDetailsComponent } from "./class-details.component";
   templateUrl: './schedule.component.html',
   styleUrl: '../../../styles/schedule.component.css',
 })
-export class ScheduleComponent {
+export class ScheduleComponent implements OnInit, AfterViewInit{
+  @Input() isReadOnly: boolean = false;
   classes: InputSignal<ClassSchedule[]> = input.required();
   today: Signal<DateTime> = signal(DateTime.local());
   firstDayOfActiveMonth: WritableSignal<DateTime> = signal(
@@ -49,7 +49,32 @@ export class ScheduleComponent {
     });
   });
 
-  constructor(private router: Router, private dialog: MatDialog){}
+  constructor(
+    private dialog: MatDialog,
+    private el: ElementRef, 
+    private renderer: Renderer2
+  ){}
+
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const width = this.el.nativeElement.offsetWidth;
+  
+          if (width < 900) {
+            this.renderer.addClass(this.el.nativeElement, 'small-container');
+          } else {
+            this.renderer.removeClass(this.el.nativeElement, 'small-container');
+          }
+        }
+      });
+  
+      observer.observe(this.el.nativeElement);
+    }, 0);
+  }
+  
 
   goToPreviousMonth(): void{
     this.firstDayOfActiveMonth.set(

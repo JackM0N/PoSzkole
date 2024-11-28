@@ -17,14 +17,14 @@ import java.util.List;
 public class ClassScheduleController {
     private final ClassScheduleService classScheduleService;
 
-    @GetMapping("/my-classes/student")
-    public ResponseEntity<List<ClassScheduleDTO>> getClassSchedulesForStudent() {
-        return ResponseEntity.ok(classScheduleService.getAllClassSchedulesForCurrentStudent());
+    @GetMapping("/my-classes/student/{studentId}")
+    public ResponseEntity<List<ClassScheduleDTO>> getClassSchedulesForStudent(@PathVariable Long studentId) {
+        return ResponseEntity.ok(classScheduleService.getAllClassSchedulesForCurrentStudent(studentId));
     }
 
-    @GetMapping("/my-classes/teacher")
-    public ResponseEntity<List<ClassScheduleDTO>> getClassSchedulesForTeacher() {
-        return ResponseEntity.ok(classScheduleService.getAllClassSchedulesForCurrentTeacher());
+    @GetMapping("/my-classes/teacher/{teacherId}")
+    public ResponseEntity<List<ClassScheduleDTO>> getClassSchedulesForTeacher(@PathVariable Long teacherId) {
+        return ResponseEntity.ok(classScheduleService.getAllClassSchedulesForCurrentTeacher(teacherId));
     }
 
     @PutMapping("/edit/{scheduleId}")
