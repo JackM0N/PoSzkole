@@ -1,1 +1,1 @@
-<app-profile [account]="currentUser"></app-profile>
+<app-profile [account]="currentUser" [isOwner]="true" (refreshAccountRequested)="loadCurrentUser()"></app-profile>

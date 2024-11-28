@@ -38,11 +38,6 @@ public class WebsiteUserService {
         WebsiteUser websiteUser = websiteUserRepository.findById(websiteUserId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        //If user inputs his own id it should display the same thing as his own profile
-        if (currentUser.getId().equals(websiteUser.getId())) {
-            return websiteUserMapper.toDto(websiteUser);
-        }
-
         return websiteUserMapper.toDtoWithoutSensitiveData(websiteUser);
     }
 

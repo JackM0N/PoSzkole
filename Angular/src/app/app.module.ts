@@ -47,6 +47,8 @@ import { AttendanceComponent } from './components/teacher/schedule/attendance.co
 import { AccountComponent } from './components/shared/profile/profile.component';
 import { MyAccountComponent } from './components/shared/profile/my-profile.component';
 import { UserAccountComponent } from './components/shared/profile/user-profile.component';
+import { EditUserComponent } from './components/shared/profile/edit-user.component';
+import { EditSubjectsComponent } from './components/shared/profile/edit-subjects.component';
 
 
 @NgModule({
@@ -70,6 +72,8 @@ import { UserAccountComponent } from './components/shared/profile/user-profile.c
     AccountComponent,
     MyAccountComponent,
     UserAccountComponent,
+    EditUserComponent,
+    EditSubjectsComponent,
   ],
   imports: [
     BrowserModule,

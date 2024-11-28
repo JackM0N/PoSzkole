@@ -46,6 +46,7 @@
         <div *ngIf="account?.issueInvoice !== null">
           <strong>Faktura:</strong> {{ account?.issueInvoice ? 'Tak' : 'Nie' }}
         </div>
+        <button *ngIf="isOwner" mat-raised-button color="primary" (click)="openEditUser()">Edytuj dane</button>
       </div>
 
       <div *ngIf="hasRole('TEACHER') && account?.subjects!.length > 0">
@@ -53,6 +54,7 @@
         <div *ngFor="let subject of account?.subjects" class="user-info">
           <p>{{subject.subjectName}}</p>
         </div>
+        <button *ngIf="isOwner" mat-raised-button color="primary" (click)="openEditSubjects()">Edytuj nauczane przedmioty</button>
       </div>
     </mat-card-content>
   </mat-card>
