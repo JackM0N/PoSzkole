@@ -11,6 +11,7 @@ import { ClassDetailsComponent } from "./class-details.component";
 })
 export class ScheduleComponent implements OnInit, AfterViewInit{
   @Input() isReadOnly: boolean = false;
+  currentMonth: string | null = null;
   classes: InputSignal<ClassSchedule[]> = input.required();
   today: Signal<DateTime> = signal(DateTime.local());
   firstDayOfActiveMonth: WritableSignal<DateTime> = signal(
@@ -55,7 +56,9 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
     private renderer: Renderer2
   ){}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.currentMonth = this.firstDayOfActiveMonth().monthShort
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {

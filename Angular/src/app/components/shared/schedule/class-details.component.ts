@@ -12,6 +12,7 @@ import { ReserveRoomComponent } from '../../teacher/schedule/reserve-room.compon
 import { AttendanceService } from '../../../services/attendance.service';
 import { AttendanceComponent } from '../../teacher/schedule/attendance.component';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-class-details',
@@ -32,6 +33,7 @@ export class ClassDetailsComponent implements OnInit{
     private tutoringClassService: TutoringClassService,
     private attendanceService: AttendanceService,
     private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -130,6 +132,11 @@ export class ClassDetailsComponent implements OnInit{
 
   hasRole(role: string): boolean {
     return this.userRoles.some(userRole => userRole.roleName === role);
+  }
+
+  openProfile(userId: number){
+    this.close();
+    this.router.navigate([`/profile/${userId}`])
   }
 
   close(): void {

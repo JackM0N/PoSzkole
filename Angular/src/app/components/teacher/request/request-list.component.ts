@@ -7,6 +7,7 @@ import { RequestService } from '../../../services/request.service';
 import { Observer } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AdmitRequestPopUpComponent } from './admit-request-popup.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-list',
@@ -22,7 +23,10 @@ export class RequestListComponent implements AfterViewInit{
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
 
-  constructor(private requestService: RequestService, private dialog: MatDialog){}
+  constructor(
+    private requestService: RequestService, 
+    private dialog: MatDialog,
+    private router: Router){}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -73,5 +77,9 @@ export class RequestListComponent implements AfterViewInit{
     dialogRef.afterClosed().subscribe(() => {
       this.loadNotAdmittedRequests();
     });
+  }
+
+  openProfile(userId: number){
+    this.router.navigate([`/profile/${userId}`])
   }
 }

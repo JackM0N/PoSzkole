@@ -30,7 +30,7 @@
     <h3>Uczniowie:</h3>
     <ul *ngIf="students.length > 0; else noStudents" class="student-list">
       <li *ngFor="let student of students">
-        <button class="unstyled-button" tabindex="-1">{{student.id}} - {{student.firstName}} {{student.lastName}}</button>
+        <button class="unstyled-button" tabindex="-1" (click)="openProfile(student.id!)">{{student.id}} - {{student.firstName}} {{student.lastName}}</button>
       </li>
     </ul>
     <ng-template #noStudents>

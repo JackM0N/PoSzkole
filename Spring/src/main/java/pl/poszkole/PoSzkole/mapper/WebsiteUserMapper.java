@@ -13,6 +13,7 @@ public interface WebsiteUserMapper {
 
     @Mapping(target = "username", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "hourlyRate", ignore = true)
     @Mapping(target = "discountPercentage", ignore = true)
     @Mapping(target = "issueInvoice", ignore = true)
     @Mapping(target = "priceListId", ignore = true)
