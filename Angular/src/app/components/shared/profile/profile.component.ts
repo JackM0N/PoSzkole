@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { WebsiteUser } from '../../../models/website-user.model';
 import { EducationLevel } from '../../../enums/education-level.enum';
-import { Role } from '../../../enums/role.enum';
+import { Roles } from '../../../enums/role.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { EditUserComponent } from './edit-user.component';
 import { EditSubjectsComponent } from './edit-subjects.component';
@@ -22,7 +22,7 @@ export class AccountComponent {
     if (!role) {
       return 'Brak danych';
     }
-    return Role[role as keyof typeof Role]
+    return Roles[role as keyof typeof Roles]
   }
 
   getLevel(level: string | undefined): string {
@@ -41,7 +41,6 @@ export class AccountComponent {
 
   openEditUser(): void {
     const dialogRef = this.dialog.open(EditUserComponent, {
-      width: '50%',
       data: { user: this.account }
     });
   
@@ -54,8 +53,8 @@ export class AccountComponent {
 
   openEditSubjects() {
     const dialogRef = this.dialog.open(EditSubjectsComponent, {
-      width: '50%',
-      data: { subjects: this.account?.subjects, userId: this.account?.id }
+      width: '30%',
+      data: { subjects: this.account?.subjects, teacherId: this.account?.id }
     });
   
     dialogRef.afterClosed().subscribe(result => {

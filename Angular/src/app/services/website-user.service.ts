@@ -4,6 +4,7 @@ import { Student } from "../models/student.model";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { WebsiteUser } from "../models/website-user.model";
+import { Subject } from "../models/subject.model";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,14 @@ export class WebsiteUserService {
 
   loadStudents(): Observable<Student[]> {
     return this.http.get<Student[]>(`${this.baseUrl}/all-students`)
+  }
+
+  editUserProfile(websiteUser: WebsiteUser): Observable<WebsiteUser> {
+    return this.http.put<WebsiteUser>(`${this.baseUrl}/edit/my-profile`, websiteUser)
+  }
+
+  editTeacherSubjects(teacherId: number, subjects: Subject[]): Observable<WebsiteUser> {
+    return this.http.put<WebsiteUser>(`${this.baseUrl}/edit/subjects/${teacherId}`, subjects)
   }
 
 }

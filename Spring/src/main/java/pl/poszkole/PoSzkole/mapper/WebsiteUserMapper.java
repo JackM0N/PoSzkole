@@ -21,5 +21,22 @@ public interface WebsiteUserMapper {
     WebsiteUserDTO toDtoWithoutSensitiveData(WebsiteUser websiteUser);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "hourlyRate", ignore = true)
+    @Mapping(target = "level", ignore = true)
+    @Mapping(target = "guardianPhone", ignore = true)
+    @Mapping(target = "guardianEmail", ignore = true)
+    @Mapping(target = "priceList", ignore = true)
+    @Mapping(target = "discountPercentage", ignore = true)
+    @Mapping(target = "isCashPayment", ignore = true)
+    @Mapping(target = "issueInvoice", ignore = true)
     WebsiteUser partialUpdate(WebsiteUserDTO websiteUserDTO, @MappingTarget WebsiteUser websiteUser);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "hourlyRate", ignore = true)
+    @Mapping(target = "priceList", ignore = true)
+    @Mapping(target = "discountPercentage", ignore = true)
+    @Mapping(target = "isCashPayment", ignore = true)
+    WebsiteUser partialProfileUpdate(WebsiteUserDTO websiteUserDTO, @MappingTarget WebsiteUser websiteUser);
 }

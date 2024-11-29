@@ -39,12 +39,13 @@ mat-checkbox {
   background-color: white;
 }
 
-/* Cancel */
+/* Buttons */
 .button-group button[type="button"] {
   color: #3366cc;
   border: 1px solid #3366cc;
   background-color: white;
   margin-right: 10px;
+  height: 36px;
 }
 
 .button-group button[type="button"]:hover {
@@ -61,9 +62,9 @@ mat-checkbox {
   background-color: #6699ff;
 }
 
-/* Buttons */
 .button-group {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   margin-top: 20px;
 }
+

@@ -1,1 +1,14 @@
-<p>edit-subjects works!</p>
+<h1>Edytuj nauczane przedmioty</h1>
+<form (ngSubmit)="onSubmit()" class="subjects-form">
+  <div *ngFor="let subject of allSubjects" class="subject-checkbox">
+    <mat-checkbox 
+      [checked]="isSubjectSelected(subject)" 
+      (change)="toggleSubject(subject, $event.checked)">
+      {{ subject.subjectName }}
+    </mat-checkbox>
+  </div>
+</form>
+<div class="button-group">
+  <button mat-raised-button color="primary" (click)="onSubmit()">Zapisz</button>
+  <button mat-button type="button" (click)="onCancel()">Anuluj</button>
+</div>

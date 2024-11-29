@@ -34,7 +34,8 @@ public class SecurityConfig {
                                 "/course/edit/","/course/delete/", "/user/all-students")
                         .hasAnyRole("MANAGER", "OWNER")
 
-                        .requestMatchers("/class/add-student", "/class/create", "/class/student-list/**")
+                        .requestMatchers("/class/add-student", "/class/create", "/class/student-list/**",
+                                "/user/edit/subjects/**")
                         .hasAnyRole("MANAGER", "TEACHER")
 
                         .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/**", "/schedule/edit/**",
@@ -49,7 +50,7 @@ public class SecurityConfig {
                         .hasRole("STUDENT")
 
                         .requestMatchers("/course/list", "/busy-days/list/**", "/subject/all", "/user/my-profile",
-                                "/user/profile/**")
+                                "/user/profile/**", "/user/edit/my-profile")
                         .hasAnyRole("OWNER", "MANAGER", "TEACHER", "STUDENT")
 
                         .requestMatchers("/login", "/register", "/details", "/css/**")

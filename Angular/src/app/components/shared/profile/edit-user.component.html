@@ -1,1 +1,89 @@
-<p>edit-user works!</p>
+<div class="edit-user-container">
+  <h1>Edytuj dane użytkownika</h1>
+  <form (ngSubmit)="onSubmit()" class="edit-user-form" [formGroup]="userForm">
+    <mat-form-field class="full-width">
+      <mat-label>Nazwa użytkownika</mat-label>
+      <input matInput formControlName="username" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Hasło</mat-label>
+      <input matInput type="password" formControlName="password" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Potwierdź hasło</mat-label>
+      <input matInput type="password" formControlName="confirmPassword" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Imię</mat-label>
+      <input matInput formControlName="firstName" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Nazwisko</mat-label>
+      <input matInput formControlName="lastName" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Płeć</mat-label>
+      <mat-select formControlName="gender" required>
+        <mat-option *ngFor="let gender of genders" [value]="gender">{{ gender }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Telefon</mat-label>
+      <input matInput type="tel" formControlName="phone" required />
+    </mat-form-field>
+
+    <!-- Hourly Rate (if user is Teacher and Manager is logged in) -->
+    <mat-form-field class="full-width" *ngIf="isTeacher && currentUserIsManager">
+      <mat-label>Stawka godzinowa</mat-label>
+      <input matInput type="number" formControlName="hourlyRate" />
+    </mat-form-field>
+
+    <!-- Education Level, Guardian Info (if Student) -->
+    <div *ngIf="isStudent">
+      <mat-form-field class="full-width">
+        <mat-label>Poziom kształcenia</mat-label>
+        <mat-select formControlName="level">
+          <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Telefon opiekuna</mat-label>
+        <input matInput type="tel" formControlName="guardianPhone" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Email opiekuna</mat-label>
+        <input matInput type="email" formControlName="guardianEmail" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width" *ngIf="currentUserIsManager">
+        <mat-label>Zniżka</mat-label>
+        <input matInput type="number" formControlName="discountProcentage" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Faktura</mat-label>
+        <mat-select formControlName="issueInvoice">
+          <mat-option [value]="true">Tak</mat-option>
+          <mat-option [value]="false">Nie</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  <div class="button-group">
+    <button mat-raised-button color="primary" (click)="onSubmit()">Zapisz</button>
+    <button mat-button type="button" (click)="onCancel()">Anuluj</button>
+  </div>
+</div>
