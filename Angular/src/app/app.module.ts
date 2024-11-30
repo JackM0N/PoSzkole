@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ToastrModule } from 'ngx-toastr';
@@ -51,73 +51,66 @@ import { EditUserComponent } from './components/shared/profile/edit-user.compone
 import { EditSubjectsComponent } from './components/shared/profile/edit-subjects.component';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    RegistrationComponent,
-    RequestListComponent,
-    RequestFormComponent,
-    RequestAdmittedListComponent,
-    PopUpDialogComponent,
-    AdmitRequestPopUpComponent,
-    ScheduleComponent,
-    StudentScheduleComponent,
-    ClassDetailsComponent,
-    CancelScheduleComponent,
-    TeacherScheduleComponent,
-    EditClassComponent,
-    ReserveRoomComponent,
-    AttendanceComponent,
-    AccountComponent,
-    MyAccountComponent,
-    UserAccountComponent,
-    EditUserComponent,
-    EditSubjectsComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    ToastrModule.forRoot({
-      timeOut: 5000,
-      positionClass: 'toast-top-right',
-      preventDuplicates: true,
-    }),
-
-    MatInputModule,
-    MatAutocompleteModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatNativeDateModule,
-    MatDatepickerModule,
-    MatPaginator,
-    MatTable,
-    MatTableModule,
-    MatSort,
-    MatSortModule,
-    MatDialogModule,
-    MatCard,
-    MatCardModule,
-    MatIcon,
-  ],
-  providers: [
-    provideAnimationsAsync(),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'pl-PL'
-    }
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        LoginComponent,
+        RegistrationComponent,
+        RequestListComponent,
+        RequestFormComponent,
+        RequestAdmittedListComponent,
+        PopUpDialogComponent,
+        AdmitRequestPopUpComponent,
+        ScheduleComponent,
+        StudentScheduleComponent,
+        ClassDetailsComponent,
+        CancelScheduleComponent,
+        TeacherScheduleComponent,
+        EditClassComponent,
+        ReserveRoomComponent,
+        AttendanceComponent,
+        AccountComponent,
+        MyAccountComponent,
+        UserAccountComponent,
+        EditUserComponent,
+        EditSubjectsComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        ToastrModule.forRoot({
+            timeOut: 5000,
+            positionClass: 'toast-top-right',
+            preventDuplicates: true,
+        }),
+        MatInputModule,
+        MatAutocompleteModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatButtonModule,
+        MatNativeDateModule,
+        MatDatepickerModule,
+        MatPaginator,
+        MatTable,
+        MatTableModule,
+        MatSort,
+        MatSortModule,
+        MatDialogModule,
+        MatCard,
+        MatCardModule,
+        MatIcon], providers: [
+        provideAnimationsAsync(),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        },
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'pl-PL'
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
