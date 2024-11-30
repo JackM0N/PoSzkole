@@ -32,7 +32,9 @@
       <mat-form-field appearance="fill">
         <mat-label>Dzień tygodnia</mat-label>
         <mat-select formControlName="day">
-          <mat-option *ngFor="let day of days" [value]="day">{{ day }}</mat-option>
+          @for (day of days; track day) {
+            <mat-option [value]="day">{{ day }}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
 
@@ -52,7 +54,9 @@
       <mat-form-field appearance="fill">
         <mat-label>Powód</mat-label>
         <mat-select formControlName="reason">
-          <mat-option *ngFor="let reason of reasons" [value]="reason">{{ reason }}</mat-option>
+          @for (reason of reasons; track reason) {
+            <mat-option [value]="reason">{{ reason }}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
 

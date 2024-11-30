@@ -74,7 +74,9 @@ import { EditSubjectsComponent } from './components/shared/profile/edit-subjects
         EditUserComponent,
         EditSubjectsComponent,
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent], 
+    imports: [
+        BrowserModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
@@ -100,7 +102,9 @@ import { EditSubjectsComponent } from './components/shared/profile/edit-subjects
         MatDialogModule,
         MatCard,
         MatCardModule,
-        MatIcon], providers: [
+        MatIcon
+    ], 
+    providers: [
         provideAnimationsAsync(),
         {
             provide: HTTP_INTERCEPTORS,

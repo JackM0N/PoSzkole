@@ -5,17 +5,19 @@
         <label for="username">Login:</label>
         <input type="text" id="username" [(ngModel)]="loginData.username" name="username" required>
       </div>
-  
+
       <div>
         <label for="password">Hasło:</label>
         <input type="password" id="password" [(ngModel)]="loginData.password" name="password" required>
       </div>
-      
+
       <button type="submit">Zaloguj</button>
     </form>
-  
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
   </div>
 </div>

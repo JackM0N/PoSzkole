@@ -8,12 +8,16 @@
         formControlName="explanation"
         placeholder="Podaj powód odwołania zajęć"
       ></textarea>
-      <mat-error *ngIf="scheduleChangeForm.get('explanation')?.hasError('required')">
-        Wyjaśnienie jest wymagane
-      </mat-error>
-      <mat-error *ngIf="scheduleChangeForm.get('explanation')?.hasError('minlength')">
-        Wyjaśnienie musi mieć co najmniej 10 znaków
-      </mat-error>
+      @if (scheduleChangeForm.get('explanation')?.hasError('required')) {
+        <mat-error>
+          Wyjaśnienie jest wymagane
+        </mat-error>
+      }
+      @if (scheduleChangeForm.get('explanation')?.hasError('minlength')) {
+        <mat-error>
+          Wyjaśnienie musi mieć co najmniej 10 znaków
+        </mat-error>
+      }
     </mat-form-field>
   </form>
 </mat-dialog-content>
@@ -24,7 +28,7 @@
     color="primary"
     [disabled]="!scheduleChangeForm.valid"
     (click)="onSubmit(data.id!)"
-  >
+    >
     Potwierdź
   </button>
 </mat-dialog-actions>

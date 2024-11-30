@@ -29,7 +29,9 @@
     <mat-form-field class="full-width">
       <mat-label>Płeć</mat-label>
       <mat-select formControlName="gender" required>
-        <mat-option *ngFor="let gender of genders" [value]="gender">{{ gender }}</mat-option>
+        @for (gender of genders; track gender) {
+          <mat-option [value]="gender">{{ gender }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
@@ -44,43 +46,47 @@
     </mat-form-field>
 
     <!-- Hourly Rate (if user is Teacher and Manager is logged in) -->
-    <mat-form-field class="full-width" *ngIf="isTeacher && currentUserIsManager">
-      <mat-label>Stawka godzinowa</mat-label>
-      <input matInput type="number" formControlName="hourlyRate" />
-    </mat-form-field>
+    @if (isTeacher && currentUserIsManager) {
+      <mat-form-field class="full-width">
+        <mat-label>Stawka godzinowa</mat-label>
+        <input matInput type="number" formControlName="hourlyRate" />
+      </mat-form-field>
+    }
 
     <!-- Education Level, Guardian Info (if Student) -->
-    <div *ngIf="isStudent">
-      <mat-form-field class="full-width">
-        <mat-label>Poziom kształcenia</mat-label>
-        <mat-select formControlName="level">
-          <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="full-width">
-        <mat-label>Telefon opiekuna</mat-label>
-        <input matInput type="tel" formControlName="guardianPhone" />
-      </mat-form-field>
-
-      <mat-form-field class="full-width">
-        <mat-label>Email opiekuna</mat-label>
-        <input matInput type="email" formControlName="guardianEmail" />
-      </mat-form-field>
-
-      <mat-form-field class="full-width" *ngIf="currentUserIsManager">
-        <mat-label>Zniżka</mat-label>
-        <input matInput type="number" formControlName="discountProcentage" />
-      </mat-form-field>
-
-      <mat-form-field class="full-width">
-        <mat-label>Faktura</mat-label>
-        <mat-select formControlName="issueInvoice">
-          <mat-option [value]="true">Tak</mat-option>
-          <mat-option [value]="false">Nie</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    @if (isStudent) {
+      <div>
+        <mat-form-field class="full-width">
+          <mat-label>Poziom kształcenia</mat-label>
+          <mat-select formControlName="level">
+            @for (level of levels; track level) {
+              <mat-option [value]="level">{{ level }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Telefon opiekuna</mat-label>
+          <input matInput type="tel" formControlName="guardianPhone" />
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Email opiekuna</mat-label>
+          <input matInput type="email" formControlName="guardianEmail" />
+        </mat-form-field>
+        @if (currentUserIsManager) {
+          <mat-form-field class="full-width">
+            <mat-label>Zniżka</mat-label>
+            <input matInput type="number" formControlName="discountProcentage" />
+          </mat-form-field>
+        }
+        <mat-form-field class="full-width">
+          <mat-label>Faktura</mat-label>
+          <mat-select formControlName="issueInvoice">
+            <mat-option [value]="true">Tak</mat-option>
+            <mat-option [value]="false">Nie</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    }
   </form>
   <div class="button-group">
     <button mat-raised-button color="primary" (click)="onSubmit()">Zapisz</button>

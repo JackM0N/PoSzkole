@@ -5,43 +5,62 @@
   <p><strong>Czas:</strong> {{ data.classDateFrom.toFormat('HH:mm') }} - {{ data.classDateTo.toFormat('HH:mm') }}</p>
   <p><strong>Przedmiot:</strong> {{data.tutoringClass.subject?.subjectName}}</p>
   <p><strong>Online:</strong> {{ data.isOnline ? 'Tak' : 'Nie' }}</p>
-  <div *ngIf="data.isCanceled">
-    <br/>
-    <p><strong>Status:</strong> Odwołane</p>
-    <p><strong>Powód:</strong>placeholder</p>
-    <p><strong>Wyjaśnienie:</strong>placeholder</p>
-  </div>
-  <div *ngIf="data.room!=null">
-    <br/>
-    <h3>Miejsce zajęć:</h3>
-    <p><strong>Budynek:</strong> {{ data.room.building }}</p>
-    <p><strong>Piętro:</strong> {{ data.room.floor }}</p>
-    <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
-  </div>
-  <div *ngIf="hasRole('STUDENT')" class="teacher-container">
-    <br/>
-    <h3>Dane nauczyciela</h3>
-    <p><strong>Imię i nazwisko:</strong> {{data.tutoringClass.teacher?.firstName}} {{data.tutoringClass.teacher?.lastName}}</p>
-    <p><strong>Email:</strong> {{data.tutoringClass.teacher?.email}}</p>
-    <p><strong>Telefon:</strong> {{data.tutoringClass.teacher?.phone}}</p>
-  </div>
-  <div *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id" class="students-container">
-    <br/>
-    <h3>Uczniowie:</h3>
-    <ul *ngIf="students.length > 0; else noStudents" class="student-list">
-      <li *ngFor="let student of students">
-        <button class="unstyled-button" tabindex="-1" (click)="openProfile(student.id!)">{{student.id}} - {{student.firstName}} {{student.lastName}}</button>
-      </li>
-    </ul>
-    <ng-template #noStudents>
-      <p>Brak uczniów zapisanych na zajęcia</p>
-    </ng-template>
-  </div>
+  @if (data.isCanceled) {
+    <div>
+      <br/>
+      <p><strong>Status:</strong> Odwołane</p>
+      <p><strong>Powód:</strong>placeholder</p>
+      <p><strong>Wyjaśnienie:</strong>placeholder</p>
+    </div>
+  }
+  @if (data.room!=null) {
+    <div>
+      <br/>
+      <h3>Miejsce zajęć:</h3>
+      <p><strong>Budynek:</strong> {{ data.room.building }}</p>
+      <p><strong>Piętro:</strong> {{ data.room.floor }}</p>
+      <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
+    </div>
+  }
+  @if (hasRole('STUDENT')) {
+    <div class="teacher-container">
+      <br/>
+      <h3>Dane nauczyciela</h3>
+      <p><strong>Imię i nazwisko:</strong> {{data.tutoringClass.teacher?.firstName}} {{data.tutoringClass.teacher?.lastName}}</p>
+      <p><strong>Email:</strong> {{data.tutoringClass.teacher?.email}}</p>
+      <p><strong>Telefon:</strong> {{data.tutoringClass.teacher?.phone}}</p>
+    </div>
+  }
+  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id) {
+    <div class="students-container">
+      <br/>
+      <h3>Uczniowie:</h3>
+      @if (students.length > 0) {
+        <ul class="student-list">
+          @for (student of students; track student) {
+            <li>
+              <button class="unstyled-button" tabindex="-1" (click)="openProfile(student.id!)">{{student.id}} - {{student.firstName}} {{student.lastName}}</button>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p>Brak uczniów zapisanych na zajęcia</p>
+      }
+    </div>
+  }
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled" (click)="openAttendance(data.id!)">Sprawdź obecność</button>
-  <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled" (click)="openReserveRoom(data)">Zarezerwuj salę</button>
-  <button mat-raised-button class="" *ngIf="hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id" (click)="openEditClass(data)">Edytuj zajęcia</button>
-  <button *ngIf="hasRole('STUDENT') && !data.isCanceled" mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>
+  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
+    <button mat-raised-button class="" (click)="openAttendance(data.id!)">Sprawdź obecność</button>
+  }
+  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
+    <button mat-raised-button class="" (click)="openReserveRoom(data)">Zarezerwuj salę</button>
+  }
+  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id) {
+    <button mat-raised-button class="" (click)="openEditClass(data)">Edytuj zajęcia</button>
+  }
+  @if (hasRole('STUDENT') && !data.isCanceled) {
+    <button mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>
+  }
   <button mat-raised-button color="primary" (click)="close()">Zamknij</button>
 </mat-dialog-actions>

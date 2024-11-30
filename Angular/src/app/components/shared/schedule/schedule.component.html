@@ -2,8 +2,8 @@
   <div class="calendar">
     <div class="calendar-header">
       <div class="calendar-header-month">
-          {{firstDayOfActiveMonth().monthShort}}
-          {{firstDayOfActiveMonth().year}}
+        {{firstDayOfActiveMonth().monthShort}}
+        {{firstDayOfActiveMonth().year}}
       </div>
       <div class="calendar-header-controls">
         <button mat-raised-button color="primary" (click)="goToPreviousMonth()"><mat-icon>arrow_back_ios_new</mat-icon></button>
@@ -27,31 +27,34 @@
     </div>
   </div>
   <div class="schedule">
-    <div *ngIf="activeDay(); else noDateSelected">
-      <h3>{{ activeDay()?.toLocaleString(DATE_MED) }}</h3>
-    
-      <div *ngIf="activeDayClasses().length === 0; else classesAvailable">
-        <p>Nie masz żadnych zajęć tego dnia</p>
+    @if (activeDay()) {
+      <div>
+        <h3>{{ activeDay()?.toLocaleString(DATE_MED) }}</h3>
+        @if (activeDayClasses().length === 0) {
+          <div>
+            <p>Nie masz żadnych zajęć tego dnia</p>
+          </div>
+        } @else {
+          @for (class of activeDayClasses(); track trackByFn($index, class)) {
+            <mat-card
+              class="class-card"
+              [ngClass]="{ 'class-canceled': class.isCanceled }"
+              (click) = '!isReadOnly && openDetailsDialog(class)'>
+              <mat-card-title>{{ class.tutoringClass.className }}</mat-card-title>
+              <mat-card-content>
+                <p>{{ class.classDateFrom.toFormat('HH:mm') }} - {{ class.classDateTo.toFormat('HH:mm') }}</p>
+                <p>{{ class.tutoringClass.subject?.subjectName }}</p>
+                <p><strong>Online:</strong> {{ class.isOnline ? 'Tak' : 'Nie' }}</p>
+                @if (class.isCanceled) {
+                  <p class="canceled-label">Zajęcia odwołane</p>
+                }
+              </mat-card-content>
+            </mat-card>
+          }
+        }
       </div>
-    
-      <ng-template #classesAvailable>
-        <mat-card 
-          *ngFor="let class of activeDayClasses(); trackBy: trackByFn"
-          class="class-card"
-          [ngClass]="{ 'class-canceled': class.isCanceled }"
-          (click) = '!isReadOnly && openDetailsDialog(class)'>
-          <mat-card-title>{{ class.tutoringClass.className }}</mat-card-title>
-          <mat-card-content>
-            <p>{{ class.classDateFrom.toFormat('HH:mm') }} - {{ class.classDateTo.toFormat('HH:mm') }}</p>
-            <p>{{ class.tutoringClass.subject?.subjectName }}</p>
-            <p><strong>Online:</strong> {{ class.isOnline ? 'Tak' : 'Nie' }}</p>
-            <p *ngIf="class.isCanceled" class="canceled-label">Zajęcia odwołane</p>
-          </mat-card-content>
-        </mat-card>
-      </ng-template>
-    </div>
-    
-    <ng-template #noDateSelected>
+    } @else {
       <p>Proszę wybrać datę</p>
-    </ng-template>
-</div>
+    }
+
+  </div>

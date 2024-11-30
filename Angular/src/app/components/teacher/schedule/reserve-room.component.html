@@ -1,20 +1,26 @@
 <div class="room-container">
   <h2>Dostępne sale</h2>
-  
-  <div *ngIf="rooms.length === 0" class="no-rooms">
-    Brak dostępnych sal w tym terminie
-  </div>
 
-  <div class="room-cards" *ngIf="rooms.length > 0">
-    <mat-card *ngFor="let room of rooms" class="room-card">
-      <mat-card-title>{{ room.building }}</mat-card-title>
-      <mat-card-content>
-        <p>Piętro: {{ room.floor }}</p>
-        <p>Pokój: {{ room.roomNumber }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button color="primary" (click)="reserveRoom(room.id!)">Wybierz</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
+  @if (rooms.length === 0) {
+    <div class="no-rooms">
+      Brak dostępnych sal w tym terminie
+    </div>
+  }
+
+  @if (rooms.length > 0) {
+    <div class="room-cards">
+      @for (room of rooms; track room) {
+        <mat-card class="room-card">
+          <mat-card-title>{{ room.building }}</mat-card-title>
+          <mat-card-content>
+            <p>Piętro: {{ room.floor }}</p>
+            <p>Pokój: {{ room.roomNumber }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="primary" (click)="reserveRoom(room.id!)">Wybierz</button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
 </div>

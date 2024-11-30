@@ -30,8 +30,8 @@ export class EditUserComponent {
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: { user: WebsiteUser },
     private dialogRef: MatDialogRef<EditUserComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { user: WebsiteUser },
     private websiteUserService: WebsiteUserService,
     private authService: AuthService
   ) {}

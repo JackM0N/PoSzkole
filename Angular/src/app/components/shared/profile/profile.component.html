@@ -2,78 +2,118 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ account?.firstName }} {{ account?.lastName }}</mat-card-title>
-      <mat-card-subtitle *ngFor="let role of account?.roles"> {{getRole(role.roleName)}} </mat-card-subtitle>
+      @for (role of account?.roles; track role) {
+        <mat-card-subtitle> {{getRole(role.roleName)}} </mat-card-subtitle>
+      }
     </mat-card-header>
 
     <mat-card-content>
-      <div *ngIf="!account">
-        <p>Nie znaleziono użytkownika o podanym ID.</p>
-      </div>
-      <div *ngIf="account">
-        <h3>Dane użytkownika:</h3>
-      </div>
+      @if (!account) {
+        <div>
+          <p>Nie znaleziono użytkownika o podanym ID.</p>
+        </div>
+      }
+      @if (account) {
+        <div>
+          <h3>Dane użytkownika:</h3>
+        </div>
+      }
       <div class="user-info">
-        <div *ngIf="account?.username">
-          <strong>Nazwa użytkownika:</strong> {{ account?.username }}
-        </div>
-        <div *ngIf="account?.email">
-          <strong>Email:</strong> {{ account?.email }}
-        </div>
-        <div *ngIf="account?.phone">
-          <strong>Telefon:</strong> {{ account?.phone }}
-        </div>
-        <div *ngIf="account?.hourlyRate">
-          <strong>Stawka godzinowa:</strong> {{ account?.hourlyRate | currency:'PLN' }}
-        </div>
-        <div *ngIf="account?.level">
-          <strong>Poziom kształcenia:</strong> {{ getLevel(account?.level) }}
-        </div>
-        <div *ngIf="account?.guardianPhone">
-          <strong>Telefon opiekuna:</strong> {{ account?.guardianPhone }}
-        </div>
-        <div *ngIf="account?.guardianEmail">
-          <strong>Email opiekuna:</strong> {{ account?.guardianEmail }}
-        </div>
-        <div *ngIf="account?.priceList">
-          <strong>Cennik:</strong> {{ account?.priceList }}
-        </div>
-        <div *ngIf="account?.discountProcentage">
-          <strong>Zniżka:</strong> {{ account?.discountProcentage }}%
-        </div>
-        <div *ngIf="account?.isCashPayment !== null">
-          <strong>Forma płatności:</strong> {{ account?.isCashPayment ? 'Gotówka' : 'Karta' }}
-        </div>
-        <div *ngIf="account?.issueInvoice !== null">
-          <strong>Faktura:</strong> {{ account?.issueInvoice ? 'Tak' : 'Nie' }}
-        </div>
-        <button *ngIf="isOwner" mat-raised-button color="primary" (click)="openEditUser()">Edytuj dane</button>
+        @if (account?.username) {
+          <div>
+            <strong>Nazwa użytkownika:</strong> {{ account?.username }}
+          </div>
+        }
+        @if (account?.email) {
+          <div>
+            <strong>Email:</strong> {{ account?.email }}
+          </div>
+        }
+        @if (account?.phone) {
+          <div>
+            <strong>Telefon:</strong> {{ account?.phone }}
+          </div>
+        }
+        @if (account?.hourlyRate) {
+          <div>
+            <strong>Stawka godzinowa:</strong> {{ account?.hourlyRate | currency:'PLN' }}
+          </div>
+        }
+        @if (account?.level) {
+          <div>
+            <strong>Poziom kształcenia:</strong> {{ getLevel(account?.level) }}
+          </div>
+        }
+        @if (account?.guardianPhone) {
+          <div>
+            <strong>Telefon opiekuna:</strong> {{ account?.guardianPhone }}
+          </div>
+        }
+        @if (account?.guardianEmail) {
+          <div>
+            <strong>Email opiekuna:</strong> {{ account?.guardianEmail }}
+          </div>
+        }
+        @if (account?.priceList) {
+          <div>
+            <strong>Cennik:</strong> {{ account?.priceList }}
+          </div>
+        }
+        @if (account?.discountProcentage) {
+          <div>
+            <strong>Zniżka:</strong> {{ account?.discountProcentage }}%
+          </div>
+        }
+        @if (account?.isCashPayment !== null) {
+          <div>
+            <strong>Forma płatności:</strong> {{ account?.isCashPayment ? 'Gotówka' : 'Karta' }}
+          </div>
+        }
+        @if (account?.issueInvoice !== null) {
+          <div>
+            <strong>Faktura:</strong> {{ account?.issueInvoice ? 'Tak' : 'Nie' }}
+          </div>
+        }
+        @if (isOwner) {
+          <button mat-raised-button color="primary" (click)="openEditUser()">Edytuj dane</button>
+        }
       </div>
 
-      <div *ngIf="hasRole('TEACHER') && account?.subjects!.length > 0">
-        <h3>Nauczane przedmioty:</h3>
-        <div *ngFor="let subject of account?.subjects" class="user-info">
-          <p>{{subject.subjectName}}</p>
+      @if (hasRole('TEACHER') && account?.subjects!.length > 0) {
+        <div>
+          <h3>Nauczane przedmioty:</h3>
+          @for (subject of account?.subjects; track subject) {
+            <div class="user-info">
+              <p>{{subject.subjectName}}</p>
+            </div>
+          }
+          @if (isOwner) {
+            <button mat-raised-button color="primary" (click)="openEditSubjects()">Edytuj nauczane przedmioty</button>
+          }
         </div>
-        <button *ngIf="isOwner" mat-raised-button color="primary" (click)="openEditSubjects()">Edytuj nauczane przedmioty</button>
-      </div>
+      }
     </mat-card-content>
   </mat-card>
   <br/>
-  <mat-card *ngIf="hasRole('TEACHER')">
-    <mat-card-header>
-      <mat-card-title>Harmonogram nauczyciela</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <app-teacher-schedule [userId]="account!.id!"></app-teacher-schedule>
-    </mat-card-content>
-  </mat-card>
+  @if (hasRole('TEACHER')) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Harmonogram nauczyciela</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-teacher-schedule [userId]="account!.id!"></app-teacher-schedule>
+      </mat-card-content>
+    </mat-card>
+  }
 
-  <mat-card *ngIf="hasRole('STUDENT')">
-    <mat-card-header>
-      <mat-card-title>Harmonogram ucznia</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <app-student-schedule [userId]="account!.id!"></app-student-schedule>
-    </mat-card-content>
-  </mat-card>
+  @if (hasRole('STUDENT')) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Harmonogram ucznia</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-student-schedule [userId]="account!.id!"></app-student-schedule>
+      </mat-card-content>
+    </mat-card>
+  }
 </div>

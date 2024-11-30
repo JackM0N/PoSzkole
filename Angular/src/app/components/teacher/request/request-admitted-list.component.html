@@ -50,9 +50,11 @@
     <tr mat-row *matRowDef="let row; columns: UnadmittedDisplayedColumns;"></tr>
   </table>
 
-  <div *ngIf="totalRequests == 0" class="no-data-message">
-    Nie masz jeszcze żadnych zaakceptowanych przez Ciebie próśb
-  </div>
+  @if (totalRequests == 0) {
+    <div class="no-data-message">
+      Nie masz jeszcze żadnych zaakceptowanych przez Ciebie próśb
+    </div>
+  }
 
   <mat-paginator [length]="totalRequests" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadAdmittedRequests()" #paginator></mat-paginator>
 </div>
