@@ -29,6 +29,8 @@ public class RoomReservationService {
     private final RoomMapper roomMapper;
     private final WebsiteUserService websiteUserService;
 
+    //TODO: Add checking schedule (free rooms) for chosen timeframe for selected day
+
     public List<RoomDTO> getRoomsWithoutReservationForSchedule(Long classScheduleId){
         ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
                 .orElseThrow(() -> new RuntimeException("Class schedule not found"));
