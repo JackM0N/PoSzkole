@@ -51,10 +51,10 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
-    <button mat-raised-button class="" (click)="openAttendance(data.id!)">Sprawdź obecność</button>
+    <button mat-raised-button class="" (click)="openAttendance(data.id!)">Obecność</button>
   }
   @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
-    <button mat-raised-button class="" (click)="openReserveRoom(data)">Zarezerwuj salę</button>
+    <button mat-raised-button class="" (click)="openReserveRoom(data.id!, data.classDateFrom, data.classDateTo)">Zarezerwuj salę</button>
   }
   @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id) {
     <button mat-raised-button class="" (click)="openEditClass(data)">Edytuj zajęcia</button>

@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Room } from '../../../models/room.model';
 import { RoomReservationService } from '../../../services/room-reservation.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ClassSchedule } from '../../../models/class-schedule.model';
 import { ToastrService } from 'ngx-toastr';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-reserve-room',
@@ -12,11 +12,20 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ReserveRoomComponent implements OnInit{
   rooms: Room[] = [];
+  @Input() importData!: { 
+    id: number | null; 
+    classDateFrom: DateTime; 
+    classDateTo: DateTime; 
+  };
 
   constructor(
     public dialogRef: MatDialogRef<ReserveRoomComponent>,
     private roomReservationService: RoomReservationService,
-    @Inject(MAT_DIALOG_DATA) public data: ClassSchedule,
+    @Inject(MAT_DIALOG_DATA) public data:{
+      id: number;
+      classDateFrom: DateTime;
+      classDateTo: DateTime;
+    },
     private toastr: ToastrService,
   ){}
 
@@ -25,7 +34,15 @@ export class ReserveRoomComponent implements OnInit{
   }
 
   loadAvailableRooms() {
-    this.roomReservationService.getRoomsForSchedule(this.data.id!).subscribe({
+    if (this.data.classDateFrom == null){
+      this.data.classDateFrom = this.importData.classDateFrom;
+      this.data.classDateTo = this.importData.classDateTo;
+    }
+
+    this.roomReservationService.getRoomsForSchedule(
+      this.data.classDateFrom.toISO({ includeOffset: false })!, 
+      this.data.classDateTo.toISO({ includeOffset: false })!
+    ).subscribe({
       next: response => {
         this.rooms = response;
       },
@@ -37,7 +54,12 @@ export class ReserveRoomComponent implements OnInit{
   }
 
   reserveRoom(roomId: number) {
-    this.roomReservationService.reserveRoom(roomId, this.data.id!).subscribe({
+    if (this.data.id === null){
+      this.toastr.error('Nie można zarezerwować sali');
+      return;
+    }
+
+    this.roomReservationService.reserveRoom(roomId, this.data.id).subscribe({
       next: response => {
         this.toastr.success('Sala została pomyślnie zarezerwowana');
         this.dialogRef.close(true);

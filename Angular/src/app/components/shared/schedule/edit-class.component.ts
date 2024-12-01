@@ -57,6 +57,12 @@ export class EditClassComponent {
   }
 
   onSubmit(): void {
+    if (!this.hasChanges()) {
+      this.toastr.info('Nie wprowadzono żadnych zmian.');
+      this.dialogRef.close(false);
+      return;
+    }
+
     const formData = this.editForm.value;
 
     const payload: ClassAndChangeLog = {
@@ -85,9 +91,31 @@ export class EditClassComponent {
       }
     });
   }
-
   
   close(): void {
     this.dialogRef.close();
+  }
+
+  private hasChanges(): boolean {
+    const formData = this.editForm.value;
+  
+    const initialData = {
+      classSchedule: {
+        id: this.data.id,
+        tutoringClass: {
+          className: this.data.tutoringClass?.className,
+        },
+        isOnline: this.data.isOnline,
+        isCanceled: this.data.isCanceled,
+      },
+      dayAndTime: {
+        day: null,
+        timeFrom: null,
+        timeTo: null,
+      },
+    };
+  
+    return JSON.stringify(formData.classSchedule) !== JSON.stringify(initialData.classSchedule) ||
+           JSON.stringify(formData.dayAndTime) !== JSON.stringify(initialData.dayAndTime);
   }
 }

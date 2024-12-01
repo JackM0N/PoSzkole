@@ -49,6 +49,7 @@ import { MyAccountComponent } from './components/shared/profile/my-profile.compo
 import { UserAccountComponent } from './components/shared/profile/user-profile.component';
 import { EditUserComponent } from './components/shared/profile/edit-user.component';
 import { EditSubjectsComponent } from './components/shared/profile/edit-subjects.component';
+import { CheckRoomAvailiabilityComponent } from './components/teacher/schedule/check-room-availability.component';
 
 
 @NgModule({ declarations: [
@@ -73,6 +74,7 @@ import { EditSubjectsComponent } from './components/shared/profile/edit-subjects
         UserAccountComponent,
         EditUserComponent,
         EditSubjectsComponent,
+        CheckRoomAvailiabilityComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

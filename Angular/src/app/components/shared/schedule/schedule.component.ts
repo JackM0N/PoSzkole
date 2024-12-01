@@ -3,6 +3,10 @@ import { DateTime, Info, Interval } from "luxon";
 import { ClassSchedule } from "../../../models/class-schedule.model";
 import { MatDialog } from "@angular/material/dialog";
 import { ClassDetailsComponent } from "./class-details.component";
+import { Role } from "../../../models/role.model";
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { AuthService } from "../../../services/auth.service";
+import { CheckRoomAvailiabilityComponent } from "../../teacher/schedule/check-room-availability.component";
 
 @Component({
   selector: 'app-schedule',
@@ -11,6 +15,9 @@ import { ClassDetailsComponent } from "./class-details.component";
 })
 export class ScheduleComponent implements OnInit, AfterViewInit{
   @Input() isReadOnly: boolean = false;
+  isCurrentUserTeacher: boolean = false;
+  jwtHelper = new JwtHelperService;
+
   currentMonth: string | null = null;
   classes: InputSignal<ClassSchedule[]> = input.required();
   today: Signal<DateTime> = signal(DateTime.local());
@@ -53,11 +60,13 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
   constructor(
     private dialog: MatDialog,
     private el: ElementRef, 
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private authService: AuthService
   ){}
 
   ngOnInit(): void {
-    this.currentMonth = this.firstDayOfActiveMonth().monthShort
+    this.currentMonth = this.firstDayOfActiveMonth().monthShort;
+    this.isCurrentUserTeacher = this.checkIfUserIsTeacher();
   }
 
   ngAfterViewInit(): void {
@@ -107,12 +116,37 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
     return item.id;
   }
 
+  checkIfUserIsTeacher(){
+    const token = this.authService.getToken();
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      const userRoles: Role[] = decodedToken.roles || [];
+  
+      return userRoles.some((role: Role) => role.roleName === "TEACHER");
+    }
+    return false;
+  }
+
   openDetailsDialog(selectedClass: ClassSchedule): void {
     this.dialog.open(ClassDetailsComponent, {
       width: '50%',
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',
       data: selectedClass,
+    });
+  }
+
+  openCheckRoomAvailability(): void{
+    if (!this.activeDay) {
+      console.error("Nie wybrano dnia.");
+      return;
+    }
+
+    this.dialog.open(CheckRoomAvailiabilityComponent, {
+      width: '50%',
+      enterAnimationDuration:'200ms',
+      exitAnimationDuration:'200ms',
+      data: {activeDay: this.activeDay()?.toISODate()}
     });
   }
 }

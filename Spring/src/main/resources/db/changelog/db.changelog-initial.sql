@@ -193,7 +193,7 @@ CREATE TABLE schedule_changes_log
     class_schedule_id BIGINT       NOT NULL REFERENCES class_schedule (class_schedule_id),
     user_id           BIGINT       NOT NULL REFERENCES website_user (user_id),
     reason            VARCHAR(100) NOT NULL,
-    explanation       TEXT         NOT NULL
+    explanation       TEXT
 );
 
 -- Rezerwacje sal

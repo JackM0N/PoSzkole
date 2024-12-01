@@ -1,0 +1,25 @@
+<div class="check-room-availability-container">
+  <h2>Sprawdź dostępność sal</h2>
+
+  <form [formGroup]="timeForm" class="time-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Godzina od</mat-label>
+      <input matInput type="time" formControlName="timeFrom">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Godzina do</mat-label>
+      <input matInput type="time" formControlName="timeTo">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="checkAvailability()" [disabled]="!timeForm.valid">
+      Sprawdź
+    </button>
+  </form>
+
+  @if (showRooms){
+    <div>
+      <app-reserve-room [importData]="reserveRoomData"></app-reserve-room>
+    </div>
+  }
+</div>

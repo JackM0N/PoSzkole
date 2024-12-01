@@ -15,6 +15,7 @@ import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 import pl.poszkole.PoSzkole.repository.RoomRepository;
 import pl.poszkole.PoSzkole.repository.RoomReservationRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,17 +32,12 @@ public class RoomReservationService {
 
     //TODO: Add checking schedule (free rooms) for chosen timeframe for selected day
 
-    public List<RoomDTO> getRoomsWithoutReservationForSchedule(Long classScheduleId){
-        ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
-                .orElseThrow(() -> new RuntimeException("Class schedule not found"));
-
+    public List<RoomDTO> getRoomsWithoutReservationForSchedule(LocalDateTime timeFrom, LocalDateTime timeTo){
         //Get all rooms
         List<Room> rooms = roomRepository.findAll();
 
         //Find reservations that overlap with schedule
-        List<RoomReservation> roomReservations = roomReservationRepository.findOverlappingReservations(
-                classSchedule.getClassDateFrom(), classSchedule.getClassDateTo()
-        );
+        List<RoomReservation> roomReservations = roomReservationRepository.findOverlappingReservations(timeFrom, timeTo);
 
         //Get all reserved rooms for chosen schedules' timeframe
         List<Room> reservedRooms = new ArrayList<>();
@@ -51,6 +47,18 @@ public class RoomReservationService {
 
         //Remove all rooms that are reserved
         rooms.removeAll(reservedRooms);
+
+        return rooms.stream().map(roomMapper::toDto).collect(Collectors.toList());
+    }
+
+    public List<RoomDTO> getRoomsWithoutReservationForTimeframe(LocalDateTime timeFrom, LocalDateTime timeTo){
+        //Get all rooms
+        List<Room> rooms = roomRepository.findAll();
+
+        //Find reservations that overlap with schedule
+        List<RoomReservation> roomReservations = roomReservationRepository.findOverlappingReservations(timeFrom, timeTo);
+
+        rooms.removeAll(roomReservations);
 
         return rooms.stream().map(roomMapper::toDto).collect(Collectors.toList());
     }

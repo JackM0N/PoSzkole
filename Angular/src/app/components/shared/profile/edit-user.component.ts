@@ -42,7 +42,7 @@ export class EditUserComponent {
 
     this.userForm = this.fb.group({
       username: [this.data.user.username],
-      password: [''],
+      password: ['', [Validators.minLength(6)]],
       confirmPassword: [''],
       firstName: [this.data.user.firstName],
       lastName: [this.data.user.lastName],

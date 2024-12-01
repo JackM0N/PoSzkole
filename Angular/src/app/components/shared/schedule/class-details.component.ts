@@ -13,6 +13,7 @@ import { AttendanceService } from '../../../services/attendance.service';
 import { AttendanceComponent } from '../../teacher/schedule/attendance.component';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-class-details',
@@ -86,13 +87,17 @@ export class ClassDetailsComponent implements OnInit{
     });
   }
 
-  openReserveRoom(selectedClass: ClassSchedule): void {
+  openReserveRoom(scheduleId: number, classDateFrom: DateTime, classDateTo: DateTime): void {
     this.close();
     this.dialog.open(ReserveRoomComponent, {
       width: '50%',
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',
-      data: selectedClass,
+      data: {
+        scheduleId: scheduleId,
+        classDateFrom: classDateFrom,
+        classDateTo: classDateTo
+      },
     });
   }
 

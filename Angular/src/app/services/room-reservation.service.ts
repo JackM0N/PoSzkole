@@ -14,8 +14,13 @@ export class RoomReservationService {
   constructor(private http: HttpClient) {}
 
 
-  getRoomsForSchedule(classScheduleId: number): Observable<Room[]> {
-    return this.http.get<Room[]>(`${this.baseUrl}/list/${classScheduleId}`);
+  getRoomsForSchedule(timeFrom: string, timeTo: string): Observable<Room[]> {
+    return this.http.get<Room[]>(`${this.baseUrl}/free-rooms`, {
+      params: {
+        timeFrom: timeFrom,
+        timeTo: timeTo
+      }
+    });
   }
 
   reserveRoom(roomId: number, classScheduleId: number): Observable<RoomReservation> {
