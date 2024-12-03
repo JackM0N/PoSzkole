@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,16 @@ public class Course {
     @Column(name = "max_participants", nullable = false)
     private Integer maxParticipants;
 
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
+
+    @Column(name = "is_done", nullable = false)
+    private Boolean isDone = false;
+
+    @Column(name = "is_open_for_registration", nullable = false)
+    private Boolean isOpenForRegistration = false;
+
     @ManyToMany(mappedBy = "courses")
     private List<WebsiteUser> students = new ArrayList<>();
+
 }

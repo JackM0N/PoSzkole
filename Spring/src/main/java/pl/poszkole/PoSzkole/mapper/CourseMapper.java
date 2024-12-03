@@ -6,6 +6,7 @@ import pl.poszkole.PoSzkole.model.Course;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CourseMapper {
+    @Mapping(target = "students", ignore = true)
     Course toEntity(CourseDTO courseDTO);
 
     CourseDTO toDto(Course course);

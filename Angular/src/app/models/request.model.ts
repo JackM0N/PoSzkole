@@ -1,6 +1,6 @@
+import { SimplifiedUser } from "./simplified-user.model";
 import { Student } from "./student.model";
 import { Subject } from "./subject.model";
-import { WebsiteUser } from "./website-user.model";
 
 export interface Request{
   id?: number;
@@ -11,5 +11,5 @@ export interface Request{
   prefersLocation: string;
   issueDate?: [];
   acceptanceDate?: [];
-  teacher?: WebsiteUser; //TODO: Change to simplified teacher
+  teacher?: SimplifiedUser;
 }

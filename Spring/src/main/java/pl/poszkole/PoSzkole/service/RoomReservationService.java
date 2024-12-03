@@ -30,8 +30,6 @@ public class RoomReservationService {
     private final RoomMapper roomMapper;
     private final WebsiteUserService websiteUserService;
 
-    //TODO: Add checking schedule (free rooms) for chosen timeframe for selected day
-
     public List<RoomDTO> getRoomsWithoutReservationForSchedule(LocalDateTime timeFrom, LocalDateTime timeTo){
         //Get all rooms
         List<Room> rooms = roomRepository.findAll();
@@ -47,18 +45,6 @@ public class RoomReservationService {
 
         //Remove all rooms that are reserved
         rooms.removeAll(reservedRooms);
-
-        return rooms.stream().map(roomMapper::toDto).collect(Collectors.toList());
-    }
-
-    public List<RoomDTO> getRoomsWithoutReservationForTimeframe(LocalDateTime timeFrom, LocalDateTime timeTo){
-        //Get all rooms
-        List<Room> rooms = roomRepository.findAll();
-
-        //Find reservations that overlap with schedule
-        List<RoomReservation> roomReservations = roomReservationRepository.findOverlappingReservations(timeFrom, timeTo);
-
-        rooms.removeAll(roomReservations);
 
         return rooms.stream().map(roomMapper::toDto).collect(Collectors.toList());
     }

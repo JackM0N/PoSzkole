@@ -10,6 +10,7 @@ import { StudentScheduleComponent } from './components/student/schedule/student-
 import { TeacherScheduleComponent } from './components/teacher/schedule/teacher-schedule.component';
 import { UserAccountComponent } from './components/shared/profile/user-profile.component';
 import { MyAccountComponent } from './components/shared/profile/my-profile.component';
+import { StudentCoursesComponent } from './components/student/courses/student-courses.component';
 
 const routes: Routes = [
   //auth
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path: 'teacher-schedule', component: TeacherScheduleComponent},
   //student
   {path: 'student-schedule', component: StudentScheduleComponent},
+  {path: 'student-courses', component: StudentCoursesComponent}
 ];
 
 @NgModule({

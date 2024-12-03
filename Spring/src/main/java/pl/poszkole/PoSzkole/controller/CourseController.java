@@ -15,9 +15,9 @@ import pl.poszkole.PoSzkole.service.CourseService;
 public class CourseController {
     private final CourseService courseService;
 
-    @GetMapping("/list")
-    public ResponseEntity<Page<CourseDTO>> getAllCourses(CourseFilter courseFilter, Pageable pageable) {
-        return ResponseEntity.ok(courseService.getAllCourses(courseFilter, pageable));
+    @GetMapping("/available-courses")
+    public ResponseEntity<Page<CourseDTO>> getAllAvailableCourses(CourseFilter courseFilter, Pageable pageable) {
+        return ResponseEntity.ok(courseService.getAllAvailableCourses(courseFilter, pageable));
     }
 
     @GetMapping("/bought-courses")
@@ -30,6 +30,21 @@ public class CourseController {
         return ResponseEntity.ok(courseService.createCourse(courseDTO));
     }
 
+    @PutMapping("/add-student")
+    public ResponseEntity<CourseDTO> addStudent(@RequestParam Long studentId, @RequestParam Long courseId) {
+        return ResponseEntity.ok(courseService.addStudentToCourse(studentId, courseId));
+    }
+
+    @PutMapping("/open/{courseId}")
+    public ResponseEntity<CourseDTO> openCourse(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.openCourseForRegistration(courseId));
+    }
+
+    @PutMapping("/finish/{courseId}")
+    public ResponseEntity<CourseDTO> finishCourse(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.finishCourse(courseId));
+    }
+
     @PutMapping("/edit/{courseId}")
     public ResponseEntity<CourseDTO> editCourse(@PathVariable Long courseId, @RequestBody CourseDTO courseDTO) {
         return ResponseEntity.ok(courseService.editCourse(courseId, courseDTO));
@@ -40,4 +55,4 @@ public class CourseController {
         courseService.deleteCourse(courseId);
         return ResponseEntity.ok().build();
     }
- }
+}

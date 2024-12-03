@@ -50,6 +50,8 @@ import { UserAccountComponent } from './components/shared/profile/user-profile.c
 import { EditUserComponent } from './components/shared/profile/edit-user.component';
 import { EditSubjectsComponent } from './components/shared/profile/edit-subjects.component';
 import { CheckRoomAvailiabilityComponent } from './components/teacher/schedule/check-room-availability.component';
+import { StudentCoursesComponent } from './components/student/courses/student-courses.component';
+import { AvailableCoursesComponent } from './components/shared/courses/available-courses.component';
 
 
 @NgModule({ declarations: [
@@ -75,6 +77,8 @@ import { CheckRoomAvailiabilityComponent } from './components/teacher/schedule/c
         EditUserComponent,
         EditSubjectsComponent,
         CheckRoomAvailiabilityComponent,
+        StudentCoursesComponent,
+        AvailableCoursesComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

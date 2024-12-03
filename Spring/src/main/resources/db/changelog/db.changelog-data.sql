@@ -64,6 +64,7 @@ VALUES
     (1003, 1),
     (1004, 5);
 
+--changeset Przemyslaw:2 labels:init,data
 INSERT INTO room (room_id, building, floor, room_number)
 VALUES
     (1, 'Budynek A - ul. Nadrzeczna 21', 1, 101),
@@ -77,18 +78,42 @@ VALUES
     (9, 'Budynek B - ul. Poznańska 77', 1, 101),
     (10, 'Budynek B - ul. Poznańska 77', 2, 201);
 
-INSERT INTO room_reservation (reservation_id, room_id, teacher_id, reservation_from, reservation_to)
+INSERT INTO room_reservation (room_id, teacher_id, reservation_from, reservation_to)
 VALUES
-    (99990, 1, 1000, '2024-11-27 08:00:00', '2024-11-27 10:00:00'),
-    (99991, 2, 1001, '2024-11-27 09:00:00', '2024-11-27 11:00:00'),
-    (99992, 3, 1002, '2024-11-28 10:00:00', '2024-11-28 12:00:00'),
-    (99993, 4, 1003, '2024-11-28 11:00:00', '2024-11-28 13:00:00'),
-    (99994, 5, 1000, '2024-11-29 14:00:00', '2024-11-29 16:00:00'),
-    (99995, 6, 1001, '2024-11-29 15:00:00', '2024-11-29 17:00:00'),
-    (99996, 7, 1002, '2024-11-30 09:00:00', '2024-11-30 11:00:00'),
-    (99997, 8, 1003, '2024-11-30 10:00:00', '2024-11-30 12:00:00'),
-    (99998, 9, 1004, '2024-12-01 08:00:00', '2024-12-01 10:00:00'),
-    (99999, 10, 1000, '2024-12-01 09:00:00', '2024-12-01 11:00:00');
+    (1, 1000, '2024-11-27 08:00:00', '2024-11-27 10:00:00'),
+    (2, 1001, '2024-11-27 09:00:00', '2024-11-27 11:00:00'),
+    (3, 1002, '2024-11-28 10:00:00', '2024-11-28 12:00:00'),
+    (4, 1003, '2024-11-28 11:00:00', '2024-11-28 13:00:00'),
+    (5, 1000, '2024-11-29 14:00:00', '2024-11-29 16:00:00'),
+    (6, 1001, '2024-11-29 15:00:00', '2024-11-29 17:00:00'),
+    (7, 1002, '2024-11-30 09:00:00', '2024-11-30 11:00:00'),
+    (8, 1003, '2024-11-30 10:00:00', '2024-11-30 12:00:00'),
+    (9, 1004, '2024-12-01 08:00:00', '2024-12-01 10:00:00'),
+    (10, 1000, '2024-12-01 09:00:00', '2024-12-01 11:00:00');
+
+--changeset Przemyslaw:3 labels:init,data
+INSERT INTO course (course_name, price, max_participants, start_date, is_open_for_registration, is_done)
+VALUES
+    ('Kurs Matematyki dla Początkujących', 499.99, 20, '2025-01-15', TRUE, FALSE),
+    ('Zaawansowany Kurs Języka Angielskiego', 799.00, 15, '2025-02-01', TRUE, FALSE),
+    ('Podstawy Programowania w Pythonie', 599.50, 25, '2025-03-10', TRUE, FALSE),
+    ('Warsztaty z Fotografii Cyfrowej', 349.99, 10, '2024-01-20', FALSE, TRUE),
+    ('Kurs Gotowania dla Początkujących', 299.00, 12, '2025-02-15', TRUE, FALSE),
+    ('Zaawansowane Techniki Marketingowe', 899.99, 30, '2025-04-05', FALSE, FALSE),
+    ('Podstawy Projektowania Graficznego', 649.50, 18, '2025-03-22', TRUE, FALSE),
+    ('Warsztaty z Kreatywnego Pisania', 399.00, 20, '2025-01-30', FALSE, TRUE),
+    ('Kurs Języka Niemieckiego dla Początkujących', 499.99, 25, '2025-02-28', TRUE, FALSE),
+    ('Zaawansowany Kurs Analizy Danych', 999.00, 10, '2024-09-10', TRUE, FALSE);
+
+INSERT INTO student_course(student_id, course_id)
+VALUES
+    (10000, 1),
+    (10001, 1),
+    (10002, 1),
+    (10000, 2),
+    (10001, 2),
+    (10000, 4);
+
 
 
 

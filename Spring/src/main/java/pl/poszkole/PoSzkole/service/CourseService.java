@@ -1,6 +1,8 @@
 package pl.poszkole.PoSzkole.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,9 @@ import pl.poszkole.PoSzkole.mapper.CourseMapper;
 import pl.poszkole.PoSzkole.model.Course;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.CourseRepository;
+import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
+
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +24,16 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
     private final WebsiteUserService websiteUserService;
+    private final WebsiteUserRepository websiteUserRepository;
 
-    //TODO: Ask if they should they exist until they are done or add Boolean started column to check if its started and finished one
-    public Page<CourseDTO> getAllCourses(CourseFilter courseFilter, Pageable pageable) {
+    public Page<CourseDTO> getAllAvailableCourses(CourseFilter courseFilter, Pageable pageable) {
         Specification<Course> spec = applyCourseFilter(courseFilter);
+
+        //Course has to be open for registration
+        spec = spec.and(((root, query, builder) -> builder.equal(root.get("isOpenForRegistration"), true)));
+
+        //Course cannot be already started to be available
+        spec = spec.and(((root, query, builder) -> builder.greaterThan(root.get("startDate"), LocalDate.now())));
 
         Page<Course> courses = courseRepository.findAll(spec, pageable);
 
@@ -48,11 +59,30 @@ public class CourseService {
         return courses.map(courseMapper::toDto);
     }
 
-    //TODO: Add method for buying said course or at least for reserving it (That might be a manager task to reserve or get confirmation about buying)
+    //TODO: Add methods for: 1. Creating schedules for course and if needed add tutoring_class to course
 
     public CourseDTO createCourse(CourseDTO courseDTO) {
         Course course = courseMapper.toEntity(courseDTO);
         return courseMapper.toDto(courseRepository.save(course));
+    }
+
+    @Transactional
+    public CourseDTO addStudentToCourse(Long courseId, Long studentId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        WebsiteUser studentUser = websiteUserRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+
+        //Check if it's actually a student
+        if(studentUser.getRoles().stream().noneMatch(role -> "STUDENT".equals(role.getRoleName()))){
+            throw new RuntimeException("User you are trying to add is not a student");
+        }
+
+        //Add student to chosen course
+        studentUser.addCourse(course);
+
+        websiteUserRepository.save(studentUser);
+        return courseMapper.toDto(course);
     }
 
     public CourseDTO editCourse(Long courseId, CourseDTO courseDTO) {
@@ -62,6 +92,22 @@ public class CourseService {
         return courseMapper.toDto(courseRepository.save(course));
     }
 
+    public CourseDTO openCourseForRegistration(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        course.setIsOpenForRegistration(true);
+        courseRepository.save(course);
+        return courseMapper.toDto(course);
+    }
+
+    public CourseDTO finishCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        course.setIsDone(true);
+        courseRepository.save(course);
+        return courseMapper.toDto(course);
+    }
+
     public void deleteCourse(Long courseId) {
         //TODO: Make sure there were no payments yet. This whole method might be useless. ASK
         courseRepository.deleteById(courseId);
@@ -69,7 +115,7 @@ public class CourseService {
 
     //Method that prevents code repetition
     private Specification<Course> applyCourseFilter(CourseFilter courseFilter) {
-        Specification<Course> spec = Specification.where(null);
+        Specification<Course> spec = ((root, query, builder) -> builder.equal(root.get("isDone"), false));
 
         // Filter by course name if provided
         if (courseFilter.getName() != null) {
