@@ -2,7 +2,6 @@ package pl.poszkole.PoSzkole.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.EnumUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
 import pl.poszkole.PoSzkole.dto.RequestDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
-import pl.poszkole.PoSzkole.enums.ClassLocation;
 import pl.poszkole.PoSzkole.mapper.RequestMapper;
 import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
 import pl.poszkole.PoSzkole.model.*;
@@ -19,8 +17,6 @@ import pl.poszkole.PoSzkole.repository.*;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,9 +29,7 @@ public class RequestService {
     private final TutoringClassRepository tutoringClassRepository;
     private final WebsiteUserRepository websiteUserRepository;
     private final ClassScheduleService classScheduleService;
-    private final UserBusyDayRepository userBusyDayRepository;
     private final UserBusyDayService userBusyDayService;
-    private final ClassScheduleRepository classScheduleRepository;
 
     @Transactional
     public Page<RequestDTO> getRequestsForTeacher(Boolean gotAdmitted,
@@ -81,9 +75,12 @@ public class RequestService {
         return rSpec;
     }
 
-    //TODO: ASK if prefers online and prefers individual are necessary
     @Transactional
     public RequestDTO createRequest(RequestDTO requestDTO) throws BadRequestException {
+        //Sometimes material form instead of false gives null so this was made in order to fix that issue
+        if (requestDTO.getPrefersIndividual() == null){
+            requestDTO.setPrefersIndividual(false);
+        }
         //Creating new request
         Request request = requestMapper.toEntity(requestDTO);
 
