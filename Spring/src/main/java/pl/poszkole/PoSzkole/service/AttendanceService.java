@@ -14,6 +14,7 @@ import pl.poszkole.PoSzkole.filter.AttendanceFilter;
 import pl.poszkole.PoSzkole.mapper.AttendanceMapper;
 import pl.poszkole.PoSzkole.model.Attendance;
 import pl.poszkole.PoSzkole.model.ClassSchedule;
+import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.AttendanceRepository;
 import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 
@@ -26,6 +27,7 @@ public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final ClassScheduleRepository classScheduleRepository;
     private final AttendanceMapper attendanceMapper;
+    private final WebsiteUserService websiteUserService;
 
     public List<AttendanceDTO> findAllForClassSchedule(
             Long classScheduleId, AttendanceFilter attendanceFilter
@@ -56,6 +58,27 @@ public class AttendanceService {
         Page<Attendance> attendances = attendanceRepository.findAll(spec, pageable);
 
         return attendances.stream().map(attendanceMapper::toDto).collect(Collectors.toList());
+    }
+
+    public Page<AttendanceDTO> findAllAttendanceForStudent(String searchText, Pageable pageable, boolean isPresent){
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+        //Get this students attendance
+        Specification<Attendance> spec = ((root, query, builder) -> builder.equal(root.get("student").get("id"), currentUser.getId()));
+        //Get only present positions
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isPresent"), isPresent));
+        //Filter subjects
+        if (searchText != null) {
+            String likePattern = "%" + searchText.toLowerCase() + "%";
+            spec = spec.and((root, query, builder) ->
+                    builder.like(
+                            builder.lower(root.get("classSchedule").get("tutoringClass").get("subject").get("subjectName")),
+                            likePattern
+                    )
+            );
+        }
+
+        Page<Attendance> attendances = attendanceRepository.findAll(spec, pageable);
+        return attendances.map(attendanceMapper::toDto);
     }
 
     //This method is used to see if attendance exists for given classSchedule

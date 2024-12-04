@@ -1,0 +1,40 @@
+<app-student-absence></app-student-absence>
+<div class="table-container">
+  <h2>Lista obecności</h2>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="subjectName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Przedmiot</th>
+      <td mat-cell *matCellDef="let attendance">{{ attendance.classSchedule.tutoringClass.subject.subjectName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="classDateFrom">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Data zajęć</th>
+      <td mat-cell *matCellDef="let attendance">
+        {{ attendance.classSchedule.classDateFrom ? (attendance.classSchedule.classDateFrom | date: 'dd.MM.yyyy') : 'Brak' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef>Godzina</th>
+      <td mat-cell *matCellDef="let attendance">
+        {{ attendance.classSchedule.classDateFrom ? (attendance.classSchedule.classDateFrom | date: 'HH:mm') : 'Brak' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="className">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa zajęć</th>
+      <td mat-cell *matCellDef="let attendance">{{ attendance.classSchedule.tutoringClass.className }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <div *ngIf="noAttendance" class="no-data-message">
+    Nie masz jeszcze żadnych obecności.
+  </div>
+
+  <mat-paginator [length]="totalAttendance" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadPresentAttendance()" #paginator></mat-paginator>
+</div>

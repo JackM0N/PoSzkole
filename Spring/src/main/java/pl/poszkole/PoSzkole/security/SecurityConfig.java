@@ -31,30 +31,32 @@ public class SecurityConfig {
                         .hasRole("OWNER")
 
                         .requestMatchers("/registration/teacher", "/request/create", "/course/create",
-                                "/course/edit/","/course/delete/", "/course/add-student","/course/open/**",
-                                "/course/finish/**","/user/all-students")
+                                "/course/edit/", "/course/delete/", "/course/add-student", "/course/open/**",
+                                "/course/finish/**", "/user/all-students")
                         .hasAnyRole("MANAGER", "OWNER")
 
                         .requestMatchers("/class/add-student", "/class/create", "/class/student-list/**",
                                 "/user/edit/subjects/**")
                         .hasAnyRole("MANAGER", "TEACHER")
 
-                        .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/**", "/schedule/edit/**",
-                                "/schedule/my-classes/teacher", "/room-reservation/free-rooms","/room-reservation/reserve/**")
+                        .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/list/**",
+                                "/attendance/check/**", "/schedule/edit/**", "/attendance/create/**",
+                                "/attendance/exists/**", "/schedule/my-classes/teacher",
+                                "/room-reservation/free-rooms", "/room-reservation/reserve/**")
                         .hasRole("TEACHER")
 
                         .requestMatchers("/busy-days/create", "/busy-days/edit/**", "/busy-days/delete/**")
                         .hasAnyRole("TEACHER", "STUDENT")
 
                         .requestMatchers("/class/my-classes", "/course/bought-courses", "/schedule/my-classes/student",
-                                "/schedule/cancel/**")
+                                "/schedule/cancel/**", "/attendance/presence", "/attendance/absence")
                         .hasRole("STUDENT")
 
                         .requestMatchers("/course/available-courses", "/busy-days/list/**", "/subject/all", "/user/my-profile",
                                 "/user/profile/**", "/user/edit/my-profile")
                         .hasAnyRole("OWNER", "MANAGER", "TEACHER", "STUDENT")
 
-                        .requestMatchers("/login", "/register", "/details", "/css/**")
+                        .requestMatchers("/login", "/register", "/details")
                         .permitAll()
 
                         .anyRequest()

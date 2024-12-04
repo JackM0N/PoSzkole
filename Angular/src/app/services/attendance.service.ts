@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environment/environment";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ClassSchedule } from "../models/class-schedule.model";
 import { Attendance } from "../models/attendance.model";
@@ -12,6 +12,24 @@ export class AttendanceService {
   private baseUrl = environment.apiUrl + '/attendance'
 
   constructor(private http: HttpClient){}
+
+  getAttendancePresent(page: number, size: number, sortBy: string, sortDir: string): Observable<Attendance[]> {
+    var params = new HttpParams()
+      .set('page', (page - 1).toString())
+      .set('size', size.toString())
+      .set('sort', sortBy + ',' + sortDir
+    );
+    return this.http.get<Attendance[]>(`${this.baseUrl}/presence`, { params })
+  }
+
+  getAttendancAbsent(page: number, size: number, sortBy: string, sortDir: string): Observable<Attendance[]> {
+    var params = new HttpParams()
+      .set('page', (page - 1).toString())
+      .set('size', size.toString())
+      .set('sort', sortBy + ',' + sortDir
+    );
+    return this.http.get<Attendance[]>(`${this.baseUrl}/absence`, { params })
+  }
   
   getAttendanceForClassSchedule(scheduleId: number): Observable<Attendance[]> {
     return this.http.get<Attendance[]>(`${this.baseUrl}/list/${scheduleId}`);

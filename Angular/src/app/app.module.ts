@@ -52,6 +52,8 @@ import { EditSubjectsComponent } from './components/shared/profile/edit-subjects
 import { CheckRoomAvailiabilityComponent } from './components/teacher/schedule/check-room-availability.component';
 import { StudentCoursesComponent } from './components/student/courses/student-courses.component';
 import { AvailableCoursesComponent } from './components/shared/courses/available-courses.component';
+import { StudentAttendanceComponent } from './components/student/attendance/student-attendance.component';
+import { StudentAbsenceComponent } from './components/student/attendance/student-absence.component';
 
 
 @NgModule({ declarations: [
@@ -79,6 +81,8 @@ import { AvailableCoursesComponent } from './components/shared/courses/available
         CheckRoomAvailiabilityComponent,
         StudentCoursesComponent,
         AvailableCoursesComponent,
+        StudentAttendanceComponent,
+        StudentAbsenceComponent
     ],
     bootstrap: [AppComponent], 
     imports: [

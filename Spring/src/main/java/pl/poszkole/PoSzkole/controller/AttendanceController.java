@@ -1,6 +1,7 @@
 package pl.poszkole.PoSzkole.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,16 @@ import java.util.List;
 @RequestMapping("/attendance")
 public class AttendanceController {
     private final AttendanceService attendanceService;
+
+    @GetMapping("/presence")
+    public ResponseEntity<Page<AttendanceDTO>> getPresentAttendance(String searchText, Pageable pageable) {
+        return ResponseEntity.ok(attendanceService.findAllAttendanceForStudent(searchText, pageable, true));
+    }
+
+    @GetMapping("/absence")
+    public ResponseEntity<Page<AttendanceDTO>> getAbsentAttendance(String searchText, Pageable pageable) {
+        return ResponseEntity.ok(attendanceService.findAllAttendanceForStudent(searchText, pageable, false));
+    }
 
     @GetMapping("/list/{scheduleId}")
     public ResponseEntity<List<AttendanceDTO>> getAttendanceForClassSchedule(
