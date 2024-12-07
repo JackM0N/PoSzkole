@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-pop-up',
   templateUrl: './pop-up-dialog.component.html',
-  styleUrl: '../../styles/pop-up-dialog.component.css'
+  styleUrl: '../../../styles/pop-up-dialog.component.css'
 })
 export class PopUpDialogComponent implements OnInit{
   constructor(

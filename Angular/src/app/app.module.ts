@@ -33,7 +33,7 @@ import { RequestListComponent } from './components/teacher/request/request-list.
 import { RequestAdmittedListComponent } from './components/teacher/request/request-admitted-list.component';
 import { RequestFormComponent } from './components/manager/request-form/request-form.component';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { PopUpDialogComponent } from './components/pop-up/pop-up-dialog.component';
+import { PopUpDialogComponent } from './components/shared/pop-up/pop-up-dialog.component';
 import { AdmitRequestPopUpComponent } from './components/teacher/request/admit-request-popup.component';
 import { ScheduleComponent } from './components/shared/schedule/schedule.component';
 import { StudentScheduleComponent } from './components/student/schedule/student-schedule.component';

@@ -41,8 +41,8 @@ export class RequestListComponent implements AfterViewInit{
   loadNotAdmittedRequests(){
     const page = this.paginator.pageIndex + 1;
     const size = this.paginator.pageSize;
-    const sortBy = this.sort.active || 'id';
-    const sortDir = this.sort.direction || 'asc';
+    const sortBy = this.sort.active || 'issueDate';
+    const sortDir = this.sort.direction || 'desc';
 
     const observer: Observer<any> = {
       next: response => {
