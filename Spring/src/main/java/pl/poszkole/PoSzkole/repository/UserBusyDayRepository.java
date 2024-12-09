@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface UserBusyDayRepository extends JpaRepository<UserBusyDay, Long> {
-    List<UserBusyDay> findByUserId(Long userId);
+    List<UserBusyDay> findByUserIdOrderByTimeTo(Long userId);
 }

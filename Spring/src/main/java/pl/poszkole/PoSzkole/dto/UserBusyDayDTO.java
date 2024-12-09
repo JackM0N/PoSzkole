@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @Getter
 public class UserBusyDayDTO implements Serializable {
     Long id;
-    WebsiteUserDTO user;
+    SimplifiedUserDTO user;
     DayOfWeek dayOfTheWeek;
     LocalTime timeFrom;
     LocalTime timeTo;

@@ -28,9 +28,11 @@ const routes: Routes = [
   {path: 'request-form', component: RequestFormComponent},
   {path: 'teachers', component: TeachersComponent},
   {path: 'students', component: StudentsComponent},
+
   //teacher
   {path: 'request-list', component: RequestListComponent},
   {path: 'teacher-schedule', component: TeacherScheduleComponent},
+  
   //student
   {path: 'student-schedule', component: StudentScheduleComponent},
   {path: 'student-courses', component: StudentCoursesComponent},

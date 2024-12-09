@@ -27,7 +27,7 @@ public class UserBusyDayService {
     public List<UserBusyDayDTO> getUserBusyDays(Long userId) {
         WebsiteUser websiteUser = websiteUserRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return userBusyDayRepository.findByUserId(websiteUser.getId())
+        return userBusyDayRepository.findByUserIdOrderByTimeTo(websiteUser.getId())
                 .stream().map(userBusyDayMapper::toDto).collect(Collectors.toList());
     }
 
@@ -87,7 +87,7 @@ public class UserBusyDayService {
 
     //TODO: Could be probably used in site itself to add in-real time info if given time is wrong for chosen day
     public boolean isOverlapping(WebsiteUser websiteUser, DayOfWeek dayOfWeek, LocalTime timeFrom, LocalTime timeTo) {
-        List<UserBusyDay> userBusyDays = userBusyDayRepository.findByUserId(websiteUser.getId());
+        List<UserBusyDay> userBusyDays = userBusyDayRepository.findByUserIdOrderByTimeTo(websiteUser.getId());
         boolean timeFromOk;
         boolean timeToOk;
         boolean completeOverlap;

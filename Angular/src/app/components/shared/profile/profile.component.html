@@ -94,8 +94,8 @@
       }
     </mat-card-content>
   </mat-card>
-  <br/>
   @if (hasRole('TEACHER')) {
+    <br/>
     <mat-card>
       <mat-card-header>
         <mat-card-title>Harmonogram nauczyciela</mat-card-title>
@@ -107,12 +107,27 @@
   }
 
   @if (hasRole('STUDENT')) {
+    <br/>
     <mat-card>
       <mat-card-header>
         <mat-card-title>Harmonogram ucznia</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <app-student-schedule [userId]="account!.id!"></app-student-schedule>
+      </mat-card-content>
+    </mat-card>
+  }
+  
+  @if (account?.id) {
+    <br/>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Niedostępność użytkownika</mat-card-title>
+        <mat-card-subtitle>Harmonogram dni i godzin, w których osoba jest niedostępna</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <app-user-busy-days [userId]="account!.id"></app-user-busy-days>
+        <button mat-raised-button color="primary" (click)="openEditUser()">Dodaj zajęty termin</button>
       </mat-card-content>
     </mat-card>
   }
