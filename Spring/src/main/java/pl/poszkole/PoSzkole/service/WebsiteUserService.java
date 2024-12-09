@@ -1,12 +1,18 @@
 package pl.poszkole.PoSzkole.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Join;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
 import pl.poszkole.PoSzkole.dto.SubjectDTO;
 import pl.poszkole.PoSzkole.dto.WebsiteUserDTO;
+import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.WebsiteUserMapper;
 import pl.poszkole.PoSzkole.model.Role;
 import pl.poszkole.PoSzkole.model.Subject;
@@ -29,6 +35,7 @@ public class WebsiteUserService {
     private final WebsiteUserMapper websiteUserMapper;
     private final RoleRepository roleRepository;
     private final SubjectRepository subjectRepository;
+    private final SimplifiedUserMapper simplifiedUserMapper;
 
     public WebsiteUserDTO getCurrentUserProfile(){
         WebsiteUser currentUser = getCurrentUser();
@@ -49,6 +56,39 @@ public class WebsiteUserService {
     public List<WebsiteUserDTO> getAllStudents(){
         List<WebsiteUser> websiteUsers = websiteUserRepository.findByRoleName("STUDENT");
         return websiteUsers.stream().map(websiteUserMapper::toDtoWithoutSensitiveData).collect(Collectors.toList());
+    }
+
+    public Page<SimplifiedUserDTO> getAllStudentsPageable(String searchText, Pageable pageable){
+        Specification<WebsiteUser> spec = ((root, query, builder) -> {
+            Join<Object, Object> rolesJoin = root.join("roles");
+            return builder.equal(rolesJoin.get("roleName"), "STUDENT");
+        });
+
+        return getSimplifiedUserDTOS(searchText, pageable, spec);
+    }
+
+    public Page<SimplifiedUserDTO> getAllTeachersPageable(String searchText, Pageable pageable){
+        Specification<WebsiteUser> spec = ((root, query, builder) -> {
+            Join<Object, Object> rolesJoin = root.join("roles");
+            return builder.equal(rolesJoin.get("roleName"), "TEACHER");
+        });
+
+        return getSimplifiedUserDTOS(searchText, pageable, spec);
+    }
+
+    private Page<SimplifiedUserDTO> getSimplifiedUserDTOS(String searchText, Pageable pageable, Specification<WebsiteUser> spec) {
+        if (searchText != null) {
+            String likePattern = "%" + searchText.toLowerCase() + "%";
+            spec = spec.and((root, query, builder) -> builder.or(
+                    builder.like(builder.lower(root.get("firstName")), likePattern),
+                    builder.like(builder.lower(root.get("lastName")), likePattern),
+                    builder.like(builder.lower(root.get("id")), likePattern)
+                )
+            );
+        }
+
+        Page<WebsiteUser> websiteUsers = websiteUserRepository.findAll(spec, pageable);
+        return websiteUsers.map(simplifiedUserMapper::toSimplifiedUserDTO);
     }
 
     public WebsiteUserDTO editUserProfile(WebsiteUserDTO websiteUserDTO){

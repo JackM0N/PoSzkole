@@ -12,6 +12,8 @@ import { UserAccountComponent } from './components/shared/profile/user-profile.c
 import { MyAccountComponent } from './components/shared/profile/my-profile.component';
 import { StudentCoursesComponent } from './components/student/courses/student-courses.component';
 import { StudentAttendanceComponent } from './components/student/attendance/student-attendance.component';
+import { StudentsComponent } from './components/manager/students/students.component';
+import { TeachersComponent } from './components/manager/teachers/teachers.component';
 
 const routes: Routes = [
   //auth
@@ -24,6 +26,8 @@ const routes: Routes = [
 
   //manager
   {path: 'request-form', component: RequestFormComponent},
+  {path: 'teachers', component: TeachersComponent},
+  {path: 'students', component: StudentsComponent},
   //teacher
   {path: 'request-list', component: RequestListComponent},
   {path: 'teacher-schedule', component: TeacherScheduleComponent},

@@ -1,4 +1,6 @@
+
 import { Role } from "./role.model";
+import { Subject } from "./subject.model";
 
 export interface SimplifiedUser {
   id?: number;
@@ -12,6 +14,8 @@ export interface SimplifiedUser {
   level?: string;
   guardianPhone?: string;
   guardianEmail?: string;
+
+  subjects?: Subject[];
 
   role?: Role;
 }

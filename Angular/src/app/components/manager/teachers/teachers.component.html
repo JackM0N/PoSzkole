@@ -1,0 +1,55 @@
+<div class="table-container">
+  <h2>Lista dostępnych kursów</h2>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nr. albumu</th>
+      <td mat-cell *matCellDef="let teacher">{{ teacher.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Imię</th>
+      <td mat-cell *matCellDef="let teacher">{{ teacher.firstName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Imię</th>
+      <td mat-cell *matCellDef="let teacher">{{ teacher.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="gender">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Płeć</th>
+      <td mat-cell *matCellDef="let teacher">{{ teacher.gender }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>E-mail</th>
+      <td mat-cell *matCellDef="let teacher">{{ teacher.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefon</th>
+      <td mat-cell *matCellDef="let teacher">{{ teacher.phone }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="subjects">
+      <th mat-header-cell *matHeaderCellDef>Nauczane przedmioty</th>
+      <td mat-cell *matCellDef="let teacher">
+        <span *ngFor="let subject of teacher.subjects">
+          {{ subject.subjectName }}<span *ngIf="teacher.subjects.indexOf(subject) !== teacher.subjects.length - 1">, </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="clickable-row" [routerLink]="'/profile/' + row.id"></tr>
+  </table>
+
+  <div *ngIf="noTeachers" class="no-data-message">
+    Nie masz żadnych kupionych kursów.
+  </div>
+
+  <mat-paginator [length]="totalTeachers" [pageSize]="20" [pageSizeOptions]="[20, 50, 100]" aria-label="Wybór liczby wierszy" (page)="loadTeachers()" #paginator></mat-paginator>
+</div>
+

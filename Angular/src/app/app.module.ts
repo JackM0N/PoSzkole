@@ -54,6 +54,8 @@ import { StudentCoursesComponent } from './components/student/courses/student-co
 import { AvailableCoursesComponent } from './components/shared/courses/available-courses.component';
 import { StudentAttendanceComponent } from './components/student/attendance/student-attendance.component';
 import { StudentAbsenceComponent } from './components/student/attendance/student-absence.component';
+import { StudentsComponent } from './components/manager/students/students.component';
+import { TeachersComponent } from './components/manager/teachers/teachers.component';
 
 
 @NgModule({ declarations: [
@@ -82,7 +84,9 @@ import { StudentAbsenceComponent } from './components/student/attendance/student
         StudentCoursesComponent,
         AvailableCoursesComponent,
         StudentAttendanceComponent,
-        StudentAbsenceComponent
+        StudentAbsenceComponent,
+        StudentsComponent,
+        TeachersComponent
     ],
     bootstrap: [AppComponent], 
     imports: [

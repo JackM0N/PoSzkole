@@ -31,7 +31,6 @@ public class RequestService {
     private final ClassScheduleService classScheduleService;
     private final UserBusyDayService userBusyDayService;
 
-    @Transactional
     public Page<RequestDTO> getRequestsForTeacher(Boolean gotAdmitted,
                                                   Subject subject,
                                                   Pageable pageable) throws AccessDeniedException {
