@@ -36,9 +36,11 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <div *ngIf="noCourses" class="no-data-message">
-    Nie masz żadnych kupionych kursów.
-  </div>
+  @if (noCourses) {
+    <div class="no-data-message">
+      Nie masz żadnych kupionych kursów.
+    </div>
+  }
 
   <mat-paginator [length]="totalCourses" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadBoughtCourses()" #paginator></mat-paginator>
 </div>

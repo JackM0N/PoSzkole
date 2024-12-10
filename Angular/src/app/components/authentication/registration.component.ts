@@ -58,7 +58,7 @@ export class RegistrationComponent {
         issueInvoice: this.registrationForm.get('issueInvoice')?.value
       }
 
-      this.authService.register(userData).subscribe({
+      this.authService.registerStudent(userData).subscribe({
         next: () => {
           this.toastr.success('Rejestracja się powiodła! Możesz się teraz zalogować')
           this.router.navigate(['/login'])

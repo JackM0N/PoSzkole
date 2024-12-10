@@ -46,9 +46,15 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse registerTeacher(WebsiteUserDTO request){
-        WebsiteUser user = new WebsiteUser();
+        WebsiteUser user = websiteUserMapper.toEntity(request);
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Long minId = 1000L;
+        Long maxId = 9999L;
+        Long highestId = websiteUserRepository.findHighestIdInRange(minId, maxId);
+
+        user.setId(highestId + 1);
 
         Role role = roleRepository.findByRoleName("TEACHER")
                 .orElseThrow(() -> new RuntimeException("Role not found"));
@@ -59,7 +65,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse registerManager(WebsiteUserDTO request){
-        WebsiteUser user = new WebsiteUser();
+        WebsiteUser user = websiteUserMapper.toEntity(request);
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 

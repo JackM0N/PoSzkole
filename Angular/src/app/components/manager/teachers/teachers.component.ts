@@ -5,6 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { WebsiteUserService } from '../../../services/website-user.service';
 import { Observer } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { RegisterTeacherComponent } from './register-teacher.component';
 
 @Component({
   selector: 'app-teachers',
@@ -20,7 +22,10 @@ export class TeachersComponent {
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
 
-  constructor(private websiteUserService: WebsiteUserService) {}
+  constructor(
+    private websiteUserService: WebsiteUserService,
+    private dialog: MatDialog
+  ) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -56,5 +61,17 @@ export class TeachersComponent {
     };
 
     this.websiteUserService.loadAllTeachersPaged(page, size, sortBy, sortDir).subscribe(observer);
+  }
+
+  openTeacherRegistration() {
+    const dialogRef = this.dialog.open(RegisterTeacherComponent, {
+      width: '50%'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log("Add displaying newly added teacher")
+      }
+    });
   }
 }

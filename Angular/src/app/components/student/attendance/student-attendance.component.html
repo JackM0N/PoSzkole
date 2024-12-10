@@ -32,9 +32,11 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <div *ngIf="noAttendance" class="no-data-message">
-    Nie masz jeszcze żadnych obecności.
-  </div>
+  @if (noAttendance) {
+    <div class="no-data-message">
+      Nie masz jeszcze żadnych obecności.
+    </div>
+  }
 
   <mat-paginator [length]="totalAttendance" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadPresentAttendance()" #paginator></mat-paginator>
 </div>
