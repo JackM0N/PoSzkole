@@ -36,7 +36,7 @@ public class UserBusyDayService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         //Check if created schedule is overlapping
-        if (isOverlapping(websiteUser, userBusyDayDTO.getDayOfTheWeek(),
+        if (isOverlapping(websiteUser, null, userBusyDayDTO.getDayOfTheWeek(),
                 userBusyDayDTO.getTimeFrom(), userBusyDayDTO.getTimeTo())) {
             throw new RuntimeException("Chosen schedule is overlapping with already existing one");
         }
@@ -64,7 +64,7 @@ public class UserBusyDayService {
         }
 
         //Check for overlapping
-        if (isOverlapping(userBusyDay.getUser(), userBusyDayDTO.getDayOfTheWeek(),
+        if (isOverlapping(userBusyDay.getUser(), userBusyDayDTO.getId(), userBusyDayDTO.getDayOfTheWeek(),
                 userBusyDayDTO.getTimeFrom(), userBusyDayDTO.getTimeTo())) {
             throw new RuntimeException("Chosen schedule is overlapping with already existing one");
         }
@@ -86,13 +86,18 @@ public class UserBusyDayService {
     }
 
     //TODO: Could be probably used in site itself to add in-real time info if given time is wrong for chosen day
-    public boolean isOverlapping(WebsiteUser websiteUser, DayOfWeek dayOfWeek, LocalTime timeFrom, LocalTime timeTo) {
+    public boolean isOverlapping(WebsiteUser websiteUser, Long ubdId, DayOfWeek dayOfWeek, LocalTime timeFrom, LocalTime timeTo) {
         List<UserBusyDay> userBusyDays = userBusyDayRepository.findByUserIdOrderByTimeTo(websiteUser.getId());
         boolean timeFromOk;
         boolean timeToOk;
         boolean completeOverlap;
 
         for (UserBusyDay userBusyDay : userBusyDays) {
+            //Ignore checking against busyDay that's being edited
+            if(ubdId != null && ubdId.equals(userBusyDay.getId())) {
+                continue;
+            }
+
             if (Objects.equals(userBusyDay.getDayOfTheWeek(), dayOfWeek.toString())) {
                 //Check if time_from is not between existing time_from and time_to
                 timeFromOk = timeFrom.isAfter(userBusyDay.getTimeTo())

@@ -28,6 +28,18 @@ export class UserBusyDayService {
     );;
   }
 
+  createUserBusyDay(busyDay: UserBusyDay): Observable<RawUserBusyDay> {
+    return this.http.post<RawUserBusyDay>(`${this.baseUrl}/create`, busyDay);
+  }
+
+  editUserBusyDay(busyDay: UserBusyDay): Observable<RawUserBusyDay> {
+    return this.http.put<RawUserBusyDay>(`${this.baseUrl}/edit/${busyDay.id}`, busyDay)
+  }
+
+  deleteUserBusyDay(busyDayId: number): Observable<RawUserBusyDay> {
+    return this.http.delete<RawUserBusyDay>(`${this.baseUrl}/delete/${busyDayId}`)
+  }
+
   private convertToTimeString(timeArray?: number[]): string | null {
     if (!timeArray || timeArray.length < 2) {
       return null;

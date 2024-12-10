@@ -141,7 +141,7 @@ public class RequestService {
         student.addClass(tutoringClass);
         websiteUserRepository.save(student);
 
-        if (userBusyDayService.isOverlapping(student, dayAndTimeDTO.getDay(), dayAndTimeDTO.getTimeFrom(), dayAndTimeDTO.getTimeTo())) {
+        if (userBusyDayService.isOverlapping(student, null, dayAndTimeDTO.getDay(), dayAndTimeDTO.getTimeFrom(), dayAndTimeDTO.getTimeTo())) {
             throw new RuntimeException("You cannot admit class on users busy day");
         }
 

@@ -57,6 +57,7 @@ import { StudentAbsenceComponent } from './components/student/attendance/student
 import { StudentsComponent } from './components/manager/students/students.component';
 import { TeachersComponent } from './components/manager/teachers/teachers.component';
 import { UserBusyDaysComponent } from './components/shared/profile/user-busy-days.component';
+import { EditBusyDaysComponent } from './components/shared/profile/edit-busy-days.component';
 
 
 @NgModule({ declarations: [
@@ -88,7 +89,8 @@ import { UserBusyDaysComponent } from './components/shared/profile/user-busy-day
         StudentAbsenceComponent,
         StudentsComponent,
         TeachersComponent,
-        UserBusyDaysComponent
+        UserBusyDaysComponent,
+        EditBusyDaysComponent
     ],
     bootstrap: [AppComponent], 
     imports: [

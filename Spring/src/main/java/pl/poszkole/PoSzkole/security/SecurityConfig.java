@@ -45,14 +45,11 @@ public class SecurityConfig {
                                 "/room-reservation/free-rooms", "/room-reservation/reserve/**")
                         .hasRole("TEACHER")
 
-                        .requestMatchers("/busy-days/create", "/busy-days/edit/**", "/busy-days/delete/**")
-                        .hasAnyRole("TEACHER", "STUDENT")
-
                         .requestMatchers("/class/my-classes", "/course/bought-courses", "/schedule/my-classes/student",
                                 "/schedule/cancel/**", "/attendance/presence", "/attendance/absence")
                         .hasRole("STUDENT")
 
-                        .requestMatchers("/course/available-courses", "/busy-days/list/**", "/subject/all", "/user/my-profile",
+                        .requestMatchers("/course/available-courses", "/busy-days/**", "/subject/all", "/user/my-profile",
                                 "/user/profile/**", "/user/edit/my-profile")
                         .hasAnyRole("OWNER", "MANAGER", "TEACHER", "STUDENT")
 

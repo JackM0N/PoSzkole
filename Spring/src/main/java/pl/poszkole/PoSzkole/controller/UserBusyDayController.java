@@ -21,11 +21,13 @@ public class UserBusyDayController {
 
     @PostMapping("/create")
     public ResponseEntity<UserBusyDayDTO> create(@RequestBody UserBusyDayDTO userBusyDayDTO) {
+        System.out.println(userBusyDayDTO);
         return ResponseEntity.ok(userBusyDayService.createUserBusyDay(userBusyDayDTO));
     }
 
     @PutMapping("/edit/{bdId}")
     public ResponseEntity<UserBusyDayDTO> edit(@PathVariable Long bdId, @RequestBody UserBusyDayDTO userBusyDayDTO) {
+        System.out.println(userBusyDayDTO);
         return ResponseEntity.ok(userBusyDayService.updateUserBusyDay(bdId, userBusyDayDTO));
     }
 

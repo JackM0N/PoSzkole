@@ -5,7 +5,7 @@
 
       @for(interval of busyIntervalsByDay[day.value]; track interval){
         <div class="time-card">
-          <mat-card (click)="openEditBusyDay()">
+          <mat-card (click)="openEditBusyDay(interval)">
             <mat-card-content>
               <span>{{ interval.timeFrom}} - {{ interval.timeTo}}</span>
             </mat-card-content>
@@ -20,5 +20,7 @@
       }
     </div>
   }
-  
 </div>
+@if(isOwner || currentUserIsManager){
+  <button mat-raised-button color="primary" (click)="openAddBusyDay()">Dodaj zajęty termin</button>
+}

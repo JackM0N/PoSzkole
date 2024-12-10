@@ -74,12 +74,12 @@
             <strong>Faktura:</strong> {{ account?.issueInvoice ? 'Tak' : 'Nie' }}
           </div>
         }
-        @if (isOwner) {
+        @if (isOwner || currentUserIsManager) {
           <button mat-raised-button color="primary" (click)="openEditUser()">Edytuj dane</button>
         }
       </div>
 
-      @if (hasRole('TEACHER') && account?.subjects!.length > 0) {
+      @if (isTeacher && account?.subjects!.length > 0) {
         <div>
           <h3>Nauczane przedmioty:</h3>
           @for (subject of account?.subjects; track subject) {
@@ -87,14 +87,14 @@
               <p>{{subject.subjectName}}</p>
             </div>
           }
-          @if (isOwner) {
+          @if (isOwner || currentUserIsManager) {
             <button mat-raised-button color="primary" (click)="openEditSubjects()">Edytuj nauczane przedmioty</button>
           }
         </div>
       }
     </mat-card-content>
   </mat-card>
-  @if (hasRole('TEACHER')) {
+  @if (isTeacher) {
     <br/>
     <mat-card>
       <mat-card-header>
@@ -106,7 +106,7 @@
     </mat-card>
   }
 
-  @if (hasRole('STUDENT')) {
+  @if (isStudent) {
     <br/>
     <mat-card>
       <mat-card-header>
@@ -126,8 +126,7 @@
         <mat-card-subtitle>Harmonogram dni i godzin, w których osoba jest niedostępna</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <app-user-busy-days [userId]="account!.id"></app-user-busy-days>
-        <button mat-raised-button color="primary" (click)="openEditUser()">Dodaj zajęty termin</button>
+        <app-user-busy-days [userId]="account!.id" [isOwner]="isOwner" [currentUserIsManager]="currentUserIsManager"></app-user-busy-days>
       </mat-card-content>
     </mat-card>
   }
