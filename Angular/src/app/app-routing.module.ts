@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/authentication/login.component';
 import { RegistrationComponent } from './components/authentication/registration.component';
 
-import { RequestFormComponent } from './components/manager/request-form/request-form.component';
+import { RequestFormComponent } from './components/manager/requests/request-form.component';
 import { RequestListComponent } from './components/teacher/request/request-list.component';
 import { StudentScheduleComponent } from './components/student/schedule/student-schedule.component';
 import { TeacherScheduleComponent } from './components/teacher/schedule/teacher-schedule.component';

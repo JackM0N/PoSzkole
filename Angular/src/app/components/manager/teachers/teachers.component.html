@@ -1,5 +1,5 @@
 <div class="table-container">
-  <h2>Lista dostępnych kursów</h2>
+  <h2>Lista uczniów</h2>
 
   <table mat-table [dataSource]="dataSource" matSort>
 
@@ -52,12 +52,12 @@
 
 @if (noTeachers) {
   <div class="no-data-message">
-    Nie masz żadnych kupionych kursów.
+    Nie ma jeszcze żadnych nauczycieli
   </div>
 }
 
 <mat-paginator [length]="totalTeachers" [pageSize]="20" [pageSizeOptions]="[20, 50, 100]" aria-label="Wybór liczby wierszy" (page)="loadTeachers()" #paginator></mat-paginator>
 
-<button mat-raised-button color="primary" class="centered" (click)="openTeacherRegistration()">Utwórz nowego nauczyciela</button>
+<button mat-raised-button color="primary" (click)="openTeacherRegistration()">Utwórz nowego nauczyciela</button>
 </div>
 

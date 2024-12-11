@@ -65,7 +65,7 @@ export class TeachersComponent {
 
   openTeacherRegistration() {
     const dialogRef = this.dialog.open(RegisterTeacherComponent, {
-      width: '50%'
+      width: '30%'
     });
   
     dialogRef.afterClosed().subscribe(result => {

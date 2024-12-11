@@ -1,23 +1,23 @@
 <div class="login-container">
   <div class="login-form">
-    <form (ngSubmit)="onSubmit()">
-      <div>
-        <label for="username">Login:</label>
-        <input type="text" id="username" [(ngModel)]="loginData.username" name="username" required>
-      </div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <h2>Logowanie</h2>
 
-      <div>
-        <label for="password">Hasło:</label>
-        <input type="password" id="password" [(ngModel)]="loginData.password" name="password" required>
-      </div>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Login</mat-label>
+        <input matInput formControlName="username" required placeholder="Wpisz login"
+        />
+      </mat-form-field>
 
-      <button type="submit">Zaloguj</button>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Hasło</mat-label>
+        <input matInput formControlName="password" type="password" required placeholder="Wpisz hasło"
+        />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+        Zaloguj
+      </button>
     </form>
-
-    @if (errorMessage) {
-      <div class="error-message">
-        {{ errorMessage }}
-      </div>
-    }
   </div>
 </div>

@@ -11,7 +11,7 @@ import { ToastrService } from "ngx-toastr";
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrl: '../../styles/auth.component.css',
+  styleUrls: ['../../styles/request-form.component.css', '../../styles/auth.component.css'],
 })
 export class RegistrationComponent {
   registrationForm: FormGroup;

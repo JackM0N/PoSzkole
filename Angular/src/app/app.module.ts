@@ -31,7 +31,7 @@ import { LoginComponent } from './components/authentication/login.component';
 import { RegistrationComponent } from './components/authentication/registration.component';
 import { RequestListComponent } from './components/teacher/request/request-list.component';
 import { RequestAdmittedListComponent } from './components/teacher/request/request-admitted-list.component';
-import { RequestFormComponent } from './components/manager/request-form/request-form.component';
+import { RequestFormComponent } from './components/manager/requests/request-form.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { PopUpDialogComponent } from './components/shared/pop-up/pop-up-dialog.component';
 import { AdmitRequestPopUpComponent } from './components/teacher/request/admit-request-popup.component';
@@ -59,6 +59,7 @@ import { TeachersComponent } from './components/manager/teachers/teachers.compon
 import { UserBusyDaysComponent } from './components/shared/profile/user-busy-days.component';
 import { EditBusyDaysComponent } from './components/shared/profile/edit-busy-days.component';
 import { RegisterTeacherComponent } from './components/manager/teachers/register-teacher.component';
+import { RegisterStudentComponent } from './components/manager/students/register-student.component';
 
 
 @NgModule({ declarations: [
@@ -92,7 +93,8 @@ import { RegisterTeacherComponent } from './components/manager/teachers/register
         TeachersComponent,
         UserBusyDaysComponent,
         EditBusyDaysComponent,
-        RegisterTeacherComponent
+        RegisterTeacherComponent,
+        RegisterStudentComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
