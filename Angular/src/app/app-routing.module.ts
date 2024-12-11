@@ -14,6 +14,7 @@ import { StudentCoursesComponent } from './components/student/courses/student-co
 import { StudentAttendanceComponent } from './components/student/attendance/student-attendance.component';
 import { StudentsComponent } from './components/manager/students/students.component';
 import { TeachersComponent } from './components/manager/teachers/teachers.component';
+import { ManagerCoursesComponent } from './components/manager/courses/manager-courses.component';
 
 const routes: Routes = [
   //auth
@@ -28,6 +29,7 @@ const routes: Routes = [
   {path: 'request-form', component: RequestFormComponent},
   {path: 'teachers', component: TeachersComponent},
   {path: 'students', component: StudentsComponent},
+  {path: 'manager-courses', component: ManagerCoursesComponent},
 
   //teacher
   {path: 'request-list', component: RequestListComponent},

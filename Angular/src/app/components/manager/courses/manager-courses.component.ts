@@ -1,17 +1,17 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Course } from '../../../models/course.model';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 import { CourseService } from '../../../services/course.service';
 import { Observer } from 'rxjs';
 
 @Component({
-  selector: 'app-student-courses',
-  templateUrl: './student-courses.component.html',
+  selector: 'app-manager-courses',
+  templateUrl: './manager-courses.component.html',
   styleUrl: '../../../styles/request-list.component.css'
 })
-export class StudentCoursesComponent implements AfterViewInit{
+export class ManagerCoursesComponent {
   protected dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>([]);
   protected totalCourses: number = 0;
   protected displayedColumns: string[] = ['courseName', 'startDate', 'price', 'maxParticipants', 'action'];
@@ -54,6 +54,6 @@ export class StudentCoursesComponent implements AfterViewInit{
       complete: () => {}
     };
 
-    this.courseService.getBoughtCourses(page, size, sortBy, sortDir).subscribe(observer);
+    this.courseService.getActiveCourses(page, size, sortBy, sortDir).subscribe(observer);
   }
 }

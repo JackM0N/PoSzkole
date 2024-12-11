@@ -32,8 +32,11 @@ public class CourseService {
         //Course has to be open for registration
         spec = spec.and(((root, query, builder) -> builder.equal(root.get("isOpenForRegistration"), true)));
 
-        //Course cannot be already started to be available
-        spec = spec.and(((root, query, builder) -> builder.greaterThan(root.get("startDate"), LocalDate.now())));
+        //Course cannot be done to be available
+        spec = spec.and(((root, query, builder) -> builder.equal(root.get("isDone"), false)));
+
+        //Course cannot have a class, because that would mean it has already started
+        spec = spec.and(((root, query, builder) -> builder.isNull(root.get("tutoringClass"))));
 
         Page<Course> courses = courseRepository.findAll(spec, pageable);
 
@@ -53,6 +56,20 @@ public class CourseService {
         if (courseFilter != null) {
             spec = spec.and(applyCourseFilter(courseFilter));
         }
+
+        Page<Course> courses = courseRepository.findAll(spec, pageable);
+
+        return courses.map(courseMapper::toDto);
+    }
+
+    public Page<CourseDTO> getActiveCourses(CourseFilter courseFilter, Pageable pageable) {
+        Specification<Course> spec = applyCourseFilter(courseFilter);
+
+        //If course has a class that means its active
+        spec = spec.and(((root, query, builder) -> builder.isNotNull(root.get("tutoringClass"))));
+
+        //Course cannot be done to be active
+        spec = spec.and(((root, query, builder) -> builder.equal(root.get("isDone"), false)));
 
         Page<Course> courses = courseRepository.findAll(spec, pageable);
 

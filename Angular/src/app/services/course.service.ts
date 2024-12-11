@@ -30,4 +30,13 @@ export class CourseService {
     return this.http.get<Course[]>(`${this.baseUrl}/bought-courses`, { params })
   }
 
+  getActiveCourses(page: number, size: number, sortBy: string, sortDir: string): Observable<Course[]>{
+    var params = new HttpParams()
+      .set('page', (page - 1).toString())
+      .set('size', size.toString())
+      .set('sort', sortBy + ',' + sortDir
+    );
+    return this.http.get<Course[]>(`${this.baseUrl}/active-courses`, { params })
+  }
+
 }

@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { CourseService } from '../../../services/course.service';
 import { Observer } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-available-courses',
@@ -16,16 +17,25 @@ export class AvailableCoursesComponent implements AfterViewInit{
   protected totalCourses: number = 0;
   protected displayedColumns: string[] = ['courseName', 'startDate', 'price', 'maxParticipants', 'action'];
   protected noCourses = false;
+  protected currentUserIsManager = false;
 
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
 
-  constructor(private courseService: CourseService) {}
+  constructor(
+    private courseService: CourseService,
+    private authService: AuthService
+
+  ) {
+    this.currentUserIsManager = this.authService.hasRole("MANAGER");
+  }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.loadBoughtCourses();
+
+    console.log(this.authService.hasRole("MANAGER"))
 
     this.sort.sortChange.subscribe(() => {
       this.loadBoughtCourses();
@@ -41,7 +51,6 @@ export class AvailableCoursesComponent implements AfterViewInit{
     const observer: Observer<any> = {
       next: response => {
         if (response) {
-          console.log(response)
           this.totalCourses = response.totalElements;
           this.dataSource = new MatTableDataSource<Course>(response.content);
           this.noCourses = this.dataSource.data.length === 0;

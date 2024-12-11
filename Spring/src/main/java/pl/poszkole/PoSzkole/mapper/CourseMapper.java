@@ -9,6 +9,7 @@ public interface CourseMapper {
     @Mapping(target = "students", ignore = true)
     Course toEntity(CourseDTO courseDTO);
 
+    @Mapping(source = "tutoringClass.id", target = "tutoringClassId")
     CourseDTO toDto(Course course);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

@@ -37,6 +37,10 @@ public class Course {
     @Column(name = "is_open_for_registration", nullable = false)
     private Boolean isOpenForRegistration = false;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tutoring_class_id")
+    private TutoringClass tutoringClass;
+
     @ManyToMany(mappedBy = "courses")
     private List<WebsiteUser> students = new ArrayList<>();
 

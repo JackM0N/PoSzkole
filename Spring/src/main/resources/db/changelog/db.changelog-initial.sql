@@ -75,6 +75,7 @@ CREATE TABLE course
     max_participants         INT          NOT NULL,
     start_date               DATE         NOT NULL,
     is_open_for_registration BOOLEAN      NOT NULL,
+    tutoring_class_id        BIGINT       REFERENCES tutoring_class (class_id),
     is_done                  BOOLEAN      NOT NULL
 );
 

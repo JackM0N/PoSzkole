@@ -25,6 +25,11 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getBoughtCourses(courseFilter, pageable));
     }
 
+    @GetMapping("/active-courses")
+    public ResponseEntity<Page<CourseDTO>> getActiveCourses(CourseFilter courseFilter, Pageable pageable) {
+        return ResponseEntity.ok(courseService.getActiveCourses(courseFilter, pageable));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<CourseDTO> createCourse(@RequestBody CourseDTO courseDTO) {
         return ResponseEntity.ok(courseService.createCourse(courseDTO));
