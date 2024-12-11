@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.poszkole.PoSzkole.dto.CourseDTO;
+import pl.poszkole.PoSzkole.dto.StartCourseDTO;
 import pl.poszkole.PoSzkole.filter.CourseFilter;
 import pl.poszkole.PoSzkole.service.CourseService;
 
@@ -35,6 +36,11 @@ public class CourseController {
         return ResponseEntity.ok(courseService.createCourse(courseDTO));
     }
 
+    @PostMapping("/start-course")
+    public ResponseEntity<CourseDTO> startCourse(@RequestBody StartCourseDTO startCourseDTO) {
+        return ResponseEntity.ok(courseService.startCourse(startCourseDTO));
+    }
+
     @PutMapping("/add-student")
     public ResponseEntity<CourseDTO> addStudent(@RequestParam Long studentId, @RequestParam Long courseId) {
         return ResponseEntity.ok(courseService.addStudentToCourse(studentId, courseId));
@@ -53,11 +59,5 @@ public class CourseController {
     @PutMapping("/edit/{courseId}")
     public ResponseEntity<CourseDTO> editCourse(@PathVariable Long courseId, @RequestBody CourseDTO courseDTO) {
         return ResponseEntity.ok(courseService.editCourse(courseId, courseDTO));
-    }
-
-    @DeleteMapping("/delete/{courseId}")
-    public ResponseEntity<?> deleteCourse(@PathVariable Long courseId) {
-        courseService.deleteCourse(courseId);
-        return ResponseEntity.ok().build();
     }
 }

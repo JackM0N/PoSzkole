@@ -4,19 +4,27 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.CourseDTO;
+import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
+import pl.poszkole.PoSzkole.dto.StartCourseDTO;
+import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
 import pl.poszkole.PoSzkole.filter.CourseFilter;
 import pl.poszkole.PoSzkole.mapper.CourseMapper;
+import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
 import pl.poszkole.PoSzkole.model.Course;
+import pl.poszkole.PoSzkole.model.TutoringClass;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.CourseRepository;
+import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +33,11 @@ public class CourseService {
     private final CourseMapper courseMapper;
     private final WebsiteUserService websiteUserService;
     private final WebsiteUserRepository websiteUserRepository;
+    private final TutoringClassMapper tutoringClassMapper;
+    private final TutoringClassRepository tutoringClassRepository;
+    private final ClassScheduleService classScheduleService;
+
+    //TODO: Add method for canceling course
 
     public Page<CourseDTO> getAllAvailableCourses(CourseFilter courseFilter, Pageable pageable) {
         Specification<Course> spec = applyCourseFilter(courseFilter);
@@ -76,7 +89,47 @@ public class CourseService {
         return courses.map(courseMapper::toDto);
     }
 
-    //TODO: Add methods for: 1. Creating schedules for course and if needed add tutoring_class to course
+    @Transactional
+    public CourseDTO startCourse(StartCourseDTO startCourseDTO) {
+        //Get course
+        Course course = courseRepository.findById(startCourseDTO.getCourseId())
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+
+        List<WebsiteUser> students = course.getStudents();
+
+        //Find wanted teacher
+        WebsiteUser teacher = websiteUserRepository.findById(startCourseDTO.getTeacherId())
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
+
+        if (teacher.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))) {
+            throw new EntityNotFoundException("Chosen user is not a teacher");
+        }
+
+        //Create class
+        TutoringClass tutoringClass = tutoringClassMapper.toEntity(startCourseDTO.getTutoringClassDTO());
+        tutoringClass.setTeacher(teacher);
+        tutoringClassRepository.save(tutoringClass);
+
+        //Add students to created class
+        students.forEach(studentUser -> {
+            studentUser.addClass(tutoringClass);
+            websiteUserRepository.save(studentUser);
+        });
+
+        classScheduleService.createRepeatingClassSchedule(
+                startCourseDTO.getDayAndTimeDTO(),
+                tutoringClass,
+                startCourseDTO.getIsOnline(),
+                startCourseDTO.getRepeatUntil(),
+                students
+        );
+
+        course.setTutoringClass(tutoringClass);
+
+        courseRepository.save(course);
+
+        return courseMapper.toDto(course);
+    }
 
     public CourseDTO createCourse(CourseDTO courseDTO) {
         Course course = courseMapper.toEntity(courseDTO);
@@ -123,11 +176,6 @@ public class CourseService {
         course.setIsDone(true);
         courseRepository.save(course);
         return courseMapper.toDto(course);
-    }
-
-    public void deleteCourse(Long courseId) {
-        //TODO: Make sure there were no payments yet. This whole method might be useless. ASK
-        courseRepository.deleteById(courseId);
     }
 
     //Method that prevents code repetition

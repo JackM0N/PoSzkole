@@ -122,8 +122,9 @@ public class ClassScheduleService {
     }
 
     //This is the standard "I need a whole year of additional math classes" type
+    @Transactional
     public void createRepeatingClassSchedule(DayAndTimeDTO dayAndTimeDTO, TutoringClass tutoringClass,
-                                                      boolean isOnline, LocalDate repeatUntil, Long studentId) {
+                                                      boolean isOnline, LocalDate repeatUntil, List<WebsiteUser> students) {
         //TODO: MAYBE add intervals to easily create classes every 2 weeks for example
         LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.nextOrSame(dayAndTimeDTO.getDay()));
 
@@ -140,11 +141,14 @@ public class ClassScheduleService {
             //Create new ClassSchedule
             ClassSchedule newClassSchedule = createSchedule(dayAndTimeDTO, tutoringClass, isOnline, firstDate);
 
-            //Check if this class schedule overlaps any existing one
-            if (!classScheduleRepository.findOverlappingSchedulesForStudent(
-                    studentId, newClassSchedule.getClassDateFrom(), newClassSchedule.getClassDateTo()).isEmpty()){
-                throw new RuntimeException("Class schedule overlaps with existing class");
-            }
+            //We need to check all students (this method was changed from single student use for course impl)
+            students.forEach(student ->{
+                //Check if this class schedule overlaps any existing one for every student
+                if (!classScheduleRepository.findOverlappingSchedulesForStudent(
+                        student.getId(), newClassSchedule.getClassDateFrom(), newClassSchedule.getClassDateTo()).isEmpty()){
+                    throw new RuntimeException("Class schedule overlaps with existing class of student with id " + student.getId());
+                }
+            });
             //If it doesn't add it to list of class schedules
             classSchedules.add(newClassSchedule);
             firstDate = firstDate.plusWeeks(1);

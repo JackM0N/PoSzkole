@@ -19,8 +19,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatCard, MatCardModule } from '@angular/material/card'
-import { MatIcon } from '@angular/material/icon'
+import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuModule } from '@angular/material/menu'
 
 //App
 import { AppRoutingModule } from './app-routing.module';
@@ -126,7 +127,9 @@ import { ManagerCoursesComponent } from './components/manager/courses/manager-co
         MatDialogModule,
         MatCard,
         MatCardModule,
-        MatIcon
+        MatIcon,
+        MatMenu,
+        MatMenuModule
     ], 
     providers: [
         provideAnimationsAsync(),

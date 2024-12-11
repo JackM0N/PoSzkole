@@ -15,6 +15,7 @@ import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,13 +23,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TutoringClassService {
-    //TODO: Maybe: add filtering
     private final TutoringClassMapper tutoringClassMapper;
     private final WebsiteUserService websiteUserService;
     private final WebsiteUserRepository websiteUserRepository;
     private final TutoringClassRepository tutoringClassRepository;
     private final ClassScheduleService classScheduleService;
     private final SimplifiedUserMapper simplifiedUserMapper;
+
+    //TODO: Add possibility to cancel the rest of the classes
 
     public List<TutoringClassDTO> getTutoringClassesForStudent() {
         //Get current user
@@ -94,7 +96,9 @@ public class TutoringClassService {
         if (repeatUntil == null) {
             classScheduleService.createSingleClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, studentUser.getId());
         }else {
-            classScheduleService.createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, repeatUntil, studentUser.getId());
+            List<WebsiteUser> students = new ArrayList<>();
+            students.add(studentUser);
+            classScheduleService.createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, repeatUntil, students);
         }
 
         return tutoringClassMapper.toDto(tutoringClass);
