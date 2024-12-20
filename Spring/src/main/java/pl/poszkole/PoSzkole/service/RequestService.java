@@ -17,6 +17,8 @@ import pl.poszkole.PoSzkole.repository.*;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -149,8 +151,10 @@ public class RequestService {
         if (request.getRepeatUntil() == null) {
             classScheduleService.createSingleClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, student.getId());
         } else {
+            List<WebsiteUser> students = new ArrayList<>();
+            students.add(student);
             classScheduleService
-                    .createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, request.getRepeatUntil(), student.getId());
+                    .createRepeatingClassSchedule(dayAndTimeDTO, tutoringClass, isOnline, request.getRepeatUntil(), students);
         }
         return requestMapper.toDto(request);
     }

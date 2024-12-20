@@ -14,6 +14,9 @@ import { AttendanceComponent } from '../../teacher/schedule/attendance.component
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { DateTime } from 'luxon';
+import { ChangeLogService } from '../../../services/change-log.service';
+import { ChangeLog } from '../../../models/change-log.model';
+import { Reason } from '../../../enums/reason.enum';
 
 @Component({
   selector: 'app-class-details',
@@ -25,6 +28,8 @@ export class ClassDetailsComponent implements OnInit{
   userRoles: Role[] = [];
   students: SimplifiedUser[] = [];
   jwtHelper = new JwtHelperService();
+  changeLog: ChangeLog | undefined;
+  reason: string | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<ClassDetailsComponent>,
@@ -33,18 +38,26 @@ export class ClassDetailsComponent implements OnInit{
     private authService: AuthService,
     private tutoringClassService: TutoringClassService,
     private attendanceService: AttendanceService,
+    private changeLogService: ChangeLogService,
     private toastr: ToastrService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    //Get current user
     this.loadUserData();
+
+    //Check if current user is teacher and this is his class
     if (this.hasRole('TEACHER') && this.userId === this.data.tutoringClass.teacher?.id) {
       const classId = this.data.tutoringClass.id;
       if (classId !== undefined){
         this.loadStudents(classId);
       }
     }
+
+    //Get changelog
+    const classScheduleId = this.data.id!;
+    this.loadChangeLog(classScheduleId); 
   }
 
   loadUserData() {
@@ -60,6 +73,20 @@ export class ClassDetailsComponent implements OnInit{
     this.tutoringClassService.getClassSchedulesForStudent(classId).subscribe({
       next: response => {
         this.students = response;
+      },
+      error: error => {
+        console.error(error);
+      }
+    })
+  }
+
+  loadChangeLog(classId: number){
+    this.changeLogService.getChangeLogForClassSchedule(classId).subscribe({
+      next: response => {
+        this.changeLog = response;
+        if (this.changeLog && this.changeLog.reason) {
+          this.changeLog.reason = Reason[this.changeLog.reason as unknown as keyof typeof Reason];
+        }
       },
       error: error => {
         console.error(error);

@@ -8,6 +8,8 @@ import { WebsiteUserService } from '../../../services/website-user.service';
 import { SubjectService } from '../../../services/subject.service';
 import { RequestService } from '../../../services/request.service';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+import { RegisterStudentComponent } from '../students/register-student.component';
 
 @Component({
   selector: 'app-request-form',
@@ -26,7 +28,8 @@ export class RequestFormComponent implements OnInit {
     private websiteUserService: WebsiteUserService,
     private subjectService: SubjectService,
     private requestService: RequestService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private dialog: MatDialog) {
     this.requestForm = this.fb.group({
       student: new FormControl(''),
       subject: new FormControl(''),
@@ -111,5 +114,17 @@ export class RequestFormComponent implements OnInit {
 
   resetForm() {
     this.requestForm.reset();
+  }
+
+  openRegisterStudent() {
+    const dialogRef = this.dialog.open(RegisterStudentComponent, {
+      width: '30%'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log("Add displaying newly added student")
+      }
+    });
   }
 }

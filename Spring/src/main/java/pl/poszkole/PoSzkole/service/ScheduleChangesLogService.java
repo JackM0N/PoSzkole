@@ -16,7 +16,7 @@ public class ScheduleChangesLogService {
     private final ClassScheduleRepository classScheduleRepository;
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
 
-    public ScheduleChangesLogDTO getLogForClass(Long classScheduleId) {
+    public ScheduleChangesLogDTO getLogForClassSchedule(Long classScheduleId) {
         ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
                 .orElseThrow(() -> new RuntimeException("Class schedule not found"));
         ScheduleChangesLog changesLog = scheduleChangesLogRepository.findByClassSchedule(classSchedule)

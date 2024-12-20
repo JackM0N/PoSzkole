@@ -1,7 +1,6 @@
 <div class="form-container">
   <h1>Wyślij prośbę do nauczycieli</h1>
   <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
-
     <mat-form-field>
       <input type="text" matInput placeholder="Wybierz ucznia*"
         [matAutocomplete]="studentAuto" formControlName="student" required>
@@ -51,6 +50,7 @@
         <div class="button-group">
           <button mat-button type="button" (click)="resetForm()">Anuluj</button>
           <button mat-raised-button color="primary" type="submit">Wyślij</button>
+          <button mat-raised-button color="primary" (click)="openRegisterStudent()" style="margin-left: 8px;">Utwórz nowego ucznia</button>
         </div>
 
       </form>

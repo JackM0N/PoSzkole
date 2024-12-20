@@ -27,7 +27,7 @@ public class ScheduleChangesLog {
     @Enumerated(EnumType.STRING)
     private Reason reason;
 
-    @Column(name = "explanation", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "explanation", length = Integer.MAX_VALUE)
     private String explanation;
 
 }

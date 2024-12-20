@@ -5,12 +5,14 @@
   <p><strong>Czas:</strong> {{ data.classDateFrom.toFormat('HH:mm') }} - {{ data.classDateTo.toFormat('HH:mm') }}</p>
   <p><strong>Przedmiot:</strong> {{data.tutoringClass.subject?.subjectName}}</p>
   <p><strong>Online:</strong> {{ data.isOnline ? 'Tak' : 'Nie' }}</p>
-  @if (data.isCanceled) {
+  @if (changeLog != undefined) {
     <div>
       <br/>
-      <p><strong>Status:</strong> Odwołane</p>
-      <p><strong>Powód:</strong>placeholder</p>
-      <p><strong>Wyjaśnienie:</strong>placeholder</p>
+      <p><strong>Status:</strong> {{data.isCanceled? "Odwołane":"Edytowane"}}</p>
+      <p><strong>Powód:</strong> {{changeLog.reason}}</p>
+      @if (changeLog.explanation != null) {
+        <p><strong>Wyjaśnienie:</strong> {{changeLog.explanation}}</p>
+      }
     </div>
   }
   @if (data.room!=null) {

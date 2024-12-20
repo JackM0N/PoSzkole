@@ -15,8 +15,8 @@ import pl.poszkole.PoSzkole.service.ScheduleChangesLogService;
 public class ScheduleChangesLogController {
     private final ScheduleChangesLogService scheduleChangesLogService;
 
-    @GetMapping("/{classId}")
-    public ResponseEntity<ScheduleChangesLogDTO> getScheduleChangesLogForClass(@PathVariable Long classId) {
-        return ResponseEntity.ok(scheduleChangesLogService.getLogForClass(classId));
+    @GetMapping("/class-schedule/{classScheduleId}")
+    public ResponseEntity<ScheduleChangesLogDTO> getChangesLogForClassSchedule(@PathVariable Long classScheduleId) {
+        return ResponseEntity.ok(scheduleChangesLogService.getLogForClassSchedule(classScheduleId));
     }
 }
