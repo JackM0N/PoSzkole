@@ -35,7 +35,7 @@ import { RequestAdmittedListComponent } from './components/teacher/request/reque
 import { RequestFormComponent } from './components/manager/requests/request-form.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { PopUpDialogComponent } from './components/shared/pop-up/pop-up-dialog.component';
-import { AdmitRequestPopUpComponent } from './components/teacher/request/admit-request-popup.component';
+import { AdmitRequestCreateComponent } from './components/teacher/request/admit-request-create.component';
 import { ScheduleComponent } from './components/shared/schedule/schedule.component';
 import { StudentScheduleComponent } from './components/student/schedule/student-schedule.component';
 import { CommonModule } from '@angular/common';
@@ -72,7 +72,7 @@ import { ManagerCoursesComponent } from './components/manager/courses/manager-co
         RequestFormComponent,
         RequestAdmittedListComponent,
         PopUpDialogComponent,
-        AdmitRequestPopUpComponent,
+        AdmitRequestCreateComponent,
         ScheduleComponent,
         StudentScheduleComponent,
         ClassDetailsComponent,
