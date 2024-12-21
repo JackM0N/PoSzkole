@@ -70,7 +70,7 @@ export class ClassDetailsComponent implements OnInit{
   }
 
   loadStudents(classId: number) {
-    this.tutoringClassService.getClassSchedulesForStudent(classId).subscribe({
+    this.tutoringClassService.getStudentsForClassSchedule(classId).subscribe({
       next: response => {
         this.students = response;
       },

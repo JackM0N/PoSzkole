@@ -6,8 +6,10 @@ import { MatSort } from '@angular/material/sort';
 import { RequestService } from '../../../services/request.service';
 import { Observer } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { AdmitRequestPopUpComponent } from './admit-request-popup.component';
+import { AdmitRequestCreateComponent } from './admit-request-create.component';
 import { Router } from '@angular/router';
+import { AdmitRequestAddComponent } from './admit-request-add.component';
+import { Subject } from '../../../models/subject.model';
 
 @Component({
   selector: 'app-request-list',
@@ -62,8 +64,8 @@ export class RequestListComponent implements AfterViewInit{
     this.requestService.getNotAdmittedRequests(page, size, sortBy, sortDir).subscribe(observer);
   }
 
-  openPopup(requestId: number, studentId: number, studentName: string){
-    const dialogRef = this.dialog.open(AdmitRequestPopUpComponent,{
+  openCreateClass(requestId: number, studentId: number, studentName: string){
+    const dialogRef = this.dialog.open(AdmitRequestCreateComponent,{
       width:'50%',
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',
@@ -71,6 +73,22 @@ export class RequestListComponent implements AfterViewInit{
         requestId: requestId,
         studentId: studentId,
         studentName: studentName
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadNotAdmittedRequests();
+    });
+  }
+
+  openAddToClass(subject: Subject, studentId: number){
+    const dialogRef = this.dialog.open(AdmitRequestAddComponent,{
+      width:'50%',
+      enterAnimationDuration:'200ms',
+      exitAnimationDuration:'200ms',
+      data:{
+        subject: subject,
+        studentId: studentId
       }
     });
 

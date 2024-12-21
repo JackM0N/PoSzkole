@@ -1,0 +1,21 @@
+.class-container {
+  padding: 16px;
+}
+
+.no-classes {
+  font-size: 18px;
+  color: #757575;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.class-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.class-card {
+  width: 300px;
+}

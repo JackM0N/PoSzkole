@@ -11,4 +11,6 @@ export interface ClassSchedule {
   isOnline: boolean;
   isCompleted: boolean;
   isCanceled: boolean;
+
+  classDateFromFormatted?: string;
 }

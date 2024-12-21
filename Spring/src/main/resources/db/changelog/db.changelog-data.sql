@@ -97,8 +97,7 @@ VALUES
     (1000, 1, 'Matematyka z Janem', false),
     (1000, 2, 'Fizyka z Janem', false),
     (1000, 1, 'Matematyka gr.1', false),
-    (1001, 3, 'Ang z Janem', false),
-    (1000, 1, 'Zaawansowany Kurs Analizy Danych', false);
+    (1001, 3, 'Ang z Janem', false);
 
 
 INSERT INTO course (course_name, price, max_participants, start_date, is_open_for_registration, tutoring_class_id, is_done)
@@ -111,8 +110,7 @@ VALUES
     ('Zaawansowane Techniki Marketingowe', 899.99, 30, '2025-04-05', FALSE, NULL, FALSE),
     ('Podstawy Projektowania Graficznego', 649.50, 18, '2025-03-22', TRUE, NULL, FALSE),
     ('Warsztaty z Kreatywnego Pisania', 399.00, 20, '2025-01-30', FALSE, NULL, TRUE),
-    ('Kurs Języka Niemieckiego dla Początkujących', 499.99, 25, '2025-02-28', TRUE, NULL, FALSE),
-    ('Zaawansowany Kurs Analizy Danych', 999.00, 10, '2024-09-10', TRUE, 5, FALSE);
+    ('Kurs Języka Niemieckiego dla Początkujących', 499.99, 25, '2025-02-28', TRUE, NULL, FALSE);
 
 INSERT INTO student_course(student_id, course_id)
 VALUES

@@ -62,6 +62,7 @@ import { EditBusyDaysComponent } from './components/shared/profile/edit-busy-day
 import { RegisterTeacherComponent } from './components/manager/teachers/register-teacher.component';
 import { RegisterStudentComponent } from './components/manager/students/register-student.component';
 import { ManagerCoursesComponent } from './components/manager/courses/manager-courses.component';
+import { AdmitRequestAddComponent } from './components/teacher/request/admit-request-add.component';
 
 
 @NgModule({ declarations: [
@@ -97,7 +98,8 @@ import { ManagerCoursesComponent } from './components/manager/courses/manager-co
         EditBusyDaysComponent,
         RegisterTeacherComponent,
         RegisterStudentComponent,
-        ManagerCoursesComponent
+        ManagerCoursesComponent,
+        AdmitRequestAddComponent
     ],
     bootstrap: [AppComponent], 
     imports: [

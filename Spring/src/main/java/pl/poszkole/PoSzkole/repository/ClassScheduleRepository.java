@@ -9,6 +9,7 @@ import pl.poszkole.PoSzkole.model.TutoringClass;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClassScheduleRepository extends JpaRepository<ClassSchedule, Long>, JpaSpecificationExecutor<ClassSchedule> {
@@ -22,4 +23,6 @@ public interface ClassScheduleRepository extends JpaRepository<ClassSchedule, Lo
     List<ClassSchedule> findOverlappingSchedulesForStudent(Long studentId, LocalDateTime startTime, LocalDateTime endTime);
 
     List<ClassSchedule> findAllByTutoringClassId(Long tutoringClassId);
+
+    Optional<ClassSchedule> findFirstByTutoringClassIdAndClassDateFromAfter(Long tutoringClassId, LocalDateTime classDateFrom);
 }

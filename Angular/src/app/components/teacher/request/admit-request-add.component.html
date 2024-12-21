@@ -1,0 +1,27 @@
+<div class="class-container">
+  <h2>Aktywne zajęcia z przedmiotu: {{data.subject.subjectName}}</h2>
+
+  @if (tutoringClasses.length === 0) {
+    <div class="no-classes">
+      Brak dostępnych sal w tym terminie
+    </div>
+  }
+
+  @if (tutoringClasses.length > 0) {
+    <div class="class-cards">
+      @for (tutoringClass of tutoringClasses; track tutoringClass) {
+        <mat-card class="class-card">
+          <mat-card-title>{{ tutoringClass.className }}</mat-card-title>
+          <mat-card-content>
+            <p>Przedmiot: {{ tutoringClass.subject?.subjectName }}</p>
+            <p>Liczba uczniów: {{ tutoringClass.numberOfStudents }}</p>
+            <p>Następne zajęcia: {{ tutoringClass.nextClassSchedule.classDateFromFormatted }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="primary" (click)="addStudentToClass(tutoringClass.id!)">Wybierz</button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

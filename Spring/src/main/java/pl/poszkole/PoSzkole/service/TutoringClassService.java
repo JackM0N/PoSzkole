@@ -6,14 +6,17 @@ import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
 import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
+import pl.poszkole.PoSzkole.mapper.ClassScheduleMapper;
 import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
 import pl.poszkole.PoSzkole.model.TutoringClass;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
+import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +31,8 @@ public class TutoringClassService {
     private final TutoringClassRepository tutoringClassRepository;
     private final ClassScheduleService classScheduleService;
     private final SimplifiedUserMapper simplifiedUserMapper;
+    private final ClassScheduleRepository classScheduleRepository;
+    private final ClassScheduleMapper classScheduleMapper;
 
     //TODO: Add possibility to cancel the rest of the classes
 
@@ -44,7 +49,17 @@ public class TutoringClassService {
                 currentUser.getId(),false, subjectId
         );
 
-        return tutoringClasses.stream().map(tutoringClassMapper::toDto).collect(Collectors.toList());
+        return tutoringClasses.stream().map(tutoringClass -> {
+            //Additional mapping added for better tutoringClass description
+            TutoringClassDTO tutoringClassDTO = tutoringClassMapper.toDto(tutoringClass);
+            tutoringClassDTO.setNumberOfStudents(tutoringClass.getStudents().size());
+            tutoringClassDTO.setNextClassSchedule(
+                    classScheduleMapper.toDto(classScheduleRepository.findFirstByTutoringClassIdAndClassDateFromAfter(
+                            tutoringClass.getId(), LocalDateTime.now()
+                    ).orElse(null))
+            );
+            return tutoringClassDTO;
+        }).collect(Collectors.toList());
     }
 
     public List<SimplifiedUserDTO> getStudentsForTutoringClass(Long tutoringClassId) {
