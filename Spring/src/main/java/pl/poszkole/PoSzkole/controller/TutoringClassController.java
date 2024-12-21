@@ -26,10 +26,8 @@ public class TutoringClassController {
     }
 
     @PostMapping("/add-student")
-    public ResponseEntity<TutoringClassDTO> addStudent(@RequestBody StudentAndClassDTO studentAndClassDTO) {
-        return ResponseEntity.ok(tutoringClassService.addToTutoringClass(
-                studentAndClassDTO.getStudentId(), studentAndClassDTO.getClassId()
-        ));
+    public ResponseEntity<TutoringClassDTO> addStudent(@RequestParam Long studentId, @RequestParam Long classId) {
+        return ResponseEntity.ok(tutoringClassService.addToTutoringClass(studentId, classId));
     }
 
     @PostMapping("/create")
