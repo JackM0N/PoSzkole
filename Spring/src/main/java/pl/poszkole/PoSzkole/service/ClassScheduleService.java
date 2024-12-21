@@ -257,7 +257,7 @@ public class ClassScheduleService {
         boolean allSchedulesCompleted = classScheduleRepository
                 .findAllByTutoringClassId(tutoringClass.getId())
                 .stream()
-                .allMatch(ClassSchedule::getIsCompleted);
+                .allMatch(schedule -> schedule.getIsCompleted() || schedule.getIsCanceled());
 
         //If all schedules are completed, set tutoringClass to complete
         if (allSchedulesCompleted) {
