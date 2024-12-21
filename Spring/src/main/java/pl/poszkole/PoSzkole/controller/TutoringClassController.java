@@ -15,9 +15,9 @@ import java.util.List;
 public class TutoringClassController {
     private final TutoringClassService tutoringClassService;
 
-    @GetMapping("/active-classes/teacher")
-    public ResponseEntity<List<TutoringClassDTO>> getActiveClassesForTeacher() {
-        return ResponseEntity.ok(tutoringClassService.getActiveTutoringClassesForCurrentTeacher());
+    @GetMapping("/active-classes/subject/{subjectId}")
+    public ResponseEntity<List<TutoringClassDTO>> getActiveClassesForSubject(@PathVariable Long subjectId) {
+        return ResponseEntity.ok(tutoringClassService.getActiveTutoringClassesForCurrentTeacher(subjectId));
     }
 
     @GetMapping("/student-list/{classId}")

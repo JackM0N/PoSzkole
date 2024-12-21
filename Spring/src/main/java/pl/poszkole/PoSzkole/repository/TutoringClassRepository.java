@@ -7,5 +7,5 @@ import pl.poszkole.PoSzkole.model.TutoringClass;
 import java.util.List;
 
 public interface TutoringClassRepository extends JpaRepository<TutoringClass, Long>, JpaSpecificationExecutor<TutoringClass> {
-    List<TutoringClass> findByTeacherIdAndIsCompleted(Long teacherId, Boolean isCompleted);
+    List<TutoringClass> findByTeacherIdAndIsCompletedAndSubjectId(Long teacherId, Boolean isCompleted, Long subjectId);
 }

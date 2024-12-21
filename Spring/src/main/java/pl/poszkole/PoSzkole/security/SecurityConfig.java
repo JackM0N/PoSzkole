@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 "/attendance/check/**", "/schedule/edit/**", "/schedule/complete/**",
                                 "/attendance/create/**", "/attendance/exists/**", "/schedule/my-classes/teacher",
                                 "/room-reservation/free-rooms", "/room-reservation/reserve/**",
-                                "/class/active-classes/teacher")
+                                "/class/active-classes/subject/**")
                         .hasRole("TEACHER")
 
                         .requestMatchers("/course/bought-courses", "/schedule/my-classes/student",

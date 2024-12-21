@@ -31,7 +31,7 @@ public class TutoringClassService {
 
     //TODO: Add possibility to cancel the rest of the classes
 
-    public List<TutoringClassDTO> getActiveTutoringClassesForCurrentTeacher() {
+    public List<TutoringClassDTO> getActiveTutoringClassesForCurrentTeacher(Long subjectId) {
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
         //Check if user is a teacher
@@ -40,8 +40,8 @@ public class TutoringClassService {
         }
 
         //Get all teachers active classes
-        List<TutoringClass> tutoringClasses = tutoringClassRepository.findByTeacherIdAndIsCompleted(
-                currentUser.getId(),false
+        List<TutoringClass> tutoringClasses = tutoringClassRepository.findByTeacherIdAndIsCompletedAndSubjectId(
+                currentUser.getId(),false, subjectId
         );
 
         return tutoringClasses.stream().map(tutoringClassMapper::toDto).collect(Collectors.toList());
