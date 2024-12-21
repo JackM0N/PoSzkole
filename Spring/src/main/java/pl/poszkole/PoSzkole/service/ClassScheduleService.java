@@ -1,5 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,6 @@ public class ClassScheduleService {
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
     private final TutoringClassRepository tutoringClassRepository;
     private final WebsiteUserRepository websiteUserRepository;
-
-    //TODO: Add schedule completing
 
     //This cannot be universal since checking role here would do bad stuff for ppl with 2 roles (T and S)
     public List<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent(Long userId) {
@@ -223,6 +222,48 @@ public class ClassScheduleService {
         log.setClassSchedule(classSchedule);
         log.setUser(currentUser);
         scheduleChangesLogRepository.save(log);
+
+        return classScheduleMapper.toDto(classSchedule);
+    }
+
+    public ClassScheduleDTO completeClassSchedule(Long scheduleId) {
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+
+        //Check if current user is a teacher
+        if(currentUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))){
+            throw new RuntimeException("You are not allowed to perform this action");
+        }
+
+        ClassSchedule classSchedule = classScheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new EntityNotFoundException("Class schedule not found"));
+
+        //Check if he can actually complete it
+        if (!classSchedule.getTutoringClass().getTeacher().getId().equals(currentUser.getId())){
+            throw new RuntimeException("You are not allowed to perform this action on someone else's class");
+        }
+        if(LocalDateTime.now().isBefore(classSchedule.getClassDateTo())){
+            throw new RuntimeException("You cant complete a class that has not started yet");
+        }
+        if(classSchedule.getIsCompleted()){
+            throw new RuntimeException("Class schedule is already completed");
+        }
+
+        //Complete and save
+        classSchedule.setIsCompleted(true);
+        classScheduleRepository.save(classSchedule);
+
+        //Check if all schedules are completed
+        TutoringClass tutoringClass = classSchedule.getTutoringClass();
+        boolean allSchedulesCompleted = classScheduleRepository
+                .findAllByTutoringClassId(tutoringClass.getId())
+                .stream()
+                .allMatch(ClassSchedule::getIsCompleted);
+
+        //If all schedules are completed, set tutoringClass to complete
+        if (allSchedulesCompleted) {
+            tutoringClass.setIsCompleted(true);
+            tutoringClassRepository.save(tutoringClass);
+        }
 
         return classScheduleMapper.toDto(classSchedule);
     }

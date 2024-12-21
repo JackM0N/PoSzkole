@@ -37,6 +37,11 @@ public class ClassScheduleController {
         return ResponseEntity.ok(classScheduleService.updateClassSchedule(scheduleId,classScheduleDTO, dayAndTimeDTO, changesLogDTO));
     }
 
+    @PutMapping("/complete/{scheduleId}")
+    public ResponseEntity<ClassScheduleDTO> completeClassSchedule(@PathVariable Long scheduleId) {
+        return ResponseEntity.ok(classScheduleService.completeClassSchedule(scheduleId));
+    }
+
     @PutMapping("/cancel/{scheduleId}")
     public ResponseEntity<ClassScheduleDTO> cancelClassSchedule(
             @PathVariable Long scheduleId,

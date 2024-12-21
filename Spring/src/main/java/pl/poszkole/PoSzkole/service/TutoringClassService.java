@@ -39,8 +39,12 @@ public class TutoringClassService {
             throw new RuntimeException("You are not allowed to access this function");
         }
 
+        //Get all teachers active classes
+        List<TutoringClass> tutoringClasses = tutoringClassRepository.findByTeacherIdAndIsCompleted(
+                currentUser.getId(),false
+        );
 
-        return null;
+        return tutoringClasses.stream().map(tutoringClassMapper::toDto).collect(Collectors.toList());
     }
 
     public List<SimplifiedUserDTO> getStudentsForTutoringClass(Long tutoringClassId) {
