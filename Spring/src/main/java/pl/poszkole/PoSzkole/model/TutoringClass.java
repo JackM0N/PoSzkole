@@ -28,6 +28,9 @@ public class TutoringClass {
     @Column(name = "class_name", nullable = false, length = Integer.MAX_VALUE)
     private String className;
 
+    @Column(name = "is_completed", nullable = false)
+    private Boolean isCompleted = false;
+
     @ManyToMany(mappedBy = "classes")
     private List<WebsiteUser> students = new ArrayList<>();
 }

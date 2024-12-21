@@ -37,9 +37,10 @@ public class ClassScheduleService {
     private final RoomRepository roomRepository;
     private final ScheduleChangesLogMapper scheduleChangesLogMapper;
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
-    private final UserBusyDayService userBusyDayService;
     private final TutoringClassRepository tutoringClassRepository;
     private final WebsiteUserRepository websiteUserRepository;
+
+    //TODO: Add schedule completing
 
     //This cannot be universal since checking role here would do bad stuff for ppl with 2 roles (T and S)
     public List<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent(Long userId) {

@@ -18,4 +18,5 @@ public class TutoringClassDTO implements Serializable {
     SimplifiedUserDTO teacher;
     SubjectDTO subject;
     String className;
+    Boolean isCompleted;
 }

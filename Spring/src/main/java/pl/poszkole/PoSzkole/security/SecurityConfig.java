@@ -43,10 +43,11 @@ public class SecurityConfig {
                         .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/list/**",
                                 "/attendance/check/**", "/schedule/edit/**", "/attendance/create/**",
                                 "/attendance/exists/**", "/schedule/my-classes/teacher",
-                                "/room-reservation/free-rooms", "/room-reservation/reserve/**")
+                                "/room-reservation/free-rooms", "/room-reservation/reserve/**",
+                                "/class/active-classes/teacher")
                         .hasRole("TEACHER")
 
-                        .requestMatchers("/class/my-classes", "/course/bought-courses", "/schedule/my-classes/student",
+                        .requestMatchers("/course/bought-courses", "/schedule/my-classes/student",
                                 "/schedule/cancel/**", "/attendance/presence", "/attendance/absence")
                         .hasRole("STUDENT")
 

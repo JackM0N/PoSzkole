@@ -92,13 +92,13 @@ VALUES
     (10, 1000, '2024-12-01 09:00:00', '2024-12-01 11:00:00');
 
 --changeset Przemyslaw:3 labels:init,data
-INSERT INTO tutoring_class (teacher_id, subject_id, class_name)
+INSERT INTO tutoring_class (teacher_id, subject_id, class_name, is_completed)
 VALUES
-    (1000, 1, 'Matematyka z Janem'),
-    (1000, 2, 'Fizyka z Janem'),
-    (1000, 1, 'Matematyka gr.1'),
-    (1001, 3, 'Ang z Janem'),
-    (1000, 1, 'Zaawansowany Kurs Analizy Danych');
+    (1000, 1, 'Matematyka z Janem', false),
+    (1000, 2, 'Fizyka z Janem', false),
+    (1000, 1, 'Matematyka gr.1', false),
+    (1001, 3, 'Ang z Janem', false),
+    (1000, 1, 'Zaawansowany Kurs Analizy Danych', false);
 
 
 INSERT INTO course (course_name, price, max_participants, start_date, is_open_for_registration, tutoring_class_id, is_done)

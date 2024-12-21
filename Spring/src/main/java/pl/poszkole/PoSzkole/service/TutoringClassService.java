@@ -1,7 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
@@ -32,13 +31,16 @@ public class TutoringClassService {
 
     //TODO: Add possibility to cancel the rest of the classes
 
-    public List<TutoringClassDTO> getTutoringClassesForStudent() {
-        //Get current user
+    public List<TutoringClassDTO> getActiveTutoringClassesForCurrentTeacher() {
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
-        //Get a list of classes that this student is attending
-        List<TutoringClass> tutoringClassList = currentUser.getClasses();
-        return tutoringClassList.stream().map(tutoringClassMapper::toDto).collect(Collectors.toList());
+        //Check if user is a teacher
+        if(currentUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))){
+            throw new RuntimeException("You are not allowed to access this function");
+        }
+
+
+        return null;
     }
 
     public List<SimplifiedUserDTO> getStudentsForTutoringClass(Long tutoringClassId) {
