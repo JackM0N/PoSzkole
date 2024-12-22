@@ -134,6 +134,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
       exitAnimationDuration:'200ms',
       data: selectedClass,
     });
+
   }
 
   openCheckRoomAvailability(): void{

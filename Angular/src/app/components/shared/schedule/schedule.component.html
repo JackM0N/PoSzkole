@@ -41,7 +41,7 @@
           @for (class of activeDayClasses(); track trackByFn($index, class)) {
             <mat-card
               class="class-card"
-              [ngClass]="{ 'class-canceled': class.isCanceled }"
+              [ngClass]="{ 'class-canceled': class.isCanceled, 'class-completed':class.isCompleted}"
               (click) = '!isReadOnly && openDetailsDialog(class)'>
               <mat-card-title>{{ class.tutoringClass.className }}</mat-card-title>
               <mat-card-content>
@@ -50,6 +50,9 @@
                 <p><strong>Online:</strong> {{ class.isOnline ? 'Tak' : 'Nie' }}</p>
                 @if (class.isCanceled) {
                   <p class="canceled-label">Zajęcia odwołane</p>
+                }
+                @if (class.isCompleted) {
+                  <p class="canceled-label">Zajęcia odbyte</p>
                 }
               </mat-card-content>
             </mat-card>

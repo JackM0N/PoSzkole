@@ -17,6 +17,7 @@ import { DateTime } from 'luxon';
 import { ChangeLogService } from '../../../services/change-log.service';
 import { ChangeLog } from '../../../models/change-log.model';
 import { Reason } from '../../../enums/reason.enum';
+import { ClassScheduleService } from '../../../services/class-schedule.service';
 
 @Component({
   selector: 'app-class-details',
@@ -37,6 +38,7 @@ export class ClassDetailsComponent implements OnInit{
     private dialog: MatDialog,
     private authService: AuthService,
     private tutoringClassService: TutoringClassService,
+    private classScheduleService: ClassScheduleService,
     private attendanceService: AttendanceService,
     private changeLogService: ChangeLogService,
     private toastr: ToastrService,
@@ -160,6 +162,19 @@ export class ClassDetailsComponent implements OnInit{
         this.toastr.error('Nie udało się sprawdzić obecności');
       }
     });
+  }
+
+  completeClassSchedule(classId: number){
+    this.classScheduleService.completeClassSchedule(classId).subscribe({
+      next: response => {
+        this.toastr.success("Zajęcia zostały oznaczone jako zakończone!","Sukces!")
+        this.dialogRef.close(true)
+      },
+      error: error => {
+        this.toastr.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", "Błąd!")
+        console.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", error)
+      }
+    })
   }
 
   hasRole(role: string): boolean {

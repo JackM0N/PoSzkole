@@ -46,7 +46,6 @@ public class ClassScheduleController {
     public ResponseEntity<ClassScheduleDTO> cancelClassSchedule(
             @PathVariable Long scheduleId,
             @RequestBody ScheduleChangesLogDTO scheduleChangesLogDTO) {
-        System.out.println(scheduleChangesLogDTO);
         return ResponseEntity.ok(classScheduleService.cancelClassSchedule(scheduleId, scheduleChangesLogDTO));
     }
 }

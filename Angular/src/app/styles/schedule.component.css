@@ -149,6 +149,11 @@
   color: #d9534f;
 }
 
+.class-completed {
+  background-color: #e5ffe5;
+  border: 1px solid #4fd978;
+}
+
 ::ng-deep .small-container .calendar-container {
   flex-direction: column !important;
   align-items: flex-start !important;

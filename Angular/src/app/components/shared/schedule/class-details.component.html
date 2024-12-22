@@ -5,6 +5,7 @@
   <p><strong>Czas:</strong> {{ data.classDateFrom.toFormat('HH:mm') }} - {{ data.classDateTo.toFormat('HH:mm') }}</p>
   <p><strong>Przedmiot:</strong> {{data.tutoringClass.subject?.subjectName}}</p>
   <p><strong>Online:</strong> {{ data.isOnline ? 'Tak' : 'Nie' }}</p>
+  <p>{{data.isCompleted? "Stan: Zakończone":"Stan: Nieodbyte"}}</p>
   @if (changeLog != undefined) {
     <div>
       <br/>
@@ -60,6 +61,9 @@
   }
   @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id) {
     <button mat-raised-button class="" (click)="openEditClass(data)">Edytuj zajęcia</button>
+  }
+  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCompleted) {
+    <button mat-raised-button color="primary" (click)="completeClassSchedule(data.id!)">Zakończ zajęcia</button>
   }
   @if (hasRole('STUDENT') && !data.isCanceled) {
     <button mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>

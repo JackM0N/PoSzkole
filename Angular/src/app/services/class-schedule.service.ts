@@ -30,4 +30,8 @@ export class ClassScheduleService {
   updateClassSchedule(scheduleId: number, classAndChangeLog: ClassAndChangeLog) {
     return this.http.put<ClassSchedule>(`${this.baseUrl}/edit/${scheduleId}`, classAndChangeLog);
   }
+
+  completeClassSchedule(scheduleId: number): Observable<ClassSchedule> {
+    return this.http.put<ClassSchedule>(`${this.baseUrl}/complete/${scheduleId}`, {})
+  }
 }
