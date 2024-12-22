@@ -72,8 +72,16 @@ export class AdmitRequestAddComponent implements OnInit{
         this.ref.close(true);
       },
       error: error => {
-        this.toastr.error("Nie udało się dodać ucznia na zajęcia", "Błąd");
-        console.error("Nie udało się dodać ucznia na zajęcia", error);
+        if (error.error === "You can't add this student to a class that he is already attending") {
+          this.toastr.error("Nie można dodać ucznia na zajęcia, na które już uczęszcza.", "Błąd dodawania do zajęć");
+        }else if (error.error === "You cannot add student to a class that's on students busy day") {
+          this.toastr.error("Nie można dodać ucznia na te zajęcia, ponieważ jest on w ten dzień niedostępny.", "Błąd dodawania do zajęć");
+        }else if (error.error === "Class schedule overlaps with existing class of this student") {
+          this.toastr.error("Nie można dodać ucznia na te zajęcia, ponieważ nachodzą one na inne zajęcia, na które już uczęszcza.", "Błąd dodawania do zajęć");
+        }else{
+          this.toastr.error("Nie udało się dodać ucznia na zajęcia", "Błąd");
+          console.error("Nie udało się dodać ucznia na zajęcia", error);
+        }
       }
     })
   }

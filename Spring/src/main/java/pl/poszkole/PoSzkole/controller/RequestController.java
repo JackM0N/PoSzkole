@@ -51,7 +51,6 @@ public class RequestController {
     public ResponseEntity<RequestDTO> approveRequestAddToClass(@RequestBody RequestAndClassDTO requestAndClassDTO) {
         Long requestId = requestAndClassDTO.getRequestId();
         Long classId = requestAndClassDTO.getClassId();
-        System.out.println("Controller");
         return ResponseEntity.ok(requestService.admitRequestAddToClass(requestId, classId));
     }
 }

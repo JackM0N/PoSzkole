@@ -161,17 +161,18 @@ public class RequestService {
     public RequestDTO admitRequestAddToClass(Long requestId, Long classId) {
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
-        //Admit request
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new EntityNotFoundException("Request not found"));
-        request.setAcceptanceDate(LocalDate.now());
-        request.setTeacher(currentUser);
 
         TutoringClass tutoringClass = tutoringClassRepository.findById(classId)
                 .orElseThrow(() -> new EntityNotFoundException("Tutoring class not found"));
 
         //Add student to a chosen tutoringClass
         tutoringClassService.addToTutoringClass(request.getStudent().getId(), tutoringClass.getId());
+
+        //Admit request
+        request.setAcceptanceDate(LocalDate.now());
+        request.setTeacher(currentUser);
 
         requestRepository.save(request);
         return requestMapper.toDto(request);

@@ -9,14 +9,17 @@ import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
 import pl.poszkole.PoSzkole.mapper.ClassScheduleMapper;
 import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
+import pl.poszkole.PoSzkole.model.ClassSchedule;
 import pl.poszkole.PoSzkole.model.TutoringClass;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +36,7 @@ public class TutoringClassService {
     private final SimplifiedUserMapper simplifiedUserMapper;
     private final ClassScheduleRepository classScheduleRepository;
     private final ClassScheduleMapper classScheduleMapper;
+    private final UserBusyDayService userBusyDayService;
 
     //TODO: Add possibility to cancel the rest of the classes
 
@@ -83,6 +87,27 @@ public class TutoringClassService {
         TutoringClass tutoringClass = tutoringClassRepository.findById(classId)
                 .orElseThrow(() -> new EntityNotFoundException("This class does not exist"));
 
+        if(studentUser.getClasses().contains(tutoringClass)){
+            throw new RuntimeException("You can't add this student to a class that he is already attending");
+        }
+
+        //Find closest classSchedule
+        ClassSchedule classSchedule = classScheduleRepository.findFirstByTutoringClassIdAndClassDateFromAfter(
+                tutoringClass.getId(), LocalDateTime.now())
+                .orElseThrow(() -> new EntityNotFoundException("This class does not have any more schedules"));
+        DayOfWeek scheduleDayOfWeek = DayOfWeek.from(classSchedule.getClassDateFrom());
+        LocalTime timeFrom = LocalTime.from(classSchedule.getClassDateFrom());
+        LocalTime timeTo = LocalTime.from(classSchedule.getClassDateTo());
+
+        if (userBusyDayService.isOverlapping(studentUser, null, scheduleDayOfWeek, timeFrom, timeTo)){
+            throw new RuntimeException("You cannot add student to a class that's on students busy day");
+        }
+
+        if (!classScheduleRepository.findOverlappingSchedulesForStudent(
+                studentUser.getId(), classSchedule.getClassDateFrom(), classSchedule.getClassDateTo()).isEmpty()){
+            throw new RuntimeException("Class schedule overlaps with existing class of this student");
+        }
+
         //Add student to class
         studentUser.addClass(tutoringClass);
         websiteUserRepository.save(studentUser);
@@ -90,8 +115,6 @@ public class TutoringClassService {
         return tutoringClassMapper.toDto(tutoringClass);
     }
 
-    //TODO: Ask if teacher should be able to make an account for a student for his class
-    //TODO: Same payments problem. Schedule or monthly based. What about February or December for example?
     public TutoringClassDTO createTutoringClass(Long studentId, TutoringClassDTO tutoringClassDTO,
                                                 DayAndTimeDTO dayAndTimeDTO, Boolean isOnline, LocalDate repeatUntil) {
         //Get needed users
@@ -125,5 +148,5 @@ public class TutoringClassService {
         return tutoringClassMapper.toDto(tutoringClass);
     }
 
-    //TODO: Add removal of student from a class and ask what should that entail. Just canceling rest of the payments? Canceling rest of payments starting next month? Something else?
+    //TODO: Add removal of single student from a class.
 }
