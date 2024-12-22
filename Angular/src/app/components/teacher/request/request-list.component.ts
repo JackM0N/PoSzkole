@@ -81,14 +81,14 @@ export class RequestListComponent implements AfterViewInit{
     });
   }
 
-  openAddToClass(subject: Subject, studentId: number){
+  openAddToClass(subject: Subject, requestId: number){
     const dialogRef = this.dialog.open(AdmitRequestAddComponent,{
       width:'50%',
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',
       data:{
         subject: subject,
-        studentId: studentId
+        requestId: requestId
       }
     });
 

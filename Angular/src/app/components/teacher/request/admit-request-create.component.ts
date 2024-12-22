@@ -66,7 +66,7 @@ export class AdmitRequestCreateComponent implements OnInit{
         isOnline: this.admitRequestForm.get('isOnline')?.value
       };
 
-      this.requestService.admitRequest(requestId, requestAdmit).subscribe({
+      this.requestService.admitRequestCreateClass(requestId, requestAdmit).subscribe({
         next: () => {
           //TODO: Add some sort of refresh after admiting request
           this.toastr.success("Request admitted successfully!");

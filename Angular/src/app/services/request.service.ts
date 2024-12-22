@@ -35,7 +35,14 @@ export class RequestService {
     return this.http.get<Request[]>(`${this.baseUrl}/list/admitted`, { params })
   }
 
-  admitRequest(requestId: number, requestForm: RequestAdmit): Observable<Request>{
-    return this.http.post<Request>(`${this.baseUrl}/admit/${requestId}`, requestForm)
+  admitRequestCreateClass(requestId: number, requestForm: RequestAdmit): Observable<Request>{
+    return this.http.post<Request>(`${this.baseUrl}/admit/create/${requestId}`, requestForm)
+  }
+
+  admitRequestAddToClass(requestId: number, classId: number): Observable<Request>{
+    return this.http.put<Request>(`${this.baseUrl}/admit/add`, {
+      requestId: requestId,
+      classId: classId
+    })
   }
 }

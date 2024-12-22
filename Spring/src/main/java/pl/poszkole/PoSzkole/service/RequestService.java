@@ -1,5 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -32,6 +33,7 @@ public class RequestService {
     private final WebsiteUserRepository websiteUserRepository;
     private final ClassScheduleService classScheduleService;
     private final UserBusyDayService userBusyDayService;
+    private final TutoringClassService tutoringClassService;
 
     public Page<RequestDTO> getRequestsForTeacher(Boolean gotAdmitted,
                                                   Subject subject,
@@ -105,12 +107,8 @@ public class RequestService {
     }
 
     @Transactional
-    public RequestDTO admitRequest(Long id, TutoringClassDTO tutoringClassDTO,
+    public RequestDTO admitRequestCreateClass(Long requestId, TutoringClassDTO tutoringClassDTO,
                                    DayAndTimeDTO dayAndTimeDTO, Boolean isOnline) {
-        //TODO: MAYBE, JUST MAYBE SOMEDAY ADD INSTANT ROOM RESERVATION... that would be a 3rd dto tho...
-        //TODO: If so maybe add wants_individual to requests maybe
-        //TODO: Ask what to do with payments, should it be schedule based or monthly based. If monthly then what if there are months with less classes (bc of holidays for example)
-
         //Validation
         if (dayAndTimeDTO.getTimeTo().isBefore(dayAndTimeDTO.getTimeFrom())){
             throw new RuntimeException("Invalid time values");
@@ -122,7 +120,7 @@ public class RequestService {
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
 
         //Admit chosen request
-        Request request = requestRepository.findById(id)
+        Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
         request.setAcceptanceDate(LocalDate.now());
         request.setTeacher(currentUser);
@@ -159,5 +157,23 @@ public class RequestService {
         return requestMapper.toDto(request);
     }
 
-    //TODO (Maybe): Add method that returns classes that this student can be added to based on his schedule
+    @Transactional
+    public RequestDTO admitRequestAddToClass(Long requestId, Long classId) {
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+
+        //Admit request
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new EntityNotFoundException("Request not found"));
+        request.setAcceptanceDate(LocalDate.now());
+        request.setTeacher(currentUser);
+
+        TutoringClass tutoringClass = tutoringClassRepository.findById(classId)
+                .orElseThrow(() -> new EntityNotFoundException("Tutoring class not found"));
+
+        //Add student to a chosen tutoringClass
+        tutoringClassService.addToTutoringClass(request.getStudent().getId(), tutoringClass.getId());
+
+        requestRepository.save(request);
+        return requestMapper.toDto(request);
+    }
 }

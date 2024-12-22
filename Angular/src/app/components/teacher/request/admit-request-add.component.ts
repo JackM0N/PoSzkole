@@ -5,6 +5,7 @@ import { TutoringClassService } from "../../../services/tutoring-class.service";
 import { ToastrService } from "ngx-toastr";
 import { Subject } from "../../../models/subject.model";
 import { DateTime } from "luxon";
+import { RequestService } from "../../../services/request.service";
 
 @Component({
   selector: 'app-admit-request-add',
@@ -18,9 +19,10 @@ export class AdmitRequestAddComponent implements OnInit{
     private ref: MatDialogRef<AdmitRequestAddComponent>,
     @Inject(MAT_DIALOG_DATA) public data:{
       subject: Subject;
-      studentId: number;
+      requestId: number;
     },
     private tutoringClassService: TutoringClassService,
+    private requestService: RequestService,
     private toastr: ToastrService,
   ){}
 
@@ -64,7 +66,7 @@ export class AdmitRequestAddComponent implements OnInit{
   }
   
   addStudentToClass(classId: number){
-    this.tutoringClassService.addStudentToTutoringClass(this.data.studentId, classId).subscribe({
+    this.requestService.admitRequestAddToClass(this.data.requestId, classId).subscribe({
       next: response => {
         this.toastr.success("Dodano ucznia na wybrane zajęcia!", "Sukces!");
         this.ref.close(true);

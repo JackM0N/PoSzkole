@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
-import pl.poszkole.PoSzkole.dto.RequestDTO;
-import pl.poszkole.PoSzkole.dto.StudentRequestAndDateDTO;
-import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
+import pl.poszkole.PoSzkole.dto.*;
 import pl.poszkole.PoSzkole.enums.ClassLocation;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.service.*;
@@ -39,15 +36,22 @@ public class RequestController {
         return ResponseEntity.ok(requestService.createRequest(requestDTO));
     }
 
-    @PostMapping("/admit/{id}")
-    @ResponseBody
-    public ResponseEntity<RequestDTO> approveRequest(
+    @PostMapping("/admit/create/{id}")
+    public ResponseEntity<RequestDTO> approveRequestCreateClass(
             @PathVariable Long id,
             @RequestBody StudentRequestAndDateDTO srdDTO
     ) {
         TutoringClassDTO tutoringClassDTO = srdDTO.getTutoringClassDTO();
         DayAndTimeDTO dayAndTimeDTO = srdDTO.getDayAndTimeDTO();
         Boolean isOnline = srdDTO.getIsOnline();
-        return ResponseEntity.ok(requestService.admitRequest(id, tutoringClassDTO, dayAndTimeDTO, isOnline));
+        return ResponseEntity.ok(requestService.admitRequestCreateClass(id, tutoringClassDTO, dayAndTimeDTO, isOnline));
+    }
+
+    @PutMapping("/admit/add")
+    public ResponseEntity<RequestDTO> approveRequestAddToClass(@RequestBody RequestAndClassDTO requestAndClassDTO) {
+        Long requestId = requestAndClassDTO.getRequestId();
+        Long classId = requestAndClassDTO.getClassId();
+        System.out.println("Controller");
+        return ResponseEntity.ok(requestService.admitRequestAddToClass(requestId, classId));
     }
 }
