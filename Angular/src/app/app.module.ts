@@ -63,6 +63,7 @@ import { RegisterTeacherComponent } from './components/manager/teachers/register
 import { RegisterStudentComponent } from './components/manager/students/register-student.component';
 import { ManagerCoursesComponent } from './components/manager/courses/manager-courses.component';
 import { AdmitRequestAddComponent } from './components/teacher/request/admit-request-add.component';
+import { AddStudentComponent } from './components/teacher/schedule/add-student.component';
 
 
 @NgModule({ declarations: [
@@ -99,7 +100,8 @@ import { AdmitRequestAddComponent } from './components/teacher/request/admit-req
         RegisterTeacherComponent,
         RegisterStudentComponent,
         ManagerCoursesComponent,
-        AdmitRequestAddComponent
+        AdmitRequestAddComponent,
+        AddStudentComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [
