@@ -44,4 +44,18 @@ public class TutoringClassController {
                 tutoringClassService.createTutoringClass(studentId,tutoringClassDTO,dayAndTimeDTO,isOnline,repeatUntil)
         );
     }
+
+    @PutMapping("/cancel/{classId}")
+    public ResponseEntity<TutoringClassDTO> cancelTheRestOfTutoringClass(
+            @PathVariable Long classId,
+            @RequestBody ScheduleChangesLogDTO scheduleChangesLogDTO) {
+        return ResponseEntity.ok(tutoringClassService.cancelTheRestOfTutoringClass(classId, scheduleChangesLogDTO));
+    }
+
+    @PutMapping("/remove-student")
+    public ResponseEntity<TutoringClassDTO> removeStudentFromTutoringClass(@RequestBody StudentAndClassDTO studentAndClassDTO) {
+        Long studentId = studentAndClassDTO.getStudentId();
+        Long classId = studentAndClassDTO.getClassId();
+        return ResponseEntity.ok(tutoringClassService.removeStudentFromTutoringClass(classId, studentId));
+    }
 }

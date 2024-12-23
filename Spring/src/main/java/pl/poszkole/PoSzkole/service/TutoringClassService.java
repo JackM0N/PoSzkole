@@ -2,17 +2,22 @@ package pl.poszkole.PoSzkole.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
+import pl.poszkole.PoSzkole.dto.ScheduleChangesLogDTO;
 import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
 import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
 import pl.poszkole.PoSzkole.mapper.ClassScheduleMapper;
+import pl.poszkole.PoSzkole.mapper.ScheduleChangesLogMapper;
 import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
 import pl.poszkole.PoSzkole.model.ClassSchedule;
+import pl.poszkole.PoSzkole.model.ScheduleChangesLog;
 import pl.poszkole.PoSzkole.model.TutoringClass;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
+import pl.poszkole.PoSzkole.repository.ScheduleChangesLogRepository;
 import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
@@ -37,8 +42,8 @@ public class TutoringClassService {
     private final ClassScheduleRepository classScheduleRepository;
     private final ClassScheduleMapper classScheduleMapper;
     private final UserBusyDayService userBusyDayService;
-
-    //TODO: Add possibility to cancel the rest of the classes
+    private final ScheduleChangesLogMapper scheduleChangesLogMapper;
+    private final ScheduleChangesLogRepository scheduleChangesLogRepository;
 
     public List<TutoringClassDTO> getActiveTutoringClassesForCurrentTeacher(Long subjectId) {
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
@@ -148,5 +153,53 @@ public class TutoringClassService {
         return tutoringClassMapper.toDto(tutoringClass);
     }
 
-    //TODO: Add removal of single student from a class.
+    public TutoringClassDTO cancelTheRestOfTutoringClass(Long tutoringClassId, ScheduleChangesLogDTO scheduleChangesLogDTO) {
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+
+        TutoringClass tutoringClass = tutoringClassRepository.findById(tutoringClassId)
+                .orElseThrow(() -> new EntityNotFoundException("This class does not exist"));
+
+        if (!tutoringClass.getTeacher().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("You cannot cancel tutoring class that you are not the teacher of");
+        }
+
+        List<ClassSchedule> classSchedules = classScheduleRepository.findAllByTutoringClassIdAndClassDateFromAfter(
+                tutoringClass.getId(), LocalDateTime.now());
+
+        classSchedules.forEach(classSchedule -> {
+            //Cancel schedule
+            classSchedule.setIsCanceled(true);
+            classScheduleRepository.save(classSchedule);
+
+            //TODO: Ask if it should create one for chosen schedule or all of em` (as in where did the cancellation started)
+            //Create changelogs
+            ScheduleChangesLog scheduleChangesLog = scheduleChangesLogMapper.toEntity(scheduleChangesLogDTO);
+            scheduleChangesLog.setUser(currentUser);
+            scheduleChangesLog.setClassSchedule(classSchedule);
+            scheduleChangesLogRepository.save(scheduleChangesLog);
+        });
+
+        return tutoringClassMapper.toDto(tutoringClass);
+    }
+
+    public TutoringClassDTO removeStudentFromTutoringClass(Long tutoringClassId, Long studentId) {
+        WebsiteUser currentUser = websiteUserService.getCurrentUser();
+
+        TutoringClass tutoringClass = tutoringClassRepository.findById(tutoringClassId)
+                .orElseThrow(() -> new EntityNotFoundException("This class does not exist"));
+
+        if (!tutoringClass.getTeacher().getId().equals(currentUser.getId())) {
+            throw new  AccessDeniedException("You cannot edit tutoring class that you are not the teacher of");
+        }
+
+        WebsiteUser student = websiteUserRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("This student does not exist"));
+
+        student.removeClass(tutoringClass);
+        websiteUserRepository.save(student);
+
+        //TODO: Kinda same vibe here. Should this create a changelog? (I think not but maybe?)
+
+        return tutoringClassMapper.toDto(tutoringClass);
+    }
 }

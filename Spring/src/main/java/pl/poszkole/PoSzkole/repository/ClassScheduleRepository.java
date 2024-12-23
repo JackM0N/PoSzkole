@@ -34,4 +34,6 @@ public interface ClassScheduleRepository extends JpaRepository<ClassSchedule, Lo
     List<ClassSchedule> findAllByTutoringClassId(Long tutoringClassId);
 
     Optional<ClassSchedule> findFirstByTutoringClassIdAndClassDateFromAfter(Long tutoringClassId, LocalDateTime classDateFrom);
+
+    List<ClassSchedule> findAllByTutoringClassIdAndClassDateFromAfter(Long tutoringClassId, LocalDateTime classDateFrom);
 }
