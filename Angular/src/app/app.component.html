@@ -7,7 +7,7 @@
           <p class="logo-text">PoSzkole</p>
         </div>
         <hr class="divider">
-        @if (authService.hasRole('STUDENT')){
+        @if (currentUserIsStudent){
           <div class="student-navbar">
             <p>Uczeń</p>
             <li><a routerLink="/student-schedule">Harmonogram ucznia</a></li>
@@ -15,14 +15,14 @@
             <li><a routerLink="/attendance">Obecność</a></li>
           </div>
         }
-        @if (authService.hasRole('TEACHER')){
+        @if (currentUserIsTeacher){
           <div class="teacher-navbar">
             <p>Nauczyciel</p>
             <li><a routerLink="/teacher-schedule">Harmonogram nauczyciela</a></li>
             <li><a routerLink="/request-list">Decyzje</a></li>
           </div>
         }
-        @if (authService.hasRole('MANAGER')){
+        @if (currentUserIsManager){
           <div class="manager-navbar">
             <p>Kierownik</p>
             <li><a routerLink="/request-form">Nowe zajęcia</a></li>

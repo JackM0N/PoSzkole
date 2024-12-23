@@ -25,7 +25,7 @@
       <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
     </div>
   }
-  @if (hasRole('STUDENT')) {
+  @if (currentUserIsStudent) {
     <div class="teacher-container">
       <br/>
       <h3>Dane nauczyciela</h3>
@@ -34,7 +34,7 @@
       <p><strong>Telefon:</strong> {{data.tutoringClass.teacher?.phone}}</p>
     </div>
   }
-  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id) {
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id) {
     <div class="students-container">
       <br/>
       <h3>Uczniowie:</h3>
@@ -53,19 +53,22 @@
   }
 </mat-dialog-content>
 <mat-dialog-actions>
-  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id) {
+    <button mat-raised-button color="primary" class="" (click)="openAddStudentToClass()">Dodaj ucznia na zajęcia</button>
+  }
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
     <button mat-raised-button class="" (click)="openAttendance(data.id!)">Obecność</button>
   }
-  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
     <button mat-raised-button class="" (click)="openReserveRoom(data.id!, data.classDateFrom, data.classDateTo)">Zarezerwuj salę</button>
   }
-  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id) {
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id) {
     <button mat-raised-button class="" (click)="openEditClass(data)">Edytuj zajęcia</button>
   }
-  @if (hasRole('TEACHER') && userId === data.tutoringClass.teacher?.id && !data.isCompleted) {
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCompleted) {
     <button mat-raised-button color="primary" (click)="completeClassSchedule(data.id!)">Zakończ zajęcia</button>
   }
-  @if (hasRole('STUDENT') && !data.isCanceled) {
+  @if (currentUserIsStudent && !data.isCanceled) {
     <button mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>
   }
   <button mat-raised-button color="primary" (click)="close()">Zamknij</button>

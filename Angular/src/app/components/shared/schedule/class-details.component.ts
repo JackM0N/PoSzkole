@@ -18,6 +18,7 @@ import { ChangeLogService } from '../../../services/change-log.service';
 import { ChangeLog } from '../../../models/change-log.model';
 import { Reason } from '../../../enums/reason.enum';
 import { ClassScheduleService } from '../../../services/class-schedule.service';
+import { AddStudentComponent } from '../../teacher/schedule/add-student.component';
 
 @Component({
   selector: 'app-class-details',
@@ -31,6 +32,8 @@ export class ClassDetailsComponent implements OnInit{
   jwtHelper = new JwtHelperService();
   changeLog: ChangeLog | undefined;
   reason: string | undefined;
+  currentUserIsStudent: boolean = false;
+  currentUserIsTeacher: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<ClassDetailsComponent>,
@@ -48,9 +51,11 @@ export class ClassDetailsComponent implements OnInit{
   ngOnInit(): void {
     //Get current user
     this.loadUserData();
+    this.currentUserIsStudent = this.authService.hasRole('STUDENT');
+    this.currentUserIsTeacher = this.authService.hasRole('TEACHER');
 
     //Check if current user is teacher and this is his class
-    if (this.hasRole('TEACHER') && this.userId === this.data.tutoringClass.teacher?.id) {
+    if (this.currentUserIsTeacher && this.userId === this.data.tutoringClass.teacher?.id) {
       const classId = this.data.tutoringClass.id;
       if (classId !== undefined){
         this.loadStudents(classId);
@@ -164,6 +169,21 @@ export class ClassDetailsComponent implements OnInit{
     });
   }
 
+  openAddStudentToClass(){
+    const classId = this.data.tutoringClass.id!;
+
+    const dialogRef = this.dialog.open(AddStudentComponent, {
+      width: '30%',
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      data: { classId },
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadStudents(classId);
+    });
+  }
+
   completeClassSchedule(classId: number){
     this.classScheduleService.completeClassSchedule(classId).subscribe({
       next: response => {
@@ -175,10 +195,6 @@ export class ClassDetailsComponent implements OnInit{
         console.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", error)
       }
     })
-  }
-
-  hasRole(role: string): boolean {
-    return this.userRoles.some(userRole => userRole.roleName === role);
   }
 
   openProfile(userId: number){
