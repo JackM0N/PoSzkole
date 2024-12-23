@@ -115,7 +115,15 @@ public class ClassScheduleService {
         //Check for overlap with other class schedules
         if (!classScheduleRepository.findOverlappingSchedulesForStudent(
                 studentId, classSchedule.getClassDateFrom(), classSchedule.getClassDateTo()).isEmpty()){
-            throw new RuntimeException("Class schedule overlaps with existing class");
+            throw new RuntimeException("Class schedule overlaps with existing student's class");
+        }
+
+        if (!classScheduleRepository.findOverlappingSchedulesForTeacher(
+                tutoringClass.getTeacher().getId(),
+                classSchedule.getClassDateFrom(),
+                classSchedule.getClassDateTo()
+        ).isEmpty()){
+            throw new RuntimeException("Class schedule overlaps with existing teacher's class");
         }
 
         classScheduleRepository.save(classSchedule);
@@ -141,12 +149,21 @@ public class ClassScheduleService {
             //Create new ClassSchedule
             ClassSchedule newClassSchedule = createSchedule(dayAndTimeDTO, tutoringClass, isOnline, firstDate);
 
+            //Check if this class schedule overlaps any existing one for the teacher
+            if (!classScheduleRepository.findOverlappingSchedulesForTeacher(
+                    tutoringClass.getTeacher().getId(),
+                    newClassSchedule.getClassDateFrom(),
+                    newClassSchedule.getClassDateTo()
+            ).isEmpty()){
+                throw new RuntimeException("Class schedule overlaps with existing teacher's class");
+            }
+
             //We need to check all students (this method was changed from single student use for course impl)
             students.forEach(student ->{
                 //Check if this class schedule overlaps any existing one for every student
                 if (!classScheduleRepository.findOverlappingSchedulesForStudent(
                         student.getId(), newClassSchedule.getClassDateFrom(), newClassSchedule.getClassDateTo()).isEmpty()){
-                    throw new RuntimeException("Class schedule overlaps with existing class of student with id " + student.getId());
+                    throw new RuntimeException("Class schedule overlaps with existing student's class with id " + student.getId());
                 }
             });
             //If it doesn't add it to list of class schedules
