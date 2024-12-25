@@ -5,9 +5,9 @@ import org.springframework.stereotype.Repository;
 import pl.poszkole.PoSzkole.model.ClassSchedule;
 import pl.poszkole.PoSzkole.model.ScheduleChangesLog;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface ScheduleChangesLogRepository extends JpaRepository<ScheduleChangesLog, Long> {
-    Optional<ScheduleChangesLog> findByClassSchedule(ClassSchedule classSchedule);
+    List<ScheduleChangesLog> findByClassSchedule(ClassSchedule classSchedule);
 }

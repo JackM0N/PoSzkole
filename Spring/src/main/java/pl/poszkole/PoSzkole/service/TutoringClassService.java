@@ -178,6 +178,8 @@ public class TutoringClassService {
             scheduleChangesLog.setClassSchedule(classSchedule);
             scheduleChangesLogRepository.save(scheduleChangesLog);
         });
+        //TODO: Not sure if that can be
+        tutoringClass.setIsCompleted(true);
 
         return tutoringClassMapper.toDto(tutoringClass);
     }

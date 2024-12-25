@@ -32,7 +32,7 @@ export class ClassDetailsComponent implements OnInit{
   userRoles: Role[] = [];
   students: SimplifiedUser[] = [];
   jwtHelper = new JwtHelperService();
-  changeLog: ChangeLog | undefined;
+  changeLogs: ChangeLog[] = [];
   reason: string | undefined;
   currentUserIsStudent: boolean = false;
   currentUserIsTeacher: boolean = false;
@@ -92,10 +92,10 @@ export class ClassDetailsComponent implements OnInit{
   loadChangeLog(classId: number){
     this.changeLogService.getChangeLogForClassSchedule(classId).subscribe({
       next: response => {
-        this.changeLog = response;
-        if (this.changeLog && this.changeLog.reason) {
-          this.changeLog.reason = Reason[this.changeLog.reason as unknown as keyof typeof Reason];
-        }
+        this.changeLogs = response.map(log => ({
+          ...log,
+          reason: Reason[log.reason as unknown as keyof typeof Reason]
+        }));
       },
       error: error => {
         console.error(error);

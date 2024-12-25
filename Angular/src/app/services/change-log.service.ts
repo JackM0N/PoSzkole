@@ -12,7 +12,7 @@ export class ChangeLogService {
 
   constructor(private http: HttpClient){}
 
-  getChangeLogForClassSchedule(classScheduleId: number): Observable<ChangeLog>{
-    return this.http.get<ChangeLog>(`${this.baseUrl}/class-schedule/${classScheduleId}`)
+  getChangeLogForClassSchedule(classScheduleId: number): Observable<ChangeLog[]>{
+    return this.http.get<ChangeLog[]>(`${this.baseUrl}/class-schedule/${classScheduleId}`)
   }
 }

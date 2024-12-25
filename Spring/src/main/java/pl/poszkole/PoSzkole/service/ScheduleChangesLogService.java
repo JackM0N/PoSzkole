@@ -9,6 +9,9 @@ import pl.poszkole.PoSzkole.model.ScheduleChangesLog;
 import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 import pl.poszkole.PoSzkole.repository.ScheduleChangesLogRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleChangesLogService {
@@ -16,11 +19,10 @@ public class ScheduleChangesLogService {
     private final ClassScheduleRepository classScheduleRepository;
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
 
-    public ScheduleChangesLogDTO getLogForClassSchedule(Long classScheduleId) {
+    public List<ScheduleChangesLogDTO> getLogForClassSchedule(Long classScheduleId) {
         ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
                 .orElseThrow(() -> new RuntimeException("Class schedule not found"));
-        ScheduleChangesLog changesLog = scheduleChangesLogRepository.findByClassSchedule(classSchedule)
-                .orElseThrow(() -> new RuntimeException("Class changelog not found"));
-        return scheduleChangesLogMapper.toDto(changesLog);
+        List<ScheduleChangesLog> changesLogs = scheduleChangesLogRepository.findByClassSchedule(classSchedule);
+        return changesLogs.stream().map(scheduleChangesLogMapper::toDto).collect(Collectors.toList());
     }
 }
