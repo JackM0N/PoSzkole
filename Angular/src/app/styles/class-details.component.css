@@ -41,3 +41,22 @@ button {
   background-color: red;
   color: white;
 }
+
+/* Przycisk do usuwania uczniów */
+.delete-button {
+  background: none;
+  border: none; 
+  color: red;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0;
+  height: 1em;
+}
+
+.delete-button mat-icon {
+  font-size: 1em; 
+}
+
+.delete-button:hover {
+  color: darkred;
+}

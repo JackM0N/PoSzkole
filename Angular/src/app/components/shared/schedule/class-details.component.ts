@@ -19,6 +19,7 @@ import { ChangeLog } from '../../../models/change-log.model';
 import { Reason } from '../../../enums/reason.enum';
 import { ClassScheduleService } from '../../../services/class-schedule.service';
 import { AddStudentComponent } from '../../teacher/schedule/add-student.component';
+import { PopUpDialogComponent } from '../pop-up/pop-up-dialog.component';
 
 @Component({
   selector: 'app-class-details',
@@ -195,6 +196,41 @@ export class ClassDetailsComponent implements OnInit{
         console.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", error)
       }
     })
+  }
+
+  removeStudent(studentId: number){
+    this.tutoringClassService.removeStudentFromTutoringClass(studentId, this.data.tutoringClass.id!).subscribe({
+      next: response => {
+        this.toastr.success(`Uczeń został usunięty z zajęć: ${this.data.tutoringClass.className}`,"Sukces!")
+        this.dialogRef.close(true)
+      },
+      error: error => {
+        if (error.error === "You cannot remove the only student from a class"){
+          this.toastr.error("Nie można usunąć z zajęć jedynego ucznia, który na nie uczęszcza", "Błąd!")
+        }else{
+          this.toastr.error("Coś poszło nie tak przy próbie usunięcia ucznia z zajęć", "Błąd!")
+          console.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", error)
+        }
+      }
+    })
+  }
+
+  confirmRemoveStudent(studentId: number): void {
+    const dialogRef = this.dialog.open(PopUpDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Potwierdzenie usunięcia',
+        content: 'Czy na pewno chcesz usunąć tego ucznia z zajęć?',
+        submitText: 'Usuń',
+        cancelText: 'Anuluj'
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.removeStudent(studentId);
+      }
+    });
   }
 
   openProfile(userId: number){

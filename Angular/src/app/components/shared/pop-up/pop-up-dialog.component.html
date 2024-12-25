@@ -5,6 +5,10 @@
 </div>
 
 <div mat-dialog-actions>
-  <button mat-raised-button color="warn" mat-dialog-close>{{data.cancelText}}</button>
-  <button mat-raised-button color="accent">{{data.submitText}}</button>
+  <button mat-raised-button color="warn" (click)="closePopup(false)">
+    {{data.cancelText}}
+  </button>
+  <button mat-raised-button color="primary" (click)="closePopup(true)">
+    {{data.submitText}}
+  </button>
 </div>

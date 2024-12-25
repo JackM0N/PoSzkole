@@ -43,6 +43,7 @@
           @for (student of students; track student) {
             <li>
               <button class="unstyled-button" tabindex="-1" (click)="openProfile(student.id!)">{{student.id}} - {{student.firstName}} {{student.lastName}}</button>
+              <button class="delete-button" (click)="confirmRemoveStudent(student.id!)"><mat-icon>close</mat-icon></button>
             </li>
           }
         </ul>

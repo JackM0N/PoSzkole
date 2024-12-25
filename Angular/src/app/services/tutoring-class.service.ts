@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { SimplifiedUser } from "../models/simplified-user.model";
 import { TutoringClass } from "../models/tutoring-class.model";
+import { ScheduleChangesLog } from "../models/schedule-changes-log.model";
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,16 @@ export class TutoringClassService {
       studentId: studentId,
       classId: classId
     });
+  }
+
+  removeStudentFromTutoringClass(studentId: number, classId: number): Observable<TutoringClass> {
+    return this.http.put<TutoringClass>(`${this.baseUrl}/remove-student`, {
+      studentId: studentId,
+      classId: classId
+    });
+  }
+
+  cancelTheRestOfTutoringClass(classId: number, scheduleChangeLog: ScheduleChangesLog): Observable<TutoringClass> {
+    return this.http.put<TutoringClass>(`${this.baseUrl}/cancel/${classId}`, {scheduleChangeLog});
   }
 }

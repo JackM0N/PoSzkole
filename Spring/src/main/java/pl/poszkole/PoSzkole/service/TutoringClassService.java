@@ -188,8 +188,12 @@ public class TutoringClassService {
         TutoringClass tutoringClass = tutoringClassRepository.findById(tutoringClassId)
                 .orElseThrow(() -> new EntityNotFoundException("This class does not exist"));
 
+        if (tutoringClass.getStudents().size() == 1){
+            throw new RuntimeException("You cannot remove the only student from a class");
+        }
+
         if (!tutoringClass.getTeacher().getId().equals(currentUser.getId())) {
-            throw new  AccessDeniedException("You cannot edit tutoring class that you are not the teacher of");
+            throw new AccessDeniedException("You cannot edit tutoring class that you are not the teacher of");
         }
 
         WebsiteUser student = websiteUserRepository.findById(studentId)

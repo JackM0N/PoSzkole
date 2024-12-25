@@ -6,5 +6,6 @@ export enum Reason {
   TECHNICAL_ISSUES = "Problemy techniczne",
   HOLIDAY = "Święta",
   CLASS_REASSIGNMENT = "Zastępstwo",
+  CANCELLATION_OF_REMAINING_CLASSES = " Odwołanie pozostałych zajęć",
   OTHER = "Inne"
 }

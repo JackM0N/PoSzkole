@@ -21,7 +21,7 @@ export class PopUpDialogComponent implements OnInit{
     this.data.cancelText = this.data.cancelText || 'Cancel';
   }
 
-  closePopup(){
-    this.ref.close();
+  closePopup(confirm: boolean){
+    this.ref.close(confirm);
   }
 }
