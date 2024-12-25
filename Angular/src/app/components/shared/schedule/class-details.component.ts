@@ -20,6 +20,7 @@ import { Reason } from '../../../enums/reason.enum';
 import { ClassScheduleService } from '../../../services/class-schedule.service';
 import { AddStudentComponent } from '../../teacher/schedule/add-student.component';
 import { PopUpDialogComponent } from '../pop-up/pop-up-dialog.component';
+import { CancelTutoringClassComponent } from '../../teacher/schedule/cancel-tutoring-class.component';
 
 @Component({
   selector: 'app-class-details',
@@ -174,6 +175,21 @@ export class ClassDetailsComponent implements OnInit{
     const classId = this.data.tutoringClass.id!;
 
     const dialogRef = this.dialog.open(AddStudentComponent, {
+      width: '30%',
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      data: { classId },
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadStudents(classId);
+    });
+  }
+
+  openCancelClass(){
+    const classId = this.data.tutoringClass.id!;
+
+    const dialogRef = this.dialog.open(CancelTutoringClassComponent, {
       width: '30%',
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',

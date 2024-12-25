@@ -49,6 +49,7 @@ public class TutoringClassController {
     public ResponseEntity<TutoringClassDTO> cancelTheRestOfTutoringClass(
             @PathVariable Long classId,
             @RequestBody ScheduleChangesLogDTO scheduleChangesLogDTO) {
+        System.out.println(scheduleChangesLogDTO);
         return ResponseEntity.ok(tutoringClassService.cancelTheRestOfTutoringClass(classId, scheduleChangesLogDTO));
     }
 

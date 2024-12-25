@@ -59,8 +59,6 @@
   }
   @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
     <button mat-raised-button class="" (click)="openAttendance(data.id!)">Obecność</button>
-  }
-  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
     <button mat-raised-button class="" (click)="openReserveRoom(data.id!, data.classDateFrom, data.classDateTo)">Zarezerwuj salę</button>
   }
   @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id) {
@@ -71,6 +69,9 @@
   }
   @if (currentUserIsStudent && !data.isCanceled) {
     <button mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>
+  }
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id) {
+    <button mat-raised-button color="warn" (click)="openCancelClass()">Odowłaj resztę terminów zajęć</button>
   }
   <button mat-raised-button color="primary" (click)="close()">Zamknij</button>
 </mat-dialog-actions>

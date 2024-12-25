@@ -37,6 +37,6 @@ export class TutoringClassService {
   }
 
   cancelTheRestOfTutoringClass(classId: number, scheduleChangeLog: ScheduleChangesLog): Observable<TutoringClass> {
-    return this.http.put<TutoringClass>(`${this.baseUrl}/cancel/${classId}`, {scheduleChangeLog});
+    return this.http.put<TutoringClass>(`${this.baseUrl}/cancel/${classId}`, scheduleChangeLog);
   }
 }
