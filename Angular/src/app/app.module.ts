@@ -67,6 +67,7 @@ import { AdmitRequestAddComponent } from './components/teacher/request/admit-req
 import { AddStudentComponent } from './components/teacher/schedule/add-student.component';
 import { CancelTutoringClassComponent } from './components/teacher/schedule/cancel-tutoring-class.component';
 import { CourseDetailsComponent } from './components/shared/courses/course-details.component';
+import { CourseAttendantsComponent } from './components/manager/courses/course-attendants.component';
 
 
 @NgModule({ declarations: [
@@ -107,6 +108,7 @@ import { CourseDetailsComponent } from './components/shared/courses/course-detai
         AddStudentComponent,
         CancelTutoringClassComponent,
         CourseDetailsComponent,
+        CourseAttendantsComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

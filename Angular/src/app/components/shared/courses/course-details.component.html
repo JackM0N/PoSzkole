@@ -19,4 +19,7 @@
 
 <mat-dialog-actions>
   <button mat-raised-button color="primary" (click)="dialogRef.close()">Zamknij</button>
+  @if(currentUserIsManager){
+    <button mat-raised-button (click)="openAttendants()">Wyświetl zapisanych uczniów</button>
+  }
 </mat-dialog-actions>

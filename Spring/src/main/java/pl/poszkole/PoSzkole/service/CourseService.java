@@ -9,12 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import pl.poszkole.PoSzkole.dto.CourseDTO;
-import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
-import pl.poszkole.PoSzkole.dto.StartCourseDTO;
-import pl.poszkole.PoSzkole.dto.TutoringClassDTO;
+import pl.poszkole.PoSzkole.dto.*;
 import pl.poszkole.PoSzkole.filter.CourseFilter;
 import pl.poszkole.PoSzkole.mapper.CourseMapper;
+import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
 import pl.poszkole.PoSzkole.model.Course;
 import pl.poszkole.PoSzkole.model.TutoringClass;
@@ -25,6 +23,7 @@ import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +35,10 @@ public class CourseService {
     private final TutoringClassMapper tutoringClassMapper;
     private final TutoringClassRepository tutoringClassRepository;
     private final ClassScheduleService classScheduleService;
+    private final SimplifiedUserMapper simplifiedUserMapper;
 
     //TODO: Add method for canceling course
+    //TODO: Add method for deleting courses that are not yet open for registration/haven't started yet
 
     public Page<CourseDTO> getAllAvailableCourses(CourseFilter courseFilter, Pageable pageable) {
         Specification<Course> spec = applyCourseFilter(courseFilter);
@@ -95,6 +96,14 @@ public class CourseService {
         return course.getDescription();
     }
 
+    public List<SimplifiedUserDTO> getCourseAttendants(Long courseId){
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        List<WebsiteUser> attendants = course.getStudents();
+
+        return attendants.stream().map(simplifiedUserMapper::toSimplifiedUserDTO).collect(Collectors.toList());
+    }
+
     @Transactional
     public CourseDTO startCourse(StartCourseDTO startCourseDTO) {
         //Get course
@@ -142,7 +151,6 @@ public class CourseService {
         return courseMapper.toDto(courseRepository.save(course));
     }
 
-    @Transactional
     public CourseDTO addStudentToCourse(Long courseId, Long studentId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Course not found"));
@@ -156,6 +164,19 @@ public class CourseService {
 
         //Add student to chosen course
         studentUser.addCourse(course);
+
+        websiteUserRepository.save(studentUser);
+        return courseMapper.toDto(course);
+    }
+
+    public CourseDTO removeStudentFromCourse(Long courseId, Long studentId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        WebsiteUser studentUser = websiteUserRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+
+        //Remove student from the chosen course
+        studentUser.removeCourse(course);
 
         websiteUserRepository.save(studentUser);
         return courseMapper.toDto(course);

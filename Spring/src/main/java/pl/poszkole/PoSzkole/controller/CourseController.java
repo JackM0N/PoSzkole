@@ -7,9 +7,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.poszkole.PoSzkole.dto.CourseDTO;
+import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
 import pl.poszkole.PoSzkole.dto.StartCourseDTO;
+import pl.poszkole.PoSzkole.dto.StudentAndCourseDTO;
 import pl.poszkole.PoSzkole.filter.CourseFilter;
 import pl.poszkole.PoSzkole.service.CourseService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +42,11 @@ public class CourseController {
         return ResponseEntity.ok().contentType(MediaType.valueOf("text/plain;charset=UTF-8")).body(description);
     }
 
+    @GetMapping("/attendants/{courseId}")
+    public ResponseEntity<List<SimplifiedUserDTO>> getAttendants(@PathVariable Long courseId){
+        return ResponseEntity.ok(courseService.getCourseAttendants(courseId));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<CourseDTO> createCourse(@RequestBody CourseDTO courseDTO) {
         return ResponseEntity.ok(courseService.createCourse(courseDTO));
@@ -49,8 +58,17 @@ public class CourseController {
     }
 
     @PutMapping("/add-student")
-    public ResponseEntity<CourseDTO> addStudent(@RequestParam Long studentId, @RequestParam Long courseId) {
+    public ResponseEntity<CourseDTO> addStudent(@RequestBody StudentAndCourseDTO studentAndCourseDTO) {
+        Long studentId = studentAndCourseDTO.getStudentId();
+        Long courseId = studentAndCourseDTO.getCourseId();
         return ResponseEntity.ok(courseService.addStudentToCourse(studentId, courseId));
+    }
+
+    @PutMapping("/remove-student")
+    public ResponseEntity<CourseDTO> removeStudent(@RequestBody StudentAndCourseDTO studentAndCourseDTO) {
+        Long studentId = studentAndCourseDTO.getStudentId();
+        Long courseId = studentAndCourseDTO.getCourseId();
+        return ResponseEntity.ok(courseService.removeStudentFromCourse(studentId, courseId));
     }
 
     @PutMapping("/open/{courseId}")

@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CourseService } from '../../../services/course.service';
 import { Course } from '../../../models/course.model';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../services/auth.service';
+import { CourseAttendantsComponent } from '../../manager/courses/course-attendants.component';
 
 @Component({
   selector: 'app-course-details',
@@ -11,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CourseDetailsComponent implements OnInit{
   courseDetails: string = '';
+  currentUserIsManager: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<CourseDetailsComponent>,
@@ -18,11 +21,14 @@ export class CourseDetailsComponent implements OnInit{
       course: Course;
     },
     private courseService: CourseService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService,
+    private dialog: MatDialog,
   ){}
 
   ngOnInit(): void {
     this.loadCourseDetails();
+    this.currentUserIsManager = this.authService.hasRole("MANAGER");
   }
 
   loadCourseDetails(){
@@ -35,5 +41,13 @@ export class CourseDetailsComponent implements OnInit{
         console.error("Error loading course details",error)
       }
     })
+  }
+
+  openAttendants(){
+    this.dialogRef.close();
+    this.dialog.open(CourseAttendantsComponent, {
+      width: '50%',
+      data: { courseId: this.data.course.id },
+    });
   }
 }
