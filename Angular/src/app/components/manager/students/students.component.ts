@@ -46,7 +46,6 @@ export class StudentsComponent implements AfterViewInit{
     const observer: Observer<any> = {
       next: response => {
         if (response) {
-          console.log(response)
           this.totalStudents = response.totalElements;
           this.dataSource = new MatTableDataSource<SimplifiedUser>(response.content);
           this.noStudents = this.dataSource.data.length === 0;

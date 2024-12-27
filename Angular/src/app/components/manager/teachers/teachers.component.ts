@@ -46,7 +46,6 @@ export class TeachersComponent {
     const observer: Observer<any> = {
       next: response => {
         if (response) {
-          console.log(response)
           this.totalTeachers = response.totalElements;
           this.dataSource = new MatTableDataSource<SimplifiedUser>(response.content);
           this.noTeachers = this.dataSource.data.length === 0;

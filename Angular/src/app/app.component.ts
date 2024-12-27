@@ -19,4 +19,10 @@ export class AppComponent {
     this.currentUserIsTeacher = this.authService.hasRole('TEACHER');
     this.currentUserIsManager = this.authService.hasRole('MANAGER');
   }
+
+  reloadRoles(){
+    this.currentUserIsStudent = this.authService.hasRole('STUDENT');
+    this.currentUserIsTeacher = this.authService.hasRole('TEACHER');
+    this.currentUserIsManager = this.authService.hasRole('MANAGER');
+  }
 }

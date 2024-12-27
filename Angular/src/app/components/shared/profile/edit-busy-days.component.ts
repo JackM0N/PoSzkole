@@ -54,8 +54,6 @@ export class EditBusyDaysComponent {
       ) as DaysOfTheWeek
     };
 
-    console.log(formValue)
-
     if (this.data.isCreation) {
       this.createBusyDay(busyDay);
     } else {

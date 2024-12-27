@@ -37,7 +37,7 @@
         <ul>
           @if(authService.isLoggedIn()){
             <li><a routerLink="/my-profile">Konto</a></li>
-            <li><a (click)="authService.logout()">Wyloguj</a></li>
+            <li><a (click)="authService.logout(); reloadRoles()">Wyloguj</a></li>
           }
           @else {
             <li><a routerLink="/login">Zaloguj się</a></li>

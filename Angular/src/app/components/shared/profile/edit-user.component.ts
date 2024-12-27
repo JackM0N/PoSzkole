@@ -68,8 +68,6 @@ export class EditUserComponent {
       return;
     }
 
-    console.log(this.areUsersEqual(originalUser,updatedUser))
-
     if (this.userForm.invalid) {
       this.toastr.error('Formularz zawiera błędy');
       return;

@@ -63,8 +63,6 @@ export class AddStudentComponent implements OnInit{
     if (this.addStudentForm.valid) {
       const selectedStudent = this.addStudentForm.get('student')!.value;
 
-      console.log(this.data.classId)
-
       this.tutoringClassService.addStudentToTutoringClass(selectedStudent.id, this.data.classId).subscribe({
         next: response => {
           this.toastr.success("Pomyślnie dodano wybranego ucznia do zajęć");

@@ -35,8 +35,6 @@ export class AvailableCoursesComponent implements AfterViewInit{
     this.dataSource.sort = this.sort;
     this.loadBoughtCourses();
 
-    console.log(this.authService.hasRole("MANAGER"))
-
     this.sort.sortChange.subscribe(() => {
       this.loadBoughtCourses();
     });

@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { environment } from "../../../environment/environment";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { AppComponent } from "../../app.component";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent {
      private authService: AuthService,
      private router: Router,
      private formBuilder: FormBuilder,
-     private toastr: ToastrService
+     private toastr: ToastrService,
+     private appComponent: AppComponent,
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -33,6 +35,7 @@ export class LoginComponent {
     this.authService.login(userData).subscribe({
       next: response => {
         localStorage.setItem(environment.tokenKey, response.token);
+        this.appComponent.reloadRoles();
         this.toastr.success("Logowanie się powiodło! Witaj z powrotem", "Sukces!")
         this.router.navigate(['/'])
       },
