@@ -89,6 +89,12 @@ public class CourseService {
         return courses.map(courseMapper::toDto);
     }
 
+    public String getCourseDescription(Long courseId){
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        return course.getDescription();
+    }
+
     @Transactional
     public CourseDTO startCourse(StartCourseDTO startCourseDTO) {
         //Get course

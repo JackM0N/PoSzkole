@@ -44,4 +44,7 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private List<WebsiteUser> students = new ArrayList<>();
 
+    @Column(name = "description", nullable = false, length = Integer.MAX_VALUE)
+    private String description;
+
 }

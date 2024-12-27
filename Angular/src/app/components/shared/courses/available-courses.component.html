@@ -31,14 +31,14 @@
         @if(currentUserIsManager){
           <button mat-button color="primary" [matMenuTriggerFor]="menu">Menu</button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>Szczegóły</button>
+            <button mat-menu-item (click)="loadDetails(course)">Szczegóły</button>
             <button mat-menu-item>Rozpocznij</button>
             <button mat-menu-item>Edytuj</button>
             <button mat-menu-item>Dodaj ucznia</button>
           </mat-menu>
         }
         @else {
-          <button mat-button color="primary">Szczegóły</button>
+          <button mat-button color="primary" (click)="loadDetails(course)">Szczegóły</button>
         }
       </td>
     </ng-container>

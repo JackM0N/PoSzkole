@@ -24,5 +24,6 @@ public class CourseDTO implements Serializable {
     Boolean isOpenForRegistration;
     Boolean isDone;
     Long tutoringClassId;
+    String description;
     List<SimplifiedUserDTO> students;
 }

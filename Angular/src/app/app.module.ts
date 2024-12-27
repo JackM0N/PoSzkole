@@ -22,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuModule } from '@angular/material/menu'
+import { MatDivider } from '@angular/material/divider'
 
 //App
 import { AppRoutingModule } from './app-routing.module';
@@ -65,6 +66,7 @@ import { ManagerCoursesComponent } from './components/manager/courses/manager-co
 import { AdmitRequestAddComponent } from './components/teacher/request/admit-request-add.component';
 import { AddStudentComponent } from './components/teacher/schedule/add-student.component';
 import { CancelTutoringClassComponent } from './components/teacher/schedule/cancel-tutoring-class.component';
+import { CourseDetailsComponent } from './components/shared/courses/course-details.component';
 
 
 @NgModule({ declarations: [
@@ -104,6 +106,7 @@ import { CancelTutoringClassComponent } from './components/teacher/schedule/canc
         AdmitRequestAddComponent,
         AddStudentComponent,
         CancelTutoringClassComponent,
+        CourseDetailsComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [
@@ -135,7 +138,8 @@ import { CancelTutoringClassComponent } from './components/teacher/schedule/canc
         MatCardModule,
         MatIcon,
         MatMenu,
-        MatMenuModule
+        MatMenuModule,
+        MatDivider
     ], 
     providers: [
         provideAnimationsAsync(),

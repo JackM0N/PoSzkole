@@ -25,14 +25,14 @@ export class ManagerCoursesComponent {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.loadBoughtCourses();
+    this.loadActiveCourses();
 
     this.sort.sortChange.subscribe(() => {
-      this.loadBoughtCourses();
+      this.loadActiveCourses();
     });
   }
 
-  loadBoughtCourses() {
+  loadActiveCourses() {
     const page = this.paginator.pageIndex + 1;
     const size = this.paginator.pageSize || 10;
     const sortBy = this.sort.active || 'courseName';

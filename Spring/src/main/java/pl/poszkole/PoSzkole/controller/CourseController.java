@@ -3,6 +3,7 @@ package pl.poszkole.PoSzkole.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.poszkole.PoSzkole.dto.CourseDTO;
@@ -29,6 +30,12 @@ public class CourseController {
     @GetMapping("/active-courses")
     public ResponseEntity<Page<CourseDTO>> getActiveCourses(CourseFilter courseFilter, Pageable pageable) {
         return ResponseEntity.ok(courseService.getActiveCourses(courseFilter, pageable));
+    }
+
+    @GetMapping(value = "/description/{courseId}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    public ResponseEntity<String> getDescription(@PathVariable Long courseId) {
+        String description = courseService.getCourseDescription(courseId);
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/plain;charset=UTF-8")).body(description);
     }
 
     @PostMapping("/create")

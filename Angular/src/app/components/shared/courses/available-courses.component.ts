@@ -6,6 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { CourseService } from '../../../services/course.service';
 import { Observer } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CourseDetailsComponent } from './course-details.component';
 
 @Component({
   selector: 'app-available-courses',
@@ -24,7 +26,8 @@ export class AvailableCoursesComponent implements AfterViewInit{
 
   constructor(
     private courseService: CourseService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog,
 
   ) {
     this.currentUserIsManager = this.authService.hasRole("MANAGER");
@@ -63,5 +66,18 @@ export class AvailableCoursesComponent implements AfterViewInit{
     };
 
     this.courseService.getAvailableCourses(page, size, sortBy, sortDir).subscribe(observer);
+  }
+
+  loadDetails(course: Course){
+    const dialogRef = this.dialog.open(CourseDetailsComponent, {
+      width: '35%',
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      data: { course },
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadBoughtCourses();
+    });
   }
 }

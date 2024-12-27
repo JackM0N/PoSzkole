@@ -77,7 +77,8 @@ CREATE TABLE course
     start_date               DATE         NOT NULL,
     is_open_for_registration BOOLEAN      NOT NULL,
     tutoring_class_id        BIGINT REFERENCES tutoring_class (class_id),
-    is_done                  BOOLEAN      NOT NULL
+    is_done                  BOOLEAN      NOT NULL,
+    description              TEXT         NOT NULL
 );
 
 --Dni zajete

@@ -52,7 +52,8 @@ public class SecurityConfig {
                         .hasRole("STUDENT")
 
                         .requestMatchers("/course/available-courses", "/busy-days/**", "/subject/all", "/user/my-profile",
-                                "/user/profile/**", "/user/edit/my-profile", "/changelog/class-schedule/**")
+                                "/user/profile/**", "/user/edit/my-profile", "/changelog/class-schedule/**",
+                                "/course/description/**")
                         .hasAnyRole("OWNER", "MANAGER", "TEACHER", "STUDENT")
 
                         .requestMatchers("/login", "/register", "/details")

@@ -39,4 +39,8 @@ export class CourseService {
     return this.http.get<Course[]>(`${this.baseUrl}/active-courses`, { params })
   }
 
+  getCourseDescription(courseId: number): Observable<string>{
+    return this.http.get<string>(`${this.baseUrl}/description/${courseId}`, { responseType: 'text' as 'json' })
+  }
+
 }
