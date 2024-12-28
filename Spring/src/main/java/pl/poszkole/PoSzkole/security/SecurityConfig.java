@@ -33,8 +33,8 @@ public class SecurityConfig {
                         .requestMatchers("/registration/teacher", "/request/create", "/course/create",
                                 "/course/edit/", "/course/delete/", "/course/add-student", "/course/open/**",
                                 "/course/finish/**", "/course/active-courses", "/course/attendants/**",
-                                "/course/add-student", "/course/remove-student", "/registration/teacher",
-                                "/registration/manager")
+                                "/course/add-student", "/course/remove-student", "/course/not-started-courses",
+                                "/registration/teacher", "/registration/manager")
                         .hasAnyRole("MANAGER", "OWNER")
 
                         .requestMatchers("/class/add-student", "/class/create", "/class/student-list/**",

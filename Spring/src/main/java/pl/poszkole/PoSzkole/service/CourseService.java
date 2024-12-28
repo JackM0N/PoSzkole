@@ -40,6 +40,20 @@ public class CourseService {
     //TODO: Add method for canceling course
     //TODO: Add method for deleting courses that are not yet open for registration/haven't started yet
 
+    public Page<CourseDTO> getAllNotStartedCourses(CourseFilter courseFilter, Pageable pageable) {
+        Specification<Course> spec = applyCourseFilter(courseFilter);
+
+        //Course cannot have a class, because that would mean it has already started
+        spec = spec.and(((root, query, builder) -> builder.isNull(root.get("tutoringClass"))));
+
+        //Course cannot be done
+        spec = spec.and(((root, query, builder) -> builder.equal(root.get("isDone"), false)));
+
+        Page<Course> courses = courseRepository.findAll(spec, pageable);
+
+        return courses.map(courseMapper::toDto);
+    }
+
     public Page<CourseDTO> getAllAvailableCourses(CourseFilter courseFilter, Pageable pageable) {
         Specification<Course> spec = applyCourseFilter(courseFilter);
 

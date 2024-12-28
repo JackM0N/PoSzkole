@@ -14,6 +14,15 @@ export class CourseService {
 
   constructor(private http: HttpClient){}
 
+  getNotStartedCourses(page: number, size: number, sortBy: string, sortDir: string): Observable<Course[]>{
+    var params = new HttpParams()
+      .set('page', (page - 1).toString())
+      .set('size', size.toString())
+      .set('sort', sortBy + ',' + sortDir
+    );
+    return this.http.get<Course[]>(`${this.baseUrl}/not-started-courses`, { params })
+  }
+
   getAvailableCourses(page: number, size: number, sortBy: string, sortDir: string): Observable<Course[]>{
     var params = new HttpParams()
       .set('page', (page - 1).toString())

@@ -53,7 +53,7 @@ import { EditUserComponent } from './components/shared/profile/edit-user.compone
 import { EditSubjectsComponent } from './components/shared/profile/edit-subjects.component';
 import { CheckRoomAvailiabilityComponent } from './components/teacher/schedule/check-room-availability.component';
 import { StudentCoursesComponent } from './components/student/courses/student-courses.component';
-import { AvailableCoursesComponent } from './components/shared/courses/available-courses.component';
+import { AvailableCoursesComponent } from './components/student/courses/available-courses.component';
 import { StudentAttendanceComponent } from './components/student/attendance/student-attendance.component';
 import { StudentAbsenceComponent } from './components/student/attendance/student-absence.component';
 import { StudentsComponent } from './components/manager/students/students.component';
@@ -68,6 +68,7 @@ import { AddStudentComponent } from './components/teacher/schedule/add-student.c
 import { CancelTutoringClassComponent } from './components/teacher/schedule/cancel-tutoring-class.component';
 import { CourseDetailsComponent } from './components/shared/courses/course-details.component';
 import { CourseAttendantsComponent } from './components/manager/courses/course-attendants.component';
+import { NotStartedCoursesComponent } from './components/manager/courses/not-started-courses.component';
 
 
 @NgModule({ declarations: [
@@ -109,6 +110,7 @@ import { CourseAttendantsComponent } from './components/manager/courses/course-a
         CancelTutoringClassComponent,
         CourseDetailsComponent,
         CourseAttendantsComponent,
+        NotStartedCoursesComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

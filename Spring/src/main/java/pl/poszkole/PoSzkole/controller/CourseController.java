@@ -21,6 +21,11 @@ import java.util.List;
 public class CourseController {
     private final CourseService courseService;
 
+    @GetMapping("/not-started-courses")
+    public ResponseEntity<Page<CourseDTO>> getAllNotStartedCourses(CourseFilter courseFilter, Pageable pageable) {
+        return ResponseEntity.ok(courseService.getAllNotStartedCourses(courseFilter, pageable));
+    }
+
     @GetMapping("/available-courses")
     public ResponseEntity<Page<CourseDTO>> getAllAvailableCourses(CourseFilter courseFilter, Pageable pageable) {
         return ResponseEntity.ok(courseService.getAllAvailableCourses(courseFilter, pageable));

@@ -1,6 +1,5 @@
-<app-not-started-courses></app-not-started-courses>
 <div class="table-container">
-  <h2>Lista aktywnych kursów</h2>
+  <h2>Nierozpoczęte kursy</h2>
 
   <table mat-table [dataSource]="dataSource" matSort>
 
@@ -26,11 +25,21 @@
       <td mat-cell *matCellDef="let course">{{course.students.length}} / {{ course.maxParticipants }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="isOpenForRegistration">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Rejestracja</th>
+      <td mat-cell *matCellDef="let course">{{course.isOpenForRegistration ? 'Otwarta':'Zamknięta'}}</td>
+    </ng-container>
+
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef>Akcje</th>
       <td mat-cell *matCellDef="let course">
-        <button mat-button color="primary">Szczegóły</button>
-        <button mat-button color="primary">Zakończ kurs</button>
+        <button mat-button color="primary" [matMenuTriggerFor]="menu">Menu</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="loadDetails(course)">Szczegóły</button>
+          <button mat-menu-item>Rozpocznij</button>
+          <button mat-menu-item>Edytuj</button>
+          <button mat-menu-item>Dodaj ucznia</button>
+        </mat-menu>
       </td>
     </ng-container>
 
@@ -44,5 +53,5 @@
     </div>
   }
 
-  <mat-paginator [length]="totalCourses" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadActiveCourses()" #paginator></mat-paginator>
+  <mat-paginator [length]="totalCourses" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadNotStartedCourses()" #paginator></mat-paginator>
 </div>

@@ -5,45 +5,40 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { CourseService } from '../../../services/course.service';
 import { Observer } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CourseDetailsComponent } from './course-details.component';
+import { CourseDetailsComponent } from '../../shared/courses/course-details.component';
 
 @Component({
-  selector: 'app-available-courses',
-  templateUrl: './available-courses.component.html',
+  selector: 'app-not-started-courses',
+  templateUrl: './not-started-courses.component.html',
   styleUrl: '../../../styles/request-list.component.css'
 })
-export class AvailableCoursesComponent implements AfterViewInit{
+export class NotStartedCoursesComponent implements AfterViewInit{
   protected dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>([]);
   protected totalCourses: number = 0;
-  protected displayedColumns: string[] = ['courseName', 'startDate', 'price', 'maxParticipants', 'action'];
+  protected displayedColumns: string[] = ['courseName', 'startDate', 'price', 'maxParticipants', 'isOpenForRegistration', 'action'];
   protected noCourses = false;
-  protected currentUserIsManager = false;
 
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
 
   constructor(
     private courseService: CourseService,
-    private authService: AuthService,
     private dialog: MatDialog,
 
-  ) {
-    this.currentUserIsManager = this.authService.hasRole("MANAGER");
-  }
+  ) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.loadBoughtCourses();
+    this.loadNotStartedCourses();
 
     this.sort.sortChange.subscribe(() => {
-      this.loadBoughtCourses();
+      this.loadNotStartedCourses();
     });
   }
 
-  loadBoughtCourses() {
+  loadNotStartedCourses() {
     const page = this.paginator.pageIndex + 1;
     const size = this.paginator.pageSize || 10;
     const sortBy = this.sort.active || 'courseName';
@@ -65,7 +60,7 @@ export class AvailableCoursesComponent implements AfterViewInit{
       complete: () => {}
     };
 
-    this.courseService.getAvailableCourses(page, size, sortBy, sortDir).subscribe(observer);
+    this.courseService.getNotStartedCourses(page, size, sortBy, sortDir).subscribe(observer);
   }
 
   loadDetails(course: Course){
@@ -77,7 +72,7 @@ export class AvailableCoursesComponent implements AfterViewInit{
     })
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadBoughtCourses();
+      this.loadNotStartedCourses();
     });
   }
 }
