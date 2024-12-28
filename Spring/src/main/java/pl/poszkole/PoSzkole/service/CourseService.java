@@ -120,6 +120,7 @@ public class CourseService {
 
     @Transactional
     public CourseDTO startCourse(StartCourseDTO startCourseDTO) {
+        System.out.println(startCourseDTO);
         //Get course
         Course course = courseRepository.findById(startCourseDTO.getCourseId())
                 .orElseThrow(() -> new EntityNotFoundException("Course not found"));

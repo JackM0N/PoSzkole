@@ -9,6 +9,6 @@ export interface TutoringClass{
   className?: string;
   isCompleted?: boolean;
 
-  numberOfStudents: number;
-  nextClassSchedule: ClassSchedule;
+  numberOfStudents?: number;
+  nextClassSchedule?: ClassSchedule;
 }

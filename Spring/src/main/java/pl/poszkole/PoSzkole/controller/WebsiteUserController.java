@@ -33,6 +33,11 @@ public class WebsiteUserController {
         return ResponseEntity.ok(websiteUserService.getAllStudents());
     }
 
+    @GetMapping("/all-teachers")
+    public ResponseEntity<List<WebsiteUserDTO>> getAllTeachers() {
+        return ResponseEntity.ok(websiteUserService.getAllTeachers());
+    }
+
     @GetMapping("/page/all-students")
     public ResponseEntity<Page<SimplifiedUserDTO>> getAllStudentsPaged(String searchText, Pageable pageable) {
         return ResponseEntity.ok(websiteUserService.getAllStudentsPageable(searchText, pageable));

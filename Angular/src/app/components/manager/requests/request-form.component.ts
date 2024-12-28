@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { Student } from '../../../models/student.model';
+import { CompactUser } from '../../../models/compact-user.model';
 import { Subject } from '../../../models/subject.model';
 import { WebsiteUserService } from '../../../services/website-user.service';
 import { SubjectService } from '../../../services/subject.service';
@@ -18,9 +18,9 @@ import { RegisterStudentComponent } from '../students/register-student.component
 })
 export class RequestFormComponent implements OnInit {
   requestForm: FormGroup;
-  students: Student[] = [];
+  students: CompactUser[] = [];
   subjects: Subject[] = [];
-  filteredStudents!: Observable<Student[]>;
+  filteredStudents!: Observable<CompactUser[]>;
   filteredSubjects!: Observable<Subject[]>;
 
   constructor(
@@ -67,7 +67,7 @@ export class RequestFormComponent implements OnInit {
     });
   }
 
-  private filterStudents(value: string): Student[] {
+  private filterStudents(value: string): CompactUser[] {
     if (typeof value !== 'string') return [];
     const filterValue = value.toLowerCase();
     return this.students?.filter(student =>
@@ -83,7 +83,7 @@ export class RequestFormComponent implements OnInit {
     ) || [];
   }
 
-  displayStudent(student: Student): string {
+  displayStudent(student: CompactUser): string {
     return student ? `${student.id} - ${student.firstName} ${student.lastName}` : '';
   }
   

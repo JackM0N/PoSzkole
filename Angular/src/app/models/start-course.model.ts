@@ -2,10 +2,10 @@ import { DayAndTime } from "./day-and-time.model";
 import { TutoringClass } from "./tutoring-class.model";
 
 export interface StartCourse{
-  id?: number;
-  tutoringClass: TutoringClass;
+  courseId: number;
+  tutoringClassDTO: TutoringClass;
   teacherId: number;
-  dayAndTime: DayAndTime;
+  dayAndTimeDTO: DayAndTime;
   isOnline: boolean;
   repeatUntil: [];
 }

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { WebsiteUserService } from "../../../services/website-user.service";
-import { Student } from "../../../models/student.model";
+import { CompactUser } from "../../../models/compact-user.model";
 import { map, Observable, startWith } from "rxjs";
 import { TutoringClassService } from "../../../services/tutoring-class.service";
 import { ToastrService } from "ngx-toastr";
@@ -14,8 +14,8 @@ import { ToastrService } from "ngx-toastr";
 })
 export class AddStudentComponent implements OnInit{
   addStudentForm: FormGroup;
-  students: Student[] = [];
-  filteredStudents!: Observable<Student[]>;
+  students: CompactUser[] = [];
+  filteredStudents!: Observable<CompactUser[]>;
 
   constructor(
     public dialogRef: MatDialogRef<AddStudentComponent>,
@@ -47,7 +47,7 @@ export class AddStudentComponent implements OnInit{
     });
   }
 
-  private filterStudents(value: string): Student[] {
+  private filterStudents(value: string): CompactUser[] {
     if (typeof value !== 'string') return [];
     const filterValue = value.toLowerCase();
     return this.students?.filter(student =>
@@ -55,7 +55,7 @@ export class AddStudentComponent implements OnInit{
     ) || [];
   }
 
-  displayStudent(student: Student): string {
+  displayStudent(student: CompactUser): string {
     return student ? `${student.id} - ${student.firstName} ${student.lastName}` : '';
   }
 

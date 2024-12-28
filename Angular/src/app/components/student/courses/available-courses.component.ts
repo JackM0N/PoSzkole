@@ -64,7 +64,7 @@ export class AvailableCoursesComponent implements AfterViewInit{
     this.courseService.getAvailableCourses(page, size, sortBy, sortDir).subscribe(observer);
   }
 
-  loadDetails(course: Course){
+  openDetails(course: Course){
     const dialogRef = this.dialog.open(CourseDetailsComponent, {
       width: '35%',
       enterAnimationDuration: '200ms',

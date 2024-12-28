@@ -58,6 +58,11 @@ public class WebsiteUserService {
         return websiteUsers.stream().map(websiteUserMapper::toDtoWithoutSensitiveData).collect(Collectors.toList());
     }
 
+    public List<WebsiteUserDTO> getAllTeachers(){
+        List<WebsiteUser> websiteUsers = websiteUserRepository.findByRoleName("TEACHER");
+        return websiteUsers.stream().map(websiteUserMapper::toDtoWithoutSensitiveData).collect(Collectors.toList());
+    }
+
     public Page<SimplifiedUserDTO> getAllStudentsPageable(String searchText, Pageable pageable){
         Specification<WebsiteUser> spec = ((root, query, builder) -> {
             Join<Object, Object> rolesJoin = root.join("roles");

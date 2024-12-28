@@ -1,10 +1,10 @@
 import { SimplifiedUser } from "./simplified-user.model";
-import { Student } from "./student.model";
+import { CompactUser } from "./compact-user.model";
 import { Subject } from "./subject.model";
 
 export interface Request{
   id?: number;
-  student?: Student;
+  student?: CompactUser;
   subject?: Subject;
   repeatUntil?: [];
   prefersIndividual: boolean;

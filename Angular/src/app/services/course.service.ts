@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Course } from "../models/course.model";
 import { SimplifiedUser } from "../models/simplified-user.model";
-import { StartCourse } from "../models/startCourse.model";
+import { StartCourse } from "../models/start-course.model";
 
 @Injectable({
   providedIn: 'root'

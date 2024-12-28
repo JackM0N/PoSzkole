@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environment/environment";
-import { Student } from "../models/student.model";
+import { CompactUser } from "../models/compact-user.model";
 import { Observable } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { WebsiteUser } from "../models/website-user.model";
@@ -23,8 +23,12 @@ export class WebsiteUserService {
     return this.http.get<WebsiteUser>(`${this.baseUrl}/profile/${userId}`)
   }
 
-  loadStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.baseUrl}/all-students`)
+  loadStudents(): Observable<CompactUser[]> {
+    return this.http.get<CompactUser[]>(`${this.baseUrl}/all-students`)
+  }
+
+  loadTeachers(): Observable<CompactUser[]> {
+    return this.http.get<CompactUser[]>(`${this.baseUrl}/all-teachers`)
   }
 
   loadAllStudentsPaged(page: number, size: number, sortBy: string, sortDir: string): Observable<SimplifiedUser[]>{

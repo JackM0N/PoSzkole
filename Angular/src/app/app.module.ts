@@ -69,6 +69,7 @@ import { CancelTutoringClassComponent } from './components/teacher/schedule/canc
 import { CourseDetailsComponent } from './components/shared/courses/course-details.component';
 import { CourseAttendantsComponent } from './components/manager/courses/course-attendants.component';
 import { NotStartedCoursesComponent } from './components/manager/courses/not-started-courses.component';
+import { StartCourseComponent } from './components/manager/courses/start-course.component';
 
 
 @NgModule({ declarations: [
@@ -111,6 +112,7 @@ import { NotStartedCoursesComponent } from './components/manager/courses/not-sta
         CourseDetailsComponent,
         CourseAttendantsComponent,
         NotStartedCoursesComponent,
+        StartCourseComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
