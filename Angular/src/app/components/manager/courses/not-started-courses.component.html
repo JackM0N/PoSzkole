@@ -59,4 +59,6 @@
   }
 
   <mat-paginator [length]="totalCourses" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadNotStartedCourses()" #paginator></mat-paginator>
+
+  <button mat-raised-button color="primary" (click)="openCreateCourse()">Utwórz nowy kurs</button>
 </div>

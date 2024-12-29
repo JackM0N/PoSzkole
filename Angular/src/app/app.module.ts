@@ -6,6 +6,8 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ToastrModule } from 'ngx-toastr';
+import { NgxEditorModule } from 'ngx-editor';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 //Material
 import { MatInputModule } from '@angular/material/input';
@@ -14,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -70,7 +72,19 @@ import { CourseDetailsComponent } from './components/shared/courses/course-detai
 import { CourseAttendantsComponent } from './components/manager/courses/course-attendants.component';
 import { NotStartedCoursesComponent } from './components/manager/courses/not-started-courses.component';
 import { StartCourseComponent } from './components/manager/courses/start-course.component';
+import { CreateCourseComponent } from './components/manager/courses/create-course.component';
 
+export const POLISH_DATE_FORMATS = {
+    parse: {
+      dateInput: 'LL',
+    },
+    display: {
+      dateInput: 'L',
+      monthYearLabel: 'MMM YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'MMM YYYY',
+    },
+  };
 
 @NgModule({ declarations: [
         AppComponent,
@@ -112,7 +126,8 @@ import { StartCourseComponent } from './components/manager/courses/start-course.
         CourseDetailsComponent,
         CourseAttendantsComponent,
         NotStartedCoursesComponent,
-        StartCourseComponent
+        StartCourseComponent,
+        CreateCourseComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
@@ -127,6 +142,7 @@ import { StartCourseComponent } from './components/manager/courses/start-course.
             positionClass: 'toast-top-right',
             preventDuplicates: true,
         }),
+        NgxEditorModule,
         MatInputModule,
         MatAutocompleteModule,
         MatSelectModule,
@@ -154,10 +170,15 @@ import { StartCourseComponent } from './components/manager/courses/start-course.
             useClass: AuthInterceptor,
             multi: true
         },
+        provideMomentDateAdapter(undefined, {useUtc: true}),
+        {
+            provide: MAT_DATE_FORMATS,
+            useValue: POLISH_DATE_FORMATS, // Własne formatowanie daty
+        },
         {
             provide: MAT_DATE_LOCALE,
             useValue: 'pl-PL'
         },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
     ] })
 export class AppModule { }

@@ -68,3 +68,8 @@ mat-checkbox {
   margin-top: 20px;
 }
 
+/* Text editor */
+.editor {
+  height: 25em;
+}
+
