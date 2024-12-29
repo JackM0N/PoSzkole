@@ -168,6 +168,8 @@ public class CourseService {
     }
 
     public CourseDTO addStudentToCourse(Long courseId, Long studentId) {
+        System.out.println(courseId);
+        System.out.println(studentId);
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Course not found"));
         WebsiteUser studentUser = websiteUserRepository.findById(studentId)

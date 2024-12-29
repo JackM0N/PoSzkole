@@ -8,17 +8,17 @@ import { TutoringClassService } from "../../../services/tutoring-class.service";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-add-student',
-  templateUrl: './add-student.component.html',
+  selector: 'app-add-student-to-class',
+  templateUrl: './add-student-to-class.component.html',
   styleUrls: ['../../../styles/request-form.component.css']
 })
-export class AddStudentComponent implements OnInit{
+export class AddStudentToClassComponent implements OnInit{
   addStudentForm: FormGroup;
   students: CompactUser[] = [];
   filteredStudents!: Observable<CompactUser[]>;
 
   constructor(
-    public dialogRef: MatDialogRef<AddStudentComponent>,
+    public dialogRef: MatDialogRef<AddStudentToClassComponent>,
     @Inject(MAT_DIALOG_DATA) public data:{
       classId: number;
     },
@@ -28,7 +28,7 @@ export class AddStudentComponent implements OnInit{
     private toastr: ToastrService,
   ){
     this.addStudentForm = this.fb.group({
-      student: new FormControl('', [Validators.required])
+      student: ['', [Validators.required]],
     });
   }
 

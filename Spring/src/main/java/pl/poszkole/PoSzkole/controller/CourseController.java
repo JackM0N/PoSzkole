@@ -66,7 +66,7 @@ public class CourseController {
     public ResponseEntity<CourseDTO> addStudent(@RequestBody StudentAndCourseDTO studentAndCourseDTO) {
         Long studentId = studentAndCourseDTO.getStudentId();
         Long courseId = studentAndCourseDTO.getCourseId();
-        return ResponseEntity.ok(courseService.addStudentToCourse(studentId, courseId));
+        return ResponseEntity.ok(courseService.addStudentToCourse(courseId, studentId));
     }
 
     @PutMapping("/remove-student")

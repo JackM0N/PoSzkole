@@ -1,0 +1,20 @@
+<div class="form-container">
+  <h1>Wybierz ucznia, którego chcesz dodać kursu: {{data.course.courseName}}</h1>
+  <form [formGroup]="addStudentForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Wybierz ucznia*"
+        [matAutocomplete]="studentAuto" formControlName="student" required>
+        <mat-autocomplete #studentAuto="matAutocomplete" [displayWith]="displayStudent">
+          @for (student of filteredStudents | async; track student) {
+            <mat-option [value]="student">
+              {{ student.id }} - {{ student.firstName }} {{ student.lastName }}
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-dialog-actions>
+        <button mat-button (click)="close()">Anuluj</button>
+        <button mat-raised-button color="primary" type="submit">Potwierdź</button>
+      </mat-dialog-actions>
+  </form>
+</div>

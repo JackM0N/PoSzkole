@@ -39,7 +39,7 @@
           <button mat-menu-item (click)="openStartCourse(course)">Rozpocznij</button>
           <button mat-menu-item>Edytuj</button>
           @if(course.isOpenForRegistration){
-            <button mat-menu-item>Dodaj ucznia</button>
+            <button mat-menu-item (click)="openAddStudentToCourse(course)">Dodaj ucznia</button>
           }@else {
             <button mat-menu-item>Otwórz rejestrację</button>
           }

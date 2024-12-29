@@ -18,7 +18,7 @@ import { ChangeLogService } from '../../../services/change-log.service';
 import { ChangeLog } from '../../../models/change-log.model';
 import { Reason } from '../../../enums/reason.enum';
 import { ClassScheduleService } from '../../../services/class-schedule.service';
-import { AddStudentComponent } from '../../teacher/schedule/add-student.component';
+import { AddStudentToClassComponent } from '../../teacher/schedule/add-student-to-class.component';
 import { PopUpDialogComponent } from '../pop-up/pop-up-dialog.component';
 import { CancelTutoringClassComponent } from '../../teacher/schedule/cancel-tutoring-class.component';
 
@@ -174,7 +174,7 @@ export class ClassDetailsComponent implements OnInit{
   openAddStudentToClass(){
     const classId = this.data.tutoringClass.id!;
 
-    const dialogRef = this.dialog.open(AddStudentComponent, {
+    const dialogRef = this.dialog.open(AddStudentToClassComponent, {
       width: '30%',
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',

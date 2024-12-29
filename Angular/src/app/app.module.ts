@@ -66,13 +66,14 @@ import { RegisterTeacherComponent } from './components/manager/teachers/register
 import { RegisterStudentComponent } from './components/manager/students/register-student.component';
 import { ManagerCoursesComponent } from './components/manager/courses/manager-courses.component';
 import { AdmitRequestAddComponent } from './components/teacher/request/admit-request-add.component';
-import { AddStudentComponent } from './components/teacher/schedule/add-student.component';
+import { AddStudentToClassComponent } from './components/teacher/schedule/add-student-to-class.component';
 import { CancelTutoringClassComponent } from './components/teacher/schedule/cancel-tutoring-class.component';
 import { CourseDetailsComponent } from './components/shared/courses/course-details.component';
 import { CourseAttendantsComponent } from './components/manager/courses/course-attendants.component';
 import { NotStartedCoursesComponent } from './components/manager/courses/not-started-courses.component';
 import { StartCourseComponent } from './components/manager/courses/start-course.component';
 import { CreateCourseComponent } from './components/manager/courses/create-course.component';
+import { AddStudentToCourseComponent } from './components/manager/courses/add-student-to-course.component';
 
 export const POLISH_DATE_FORMATS = {
     parse: {
@@ -121,13 +122,14 @@ export const POLISH_DATE_FORMATS = {
         RegisterStudentComponent,
         ManagerCoursesComponent,
         AdmitRequestAddComponent,
-        AddStudentComponent,
+        AddStudentToClassComponent,
         CancelTutoringClassComponent,
         CourseDetailsComponent,
         CourseAttendantsComponent,
         NotStartedCoursesComponent,
         StartCourseComponent,
-        CreateCourseComponent
+        CreateCourseComponent,
+        AddStudentToCourseComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CourseDetailsComponent } from '../../shared/courses/course-details.component';
 import { StartCourseComponent } from './start-course.component';
 import { CreateCourseComponent } from './create-course.component';
+import { AddStudentToCourseComponent } from './add-student-to-course.component';
 
 @Component({
   selector: 'app-not-started-courses',
@@ -96,6 +97,19 @@ export class NotStartedCoursesComponent implements AfterViewInit{
       width: '35%',
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadNotStartedCourses();
+    });
+  }
+
+  openAddStudentToCourse(course: Course){
+    const dialogRef = this.dialog.open(AddStudentToCourseComponent, {
+      width: '35%',
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      data: { course },
     })
 
     dialogRef.afterClosed().subscribe(() => {
