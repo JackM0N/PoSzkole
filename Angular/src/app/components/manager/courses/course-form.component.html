@@ -1,4 +1,6 @@
-<h1 mat-dialog-title>Utwórz nowy kurs</h1>
+<h1 mat-dialog-title>
+  {{ data.courseToEdit ? 'Edytuj kurs' : 'Utwórz nowy kurs' }}
+</h1>
 
 <mat-dialog-content>
   <form [formGroup]="createCourseForm" (ngSubmit)="onSubmit()">
@@ -49,10 +51,11 @@
         [spellcheck]="true" required >
       </ngx-editor>
     </div>
+    <mat-dialog-actions>
+      <button mat-button (click)="onCancel()">Anuluj</button>
+      <button mat-raised-button color="primary" [disabled]="createCourseForm.invalid" type="submit">
+        {{ data.courseToEdit ? 'Zapisz zmiany' : 'Utwórz' }}
+      </button>
+    </mat-dialog-actions>
   </form>
 </mat-dialog-content>
-
-<mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Anuluj</button>
-  <button mat-raised-button color="primary" [disabled]="createCourseForm.invalid" (click)="onSubmit()">Utwórz</button>
-</mat-dialog-actions>

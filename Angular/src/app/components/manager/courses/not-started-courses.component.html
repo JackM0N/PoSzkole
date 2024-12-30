@@ -37,13 +37,13 @@
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="openDetails(course)">Szczegóły</button>
           <button mat-menu-item (click)="openStartCourse(course)">Rozpocznij</button>
-          <button mat-menu-item>Edytuj</button>
+          <button mat-menu-item (click)="openCourseForm(course)">Edytuj</button>
           @if(course.isOpenForRegistration){
             <button mat-menu-item (click)="openAddStudentToCourse(course)">Dodaj ucznia</button>
           }@else {
             <button mat-menu-item>Otwórz rejestrację</button>
+            <button style="color: red;" mat-menu-item>Usuń</button>
           }
-          
         </mat-menu>
       </td>
     </ng-container>
@@ -60,5 +60,5 @@
 
   <mat-paginator [length]="totalCourses" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" aria-label="Wybór liczby wierszy" (page)="loadNotStartedCourses()" #paginator></mat-paginator>
 
-  <button mat-raised-button color="primary" (click)="openCreateCourse()">Utwórz nowy kurs</button>
+  <button mat-raised-button color="primary" (click)="openCourseForm()">Utwórz nowy kurs</button>
 </div>

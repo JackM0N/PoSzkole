@@ -72,7 +72,7 @@ import { CourseDetailsComponent } from './components/shared/courses/course-detai
 import { CourseAttendantsComponent } from './components/manager/courses/course-attendants.component';
 import { NotStartedCoursesComponent } from './components/manager/courses/not-started-courses.component';
 import { StartCourseComponent } from './components/manager/courses/start-course.component';
-import { CreateCourseComponent } from './components/manager/courses/create-course.component';
+import { CourseFormComponent } from './components/manager/courses/course-form.component';
 import { AddStudentToCourseComponent } from './components/manager/courses/add-student-to-course.component';
 
 export const POLISH_DATE_FORMATS = {
@@ -128,7 +128,7 @@ export const POLISH_DATE_FORMATS = {
         CourseAttendantsComponent,
         NotStartedCoursesComponent,
         StartCourseComponent,
-        CreateCourseComponent,
+        CourseFormComponent,
         AddStudentToCourseComponent,
     ],
     bootstrap: [AppComponent], 

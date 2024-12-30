@@ -5,6 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { CourseService } from '../../../services/course.service';
 import { Observer } from 'rxjs';
+import { CourseDetailsComponent } from '../../shared/courses/course-details.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-manager-courses',
@@ -20,7 +22,10 @@ export class ManagerCoursesComponent {
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
 
-  constructor(private courseService: CourseService) {}
+  constructor(
+    private courseService: CourseService,
+    private dialog: MatDialog,
+  ) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -56,4 +61,17 @@ export class ManagerCoursesComponent {
 
     this.courseService.getActiveCourses(page, size, sortBy, sortDir).subscribe(observer);
   }
+
+  openDetails(course: Course){
+      const dialogRef = this.dialog.open(CourseDetailsComponent, {
+        width: '35%',
+        enterAnimationDuration: '200ms',
+        exitAnimationDuration: '200ms',
+        data: { course },
+      })
+  
+      dialogRef.afterClosed().subscribe(() => {
+        this.loadActiveCourses();
+      });
+    }
 }

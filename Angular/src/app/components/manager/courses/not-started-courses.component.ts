@@ -8,7 +8,7 @@ import { Observer } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseDetailsComponent } from '../../shared/courses/course-details.component';
 import { StartCourseComponent } from './start-course.component';
-import { CreateCourseComponent } from './create-course.component';
+import { CourseFormComponent } from './course-form.component';
 import { AddStudentToCourseComponent } from './add-student-to-course.component';
 
 @Component({
@@ -92,11 +92,12 @@ export class NotStartedCoursesComponent implements AfterViewInit{
     });
   }
 
-  openCreateCourse(){
-    const dialogRef = this.dialog.open(CreateCourseComponent, {
+  openCourseForm(course?: Course){
+    const dialogRef = this.dialog.open(CourseFormComponent, {
       width: '35%',
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
+      data: { courseToEdit: course }
     })
 
     dialogRef.afterClosed().subscribe(() => {
