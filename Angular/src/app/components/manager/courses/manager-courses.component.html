@@ -26,6 +26,20 @@
       <td mat-cell *matCellDef="let course">{{course.students.length}} / {{ course.maxParticipants }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="teacher">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nauczyciel</th>
+      <td mat-cell *matCellDef="let course">
+        <button mat-button (click)="openProfile(course.teacher.id)">
+          {{course.teacher.id}} - {{course.teacher.firstName}} {{course.teacher.lastName}}
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastScheduleDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Data ostatnich zajęć kursu</th>
+      <td mat-cell *matCellDef="let course">{{course.lastScheduleDate | date: 'YYYY-MM-dd HH:mm'}}</td>
+    </ng-container>
+
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef>Akcje</th>
       <td mat-cell *matCellDef="let course">

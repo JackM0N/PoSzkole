@@ -14,9 +14,11 @@ import pl.poszkole.PoSzkole.filter.CourseFilter;
 import pl.poszkole.PoSzkole.mapper.CourseMapper;
 import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.TutoringClassMapper;
+import pl.poszkole.PoSzkole.model.ClassSchedule;
 import pl.poszkole.PoSzkole.model.Course;
 import pl.poszkole.PoSzkole.model.TutoringClass;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
+import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 import pl.poszkole.PoSzkole.repository.CourseRepository;
 import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
@@ -37,9 +39,7 @@ public class CourseService {
     private final ClassScheduleService classScheduleService;
     private final SimplifiedUserMapper simplifiedUserMapper;
     private final TutoringClassService tutoringClassService;
-
-    //TODO: Add method for canceling course
-    //TODO: Add method for deleting courses that are not yet open for registration/haven't started yet
+    private final ClassScheduleRepository classScheduleRepository;
 
     public Page<CourseDTO> getAllNotStartedCourses(CourseFilter courseFilter, Pageable pageable) {
         Specification<Course> spec = applyCourseFilter(courseFilter);
@@ -102,7 +102,15 @@ public class CourseService {
 
         Page<Course> courses = courseRepository.findAll(spec, pageable);
 
-        return courses.map(courseMapper::toDto);
+        return courses.map(course -> {
+            ClassSchedule classSchedule = classScheduleRepository.findLastScheduleByClassId(course.getTutoringClass().getId())
+                    .orElse(null);
+            CourseDTO courseDTO = courseMapper.toDto(course);
+            assert classSchedule != null;
+            courseDTO.setTeacher(simplifiedUserMapper.toSimplifiedUserDTO(classSchedule.getTutoringClass().getTeacher()));
+            courseDTO.setLastScheduleDate(classSchedule.getClassDateFrom());
+            return courseDTO;
+        });
     }
 
     public String getCourseDescription(Long courseId){

@@ -8,6 +8,10 @@ export interface Course{
   startDate?: number[];
   isOpenForRegistration?: boolean;
   isDone?: boolean;
-  students?: SimplifiedUser[];
   description?: string;
+
+  teacher?: SimplifiedUser,
+  lastScheduleDate?: number[] | Date | null
+
+  students?: SimplifiedUser[];
 }

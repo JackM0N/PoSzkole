@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -25,5 +26,9 @@ public class CourseDTO implements Serializable {
     Boolean isDone;
     Long tutoringClassId;
     String description;
+
+    SimplifiedUserDTO teacher;
+    LocalDateTime lastScheduleDate;
+
     List<SimplifiedUserDTO> students;
 }

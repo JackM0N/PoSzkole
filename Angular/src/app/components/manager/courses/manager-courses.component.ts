@@ -9,6 +9,7 @@ import { CourseDetailsComponent } from '../../shared/courses/course-details.comp
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { CancelCourseComponent } from './cancel-course.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manager-courses',
@@ -18,7 +19,7 @@ import { CancelCourseComponent } from './cancel-course.component';
 export class ManagerCoursesComponent {
   protected dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>([]);
   protected totalCourses: number = 0;
-  protected displayedColumns: string[] = ['courseName', 'startDate', 'price', 'maxParticipants', 'action'];
+  protected displayedColumns: string[] = ['courseName', 'startDate', 'price', 'maxParticipants', 'teacher', 'lastScheduleDate', 'action'];
   protected noCourses = false;
 
   @ViewChild('paginator') protected paginator!: MatPaginator;
@@ -28,6 +29,7 @@ export class ManagerCoursesComponent {
     private courseService: CourseService,
     private dialog: MatDialog,
     private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngAfterViewInit(): void {
@@ -50,6 +52,12 @@ export class ManagerCoursesComponent {
       next: response => {
         if (response) {
           this.totalCourses = response.totalElements;
+          const parsedCourses = response.content.map((course: Course) => {
+            if (course.lastScheduleDate) {
+              course.lastScheduleDate = this.parseDate(course.lastScheduleDate as unknown as number[]);
+            }
+            return course;
+          });
           this.dataSource = new MatTableDataSource<Course>(response.content);
           this.noCourses = this.dataSource.data.length === 0;
         } else {
@@ -102,5 +110,16 @@ export class ManagerCoursesComponent {
         console.error("Coś poszło nie tak przy zmianie statusu kursu", error)
       }
     })
+  }
+
+  openProfile(userId: number){
+    this.router.navigate([`/profile/${userId}`])
+  }
+
+  private parseDate(lastDate: number[] | undefined): Date | null {
+    if (!lastDate) {
+      return null;
+    }
+    return new Date(lastDate[0], lastDate[1] - 1, lastDate[2], lastDate[3], lastDate[4]);
   }
 }
