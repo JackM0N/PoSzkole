@@ -32,8 +32,8 @@
         <button mat-button color="primary" [matMenuTriggerFor]="menu">Menu</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="openDetails(course)">Szczegóły</button>
-          <button mat-menu-item>Zakończ kurs</button>
-          <button style="color: red;" mat-menu-item>Odwołaj kurs</button>        
+          <button mat-menu-item (click)="finishCourse(course.id)">Zakończ kurs</button>
+          <button style="color: red;" mat-menu-item (click)="openCancelCourse(course)">Odwołaj kurs</button>
         </mat-menu>
       </td>
     </ng-container>

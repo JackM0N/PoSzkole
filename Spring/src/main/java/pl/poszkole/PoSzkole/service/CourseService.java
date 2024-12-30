@@ -36,6 +36,7 @@ public class CourseService {
     private final TutoringClassRepository tutoringClassRepository;
     private final ClassScheduleService classScheduleService;
     private final SimplifiedUserMapper simplifiedUserMapper;
+    private final TutoringClassService tutoringClassService;
 
     //TODO: Add method for canceling course
     //TODO: Add method for deleting courses that are not yet open for registration/haven't started yet
@@ -224,6 +225,18 @@ public class CourseService {
         course.setIsDone(true);
         courseRepository.save(course);
         return courseMapper.toDto(course);
+    }
+
+    @Transactional
+    public void cancelCourse(Long courseId, ScheduleChangesLogDTO scheduleChangesLogDTO) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        //Mark course as done
+        course.setIsDone(true);
+        //Cancel the rest of its schedules
+        tutoringClassService.cancelTheRestOfTutoringClass(course.getTutoringClass().getId(), scheduleChangesLogDTO);
+
+        courseRepository.save(course);
     }
 
     public void deleteCourse(Long courseId) {

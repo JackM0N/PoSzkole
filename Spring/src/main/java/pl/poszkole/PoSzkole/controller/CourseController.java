@@ -6,10 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.poszkole.PoSzkole.dto.CourseDTO;
-import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
-import pl.poszkole.PoSzkole.dto.StartCourseDTO;
-import pl.poszkole.PoSzkole.dto.StudentAndCourseDTO;
+import pl.poszkole.PoSzkole.dto.*;
 import pl.poszkole.PoSzkole.filter.CourseFilter;
 import pl.poszkole.PoSzkole.service.CourseService;
 
@@ -89,6 +86,12 @@ public class CourseController {
     @PutMapping("/edit/{courseId}")
     public ResponseEntity<CourseDTO> editCourse(@PathVariable Long courseId, @RequestBody CourseDTO courseDTO) {
         return ResponseEntity.ok(courseService.editCourse(courseId, courseDTO));
+    }
+
+    @PutMapping("/cancel/{courseId}")
+    public ResponseEntity<?> cancelCourse(@PathVariable Long courseId, @RequestBody ScheduleChangesLogDTO scheduleChangesLogDTO) {
+        courseService.cancelCourse(courseId, scheduleChangesLogDTO);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{courseId}")

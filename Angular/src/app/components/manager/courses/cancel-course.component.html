@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Odwołaj kurs: {{data.course.courseName}}</h2>
+<mat-dialog-content>
+  <form [formGroup]="cancelForm" (ngSubmit)="onSubmit()">
+    <h3>Powód zmian</h3>
+      <mat-form-field>
+        <mat-label>Powód</mat-label>
+        <mat-select formControlName="reason">
+          @for (reason of reasons; track reason) {
+            <mat-option [value]="reason">{{ reason }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Wyjaśnienie</mat-label>
+        <textarea matInput formControlName="explanation"></textarea>
+      </mat-form-field>
+      <mat-dialog-actions>
+        <button mat-button (click)="onCancel()">Anuluj</button>
+        <button mat-raised-button color="primary" [disabled]="cancelForm.invalid" type="submit">Zapisz</button>
+      </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

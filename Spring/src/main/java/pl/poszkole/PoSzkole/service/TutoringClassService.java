@@ -159,7 +159,12 @@ public class TutoringClassService {
         TutoringClass tutoringClass = tutoringClassRepository.findById(tutoringClassId)
                 .orElseThrow(() -> new EntityNotFoundException("This class does not exist"));
 
-        if (!tutoringClass.getTeacher().getId().equals(currentUser.getId())) {
+        //Added this check for canceling course purposes. It also opens a possibility for manager to be able to make
+        //changes to chosen teachers schedule
+        boolean isManager = currentUser.getRoles().stream()
+                .anyMatch(role -> "MANAGER".equals(role.getRoleName()));
+
+        if (!tutoringClass.getTeacher().getId().equals(currentUser.getId()) && !isManager) {
             throw new AccessDeniedException("You cannot cancel tutoring class that you are not the teacher of");
         }
 

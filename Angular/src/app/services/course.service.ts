@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { Course } from "../models/course.model";
 import { SimplifiedUser } from "../models/simplified-user.model";
 import { StartCourse } from "../models/start-course.model";
+import { ChangeLog } from "../models/change-log.model";
 
 @Injectable({
   providedIn: 'root'
@@ -90,6 +91,10 @@ export class CourseService {
 
   updateCourse(courseId: number, course: Course): Observable<Course>{
     return this.http.put<Course>(`${this.baseUrl}/edit/${courseId}`, course)
+  }
+
+  cancelCourse(courseId: number, changeLog: ChangeLog): Observable<any>{
+    return this.http.put<any>(`${this.baseUrl}/cancel/${courseId}`, changeLog)
   }
 
   deleteCourse(courseId: number): Observable<any> {

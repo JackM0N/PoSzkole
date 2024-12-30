@@ -45,8 +45,6 @@ export class CourseFormComponent implements OnInit, OnDestroy{
     if (this.createCourseForm.valid) {
       const formData = this.createCourseForm.value;
 
-      console.log(formData)
-
       const newCourse: Course = {
         courseName: formData.courseName,
         price: formData.price,

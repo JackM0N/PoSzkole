@@ -7,6 +7,8 @@ import { CourseService } from '../../../services/course.service';
 import { Observer } from 'rxjs';
 import { CourseDetailsComponent } from '../../shared/courses/course-details.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { CancelCourseComponent } from './cancel-course.component';
 
 @Component({
   selector: 'app-manager-courses',
@@ -25,6 +27,7 @@ export class ManagerCoursesComponent {
   constructor(
     private courseService: CourseService,
     private dialog: MatDialog,
+    private toastr: ToastrService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -63,15 +66,41 @@ export class ManagerCoursesComponent {
   }
 
   openDetails(course: Course){
-      const dialogRef = this.dialog.open(CourseDetailsComponent, {
-        width: '35%',
-        enterAnimationDuration: '200ms',
-        exitAnimationDuration: '200ms',
-        data: { course },
-      })
-  
-      dialogRef.afterClosed().subscribe(() => {
+    const dialogRef = this.dialog.open(CourseDetailsComponent, {
+      width: '35%',
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      data: { course },
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadActiveCourses();
+    });
+  }
+
+  openCancelCourse(course: Course){
+    const dialogRef = this.dialog.open(CancelCourseComponent, {
+      width: '35%',
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      data: { course },
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadActiveCourses();
+    });
+  }
+
+  finishCourse(courseId: number){
+    this.courseService.finishCourse(courseId).subscribe({
+      next: () => {
+        this.toastr.success("Wybrany kurs został oznaczony jako zakończony!","Sukces!")
         this.loadActiveCourses();
-      });
-    }
+      },
+      error: error => {
+        this.toastr.error("Coś poszło nie tak przy zmianie statusu kursu", "Błąd!")
+        console.error("Coś poszło nie tak przy zmianie statusu kursu", error)
+      }
+    })
+  }
 }

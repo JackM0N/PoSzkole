@@ -74,6 +74,7 @@ import { NotStartedCoursesComponent } from './components/manager/courses/not-sta
 import { StartCourseComponent } from './components/manager/courses/start-course.component';
 import { CourseFormComponent } from './components/manager/courses/course-form.component';
 import { AddStudentToCourseComponent } from './components/manager/courses/add-student-to-course.component';
+import { CancelCourseComponent } from './components/manager/courses/cancel-course.component';
 
 export const POLISH_DATE_FORMATS = {
     parse: {
@@ -130,6 +131,7 @@ export const POLISH_DATE_FORMATS = {
         StartCourseComponent,
         CourseFormComponent,
         AddStudentToCourseComponent,
+        CancelCourseComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [
