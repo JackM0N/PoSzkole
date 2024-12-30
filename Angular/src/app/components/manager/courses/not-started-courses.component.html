@@ -41,8 +41,10 @@
           @if(course.isOpenForRegistration){
             <button mat-menu-item (click)="openAddStudentToCourse(course)">Dodaj ucznia</button>
           }@else {
-            <button mat-menu-item>Otwórz rejestrację</button>
-            <button style="color: red;" mat-menu-item>Usuń</button>
+            <button mat-menu-item (click)="openForRegistration(course.id)">Otwórz rejestrację</button>
+            @if(course.students.length != course.maxParticipants){
+              <button style="color: red;" mat-menu-item (click)="deleteCourse(course.id)">Usuń</button>
+            }
           }
         </mat-menu>
       </td>

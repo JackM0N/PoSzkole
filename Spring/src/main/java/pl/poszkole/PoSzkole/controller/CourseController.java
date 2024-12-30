@@ -90,4 +90,10 @@ public class CourseController {
     public ResponseEntity<CourseDTO> editCourse(@PathVariable Long courseId, @RequestBody CourseDTO courseDTO) {
         return ResponseEntity.ok(courseService.editCourse(courseId, courseDTO));
     }
+
+    @DeleteMapping("/delete/{courseId}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Long courseId) {
+        courseService.deleteCourse(courseId);
+        return ResponseEntity.ok().build();
+    }
 }

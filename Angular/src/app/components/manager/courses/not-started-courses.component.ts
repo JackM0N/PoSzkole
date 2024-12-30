@@ -10,6 +10,7 @@ import { CourseDetailsComponent } from '../../shared/courses/course-details.comp
 import { StartCourseComponent } from './start-course.component';
 import { CourseFormComponent } from './course-form.component';
 import { AddStudentToCourseComponent } from './add-student-to-course.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-not-started-courses',
@@ -28,7 +29,7 @@ export class NotStartedCoursesComponent implements AfterViewInit{
   constructor(
     private courseService: CourseService,
     private dialog: MatDialog,
-
+    private toastr: ToastrService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -116,5 +117,31 @@ export class NotStartedCoursesComponent implements AfterViewInit{
     dialogRef.afterClosed().subscribe(() => {
       this.loadNotStartedCourses();
     });
+  }
+
+  openForRegistration(courseId: number){
+    this.courseService.openCourseForRegistration(courseId).subscribe({
+      next: () => {
+        this.toastr.success("Wybrany kurs został otworzony na rejestracje!","Sukces!")
+        this.loadNotStartedCourses();
+      },
+      error: error => {
+        this.toastr.error("Coś poszło nie tak przy otwieraniu kursu", "Błąd!")
+        console.error("Coś poszło nie tak przy otwieraniu kursu", error)
+      }
+    })
+  }
+
+  deleteCourse(courseId: number){
+    this.courseService.deleteCourse(courseId).subscribe({
+      next: () => {
+        this.toastr.success("Wybrany kurs został usunięty!","Sukces!")
+        this.loadNotStartedCourses();
+      },
+      error: error => {
+        this.toastr.error("Coś poszło nie tak przy usuwaniu kursu", "Błąd!")
+        console.error("Coś poszło nie tak przy usuwaniu kursu", error)
+      }
+    })
   }
 }

@@ -92,4 +92,7 @@ export class CourseService {
     return this.http.put<Course>(`${this.baseUrl}/edit/${courseId}`, course)
   }
 
+  deleteCourse(courseId: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/delete/${courseId}`)
+  }
 }

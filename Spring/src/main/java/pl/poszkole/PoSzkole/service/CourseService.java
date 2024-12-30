@@ -168,8 +168,6 @@ public class CourseService {
     }
 
     public CourseDTO addStudentToCourse(Long courseId, Long studentId) {
-        System.out.println(courseId);
-        System.out.println(studentId);
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Course not found"));
         WebsiteUser studentUser = websiteUserRepository.findById(studentId)
@@ -182,6 +180,11 @@ public class CourseService {
 
         //Add student to chosen course
         studentUser.addCourse(course);
+
+        if (course.getStudents().size() == course.getMaxParticipants()){
+            course.setIsOpenForRegistration(false);
+            courseRepository.save(course);
+        }
 
         websiteUserRepository.save(studentUser);
         return courseMapper.toDto(course);
@@ -221,6 +224,21 @@ public class CourseService {
         course.setIsDone(true);
         courseRepository.save(course);
         return courseMapper.toDto(course);
+    }
+
+    public void deleteCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+
+        if(course.getIsOpenForRegistration()){
+            throw new RuntimeException("You cant delete a course that is already open for registration");
+        }
+
+        if(!course.getStudents().isEmpty()){
+            throw new RuntimeException("You cant delete a course that people are already registered to");
+        }
+
+        courseRepository.delete(course);
     }
 
     //Method that prevents code repetition
