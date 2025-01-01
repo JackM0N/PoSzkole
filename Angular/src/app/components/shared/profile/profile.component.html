@@ -74,6 +74,11 @@
             <strong>Faktura:</strong> {{ account?.issueInvoice ? 'Tak' : 'Nie' }}
           </div>
         }
+        @if(currentUserIsManager &&  account?.isDeleted){
+          <div style="color: red;">
+            <strong>Stan:</strong> Usunięty
+          </div>
+        }
         @if (isOwner || currentUserIsManager) {
           <button mat-raised-button color="primary" (click)="openEditUser()">Edytuj dane</button>
         }

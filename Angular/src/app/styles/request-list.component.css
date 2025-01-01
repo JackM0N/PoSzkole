@@ -95,3 +95,32 @@ table.mat-table {
 .clickable-row:hover {
   background-color: #f1f1f1;
 }
+
+/* Filter container */
+.filter-container {
+  background-color: #ffffff;
+  margin: 20 auto;
+}
+
+.filter-container h3 {
+  font-size: 18px;
+  color: #4a4a4a;
+  margin-bottom: 15px;
+}
+
+.filter-container .filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.filter-container .mat-button {
+  background-color: #3366cc;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 5px;
+}
+
+.filter-container .mat-button:hover {
+  background-color: #274b9f;
+}

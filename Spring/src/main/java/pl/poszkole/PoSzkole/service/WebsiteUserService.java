@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
 import pl.poszkole.PoSzkole.dto.SubjectDTO;
 import pl.poszkole.PoSzkole.dto.WebsiteUserDTO;
+import pl.poszkole.PoSzkole.filter.UserFilter;
 import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.WebsiteUserMapper;
 import pl.poszkole.PoSzkole.model.Role;
@@ -54,47 +55,60 @@ public class WebsiteUserService {
     }
 
     public List<WebsiteUserDTO> getAllStudents(){
-        List<WebsiteUser> websiteUsers = websiteUserRepository.findByRoleName("STUDENT");
+        List<WebsiteUser> websiteUsers = websiteUserRepository.findByRoleNameAndNotDeleted("STUDENT");
         return websiteUsers.stream().map(websiteUserMapper::toDtoWithoutSensitiveData).collect(Collectors.toList());
     }
 
     public List<WebsiteUserDTO> getAllTeachers(){
-        List<WebsiteUser> websiteUsers = websiteUserRepository.findByRoleName("TEACHER");
+        List<WebsiteUser> websiteUsers = websiteUserRepository.findByRoleNameAndNotDeleted("TEACHER");
         return websiteUsers.stream().map(websiteUserMapper::toDtoWithoutSensitiveData).collect(Collectors.toList());
     }
 
-    public Page<SimplifiedUserDTO> getAllStudentsPageable(String searchText, Pageable pageable){
+    public Page<SimplifiedUserDTO> getAllStudentsPageable(UserFilter filter, Pageable pageable){
         Specification<WebsiteUser> spec = ((root, query, builder) -> {
             Join<Object, Object> rolesJoin = root.join("roles");
             return builder.equal(rolesJoin.get("roleName"), "STUDENT");
         });
 
-        return getSimplifiedUserDTOS(searchText, pageable, spec);
+        return getSimplifiedUserDTOS(filter, pageable, spec);
     }
 
-    public Page<SimplifiedUserDTO> getAllTeachersPageable(String searchText, Pageable pageable){
+    public Page<SimplifiedUserDTO> getAllTeachersPageable(UserFilter filter, Pageable pageable){
         Specification<WebsiteUser> spec = ((root, query, builder) -> {
             Join<Object, Object> rolesJoin = root.join("roles");
             return builder.equal(rolesJoin.get("roleName"), "TEACHER");
         });
 
-        return getSimplifiedUserDTOS(searchText, pageable, spec);
+        return getSimplifiedUserDTOS(filter, pageable, spec);
     }
 
-    private Page<SimplifiedUserDTO> getSimplifiedUserDTOS(String searchText, Pageable pageable, Specification<WebsiteUser> spec) {
-        if (searchText != null) {
-            String likePattern = "%" + searchText.toLowerCase() + "%";
-            spec = spec.and((root, query, builder) -> builder.or(
-                    builder.like(builder.lower(root.get("firstName")), likePattern),
-                    builder.like(builder.lower(root.get("lastName")), likePattern),
-                    builder.like(builder.lower(root.get("id")), likePattern)
-                )
-            );
+    private Page<SimplifiedUserDTO> getSimplifiedUserDTOS(UserFilter filter, Pageable pageable, Specification<WebsiteUser> spec) {
+        if (filter.getSearchText() != null && !filter.getSearchText().isBlank()) {
+            String[] searchWords = filter.getSearchText().toLowerCase().split("\\s+"); // Split words using "spacebar"
+            for (String word : searchWords) {
+                String likePattern = "%" + word + "%";
+                spec = spec.and((root, query, builder) -> builder.or(
+                        builder.like(builder.lower(root.get("firstName")), likePattern),
+                        builder.like(builder.lower(root.get("lastName")), likePattern),
+                        builder.like(builder.lower(root.get("gender")), likePattern),
+                        builder.like(builder.lower(root.get("email")), likePattern),
+                        builder.like(builder.lower(root.get("phone")), likePattern),
+                        builder.like(builder.lower(root.get("level")), likePattern),
+                        builder.like(builder.lower(root.get("guardianPhone")), likePattern),
+                        builder.like(builder.lower(root.get("guardianEmail")), likePattern)
+                    )
+                );
+            }
+        }
+
+        if (filter.getIsDeleted() != null) {
+            spec = spec.and((root, query, builder) -> builder.equal(root.get("isDeleted"), filter.getIsDeleted()));
         }
 
         Page<WebsiteUser> websiteUsers = websiteUserRepository.findAll(spec, pageable);
         return websiteUsers.map(simplifiedUserMapper::toSimplifiedUserDTO);
     }
+
 
     public WebsiteUserDTO editUserProfile(WebsiteUserDTO websiteUserDTO){
         WebsiteUser currentUser = getCurrentUser();

@@ -3,6 +3,7 @@ package pl.poszkole.PoSzkole.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -69,6 +70,10 @@ public class WebsiteUser {
 
     @Column(name = "issue_invoice")
     private Boolean issueInvoice;
+
+    @ColumnDefault("false")
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     // Student attributes/methods
     @ManyToMany

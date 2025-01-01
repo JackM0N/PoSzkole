@@ -19,6 +19,6 @@ public interface WebsiteUserRepository extends JpaRepository<WebsiteUser, Long>,
     @Query("SELECT COALESCE(MAX(u.id), 0) FROM WebsiteUser u WHERE u.id BETWEEN :minId AND :maxId")
     Long findHighestIdInRange(@Param("minId") Long minId, @Param("maxId") Long maxId);
 
-    @Query("SELECT u FROM WebsiteUser u JOIN u.roles r WHERE r.roleName = :roleName")
-    List<WebsiteUser> findByRoleName(@Param("roleName") String roleName);
+    @Query("SELECT u FROM WebsiteUser u JOIN u.roles r WHERE r.roleName = :roleName AND u.isDeleted = false")
+    List<WebsiteUser> findByRoleNameAndNotDeleted(@Param("roleName") String roleName);
 }

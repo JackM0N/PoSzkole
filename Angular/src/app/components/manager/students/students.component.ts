@@ -18,6 +18,8 @@ export class StudentsComponent implements AfterViewInit{
   protected totalStudents: number = 0;
   protected displayedColumns: string[] = ['id', 'firstName', 'lastName', 'gender', 'email', 'phone', "guardianEmail", "guardianPhone"];
   protected noStudents = false;
+  protected searchText: string = '';
+  protected isDeleted: boolean = false;
 
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
@@ -59,7 +61,7 @@ export class StudentsComponent implements AfterViewInit{
       complete: () => {}
     };
 
-    this.websiteUserService.loadAllStudentsPaged(page, size, sortBy, sortDir).subscribe(observer);
+    this.websiteUserService.loadAllStudentsPaged(page, size, sortBy, sortDir, this.searchText, this.isDeleted).subscribe(observer);
   }
 
   openStudentRegistration() {
@@ -72,5 +74,10 @@ export class StudentsComponent implements AfterViewInit{
         console.log("Add displaying newly added teacher")
       }
     });
+  }
+
+  onFilterChange() {
+    this.paginator.pageIndex = 0;
+    this.loadStudents();
   }
 }

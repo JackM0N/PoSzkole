@@ -18,6 +18,8 @@ export class TeachersComponent {
   protected totalTeachers: number = 0;
   protected displayedColumns: string[] = ['id', 'firstName', 'lastName', 'gender', 'email', 'phone', "subjects"];
   protected noTeachers = false;
+  protected searchText: string = '';
+  protected isDeleted: boolean = false;
 
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
@@ -59,7 +61,7 @@ export class TeachersComponent {
       complete: () => {}
     };
 
-    this.websiteUserService.loadAllTeachersPaged(page, size, sortBy, sortDir).subscribe(observer);
+    this.websiteUserService.loadAllTeachersPaged(page, size, sortBy, sortDir, this.searchText, this.isDeleted).subscribe(observer);
   }
 
   openTeacherRegistration() {
@@ -72,5 +74,10 @@ export class TeachersComponent {
         console.log("Add displaying newly added teacher")
       }
     });
+  }
+
+  onFilterChange() {
+    this.paginator.pageIndex = 0;
+    this.loadTeachers();
   }
 }

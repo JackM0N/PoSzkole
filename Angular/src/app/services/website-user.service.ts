@@ -31,21 +31,39 @@ export class WebsiteUserService {
     return this.http.get<CompactUser[]>(`${this.baseUrl}/all-teachers`)
   }
 
-  loadAllStudentsPaged(page: number, size: number, sortBy: string, sortDir: string): Observable<SimplifiedUser[]>{
+  loadAllStudentsPaged(page: number, size: number, sortBy: string, sortDir: string, searchText?: string, isDeleted?: boolean): Observable<SimplifiedUser[]>{
     var params = new HttpParams()
       .set('page', (page - 1).toString())
       .set('size', size.toString())
       .set('sort', sortBy + ',' + sortDir
     );
+
+    if (searchText) {
+      params = params.set('searchText', searchText);
+    }
+  
+    if (isDeleted !== undefined) {
+      params = params.set('isDeleted', isDeleted.toString());
+    }
+
     return this.http.get<SimplifiedUser[]>(`${this.baseUrl}/page/all-students`, {params})
   }
 
-  loadAllTeachersPaged(page: number, size: number, sortBy: string, sortDir: string): Observable<SimplifiedUser[]>{
+  loadAllTeachersPaged(page: number, size: number, sortBy: string, sortDir: string, searchText?: string, isDeleted?: boolean): Observable<SimplifiedUser[]>{
     var params = new HttpParams()
       .set('page', (page - 1).toString())
       .set('size', size.toString())
       .set('sort', sortBy + ',' + sortDir
     );
+
+    if (searchText) {
+      params = params.set('searchText', searchText);
+    }
+  
+    if (isDeleted !== undefined) {
+      params = params.set('isDeleted', isDeleted.toString());
+    }
+
     return this.http.get<SimplifiedUser[]>(`${this.baseUrl}/page/all-teachers`, {params})
   }
 

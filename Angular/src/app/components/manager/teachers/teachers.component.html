@@ -1,6 +1,15 @@
 <div class="table-container">
   <h2>Lista nauczycieli</h2>
 
+  <div class="filter-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Wyszukaj</mat-label>
+      <input matInput [(ngModel)]="searchText" (ngModelChange)="onFilterChange()" placeholder="Filtruj">
+    </mat-form-field>
+  
+    <mat-checkbox [(ngModel)]="isDeleted" (change)="onFilterChange()">Pokaż usuniętych</mat-checkbox>
+  </div>
+
   <table mat-table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="id">

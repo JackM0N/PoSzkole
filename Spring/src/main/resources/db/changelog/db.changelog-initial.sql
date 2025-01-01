@@ -45,7 +45,8 @@ CREATE TABLE website_user
     price_list_id       BIGINT REFERENCES price_list (price_list_id),
     discount_percentage INT,
     is_cash_payment     BOOLEAN,
-    issue_invoice       BOOLEAN
+    issue_invoice       BOOLEAN,
+    is_deleted          BOOLEAN             NOT NULL DEFAULT false
 );
 
 -- Sale

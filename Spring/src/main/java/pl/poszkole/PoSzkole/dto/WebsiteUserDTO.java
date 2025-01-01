@@ -37,6 +37,7 @@ public class WebsiteUserDTO implements Serializable {
     Integer discountPercentage;
     Boolean isCashPayment;
     Boolean issueInvoice;
+    Boolean isDeleted;
     Set<Role> roles;
     List<TutoringClassDTO> classes;
     Collection<SubjectDTO> subjects;

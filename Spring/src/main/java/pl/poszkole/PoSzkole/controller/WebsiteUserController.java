@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
 import pl.poszkole.PoSzkole.dto.SubjectDTO;
 import pl.poszkole.PoSzkole.dto.WebsiteUserDTO;
+import pl.poszkole.PoSzkole.filter.UserFilter;
 import pl.poszkole.PoSzkole.service.WebsiteUserService;
 
 import java.util.List;
@@ -39,13 +40,13 @@ public class WebsiteUserController {
     }
 
     @GetMapping("/page/all-students")
-    public ResponseEntity<Page<SimplifiedUserDTO>> getAllStudentsPaged(String searchText, Pageable pageable) {
-        return ResponseEntity.ok(websiteUserService.getAllStudentsPageable(searchText, pageable));
+    public ResponseEntity<Page<SimplifiedUserDTO>> getAllStudentsPaged(UserFilter filter, Pageable pageable) {
+        return ResponseEntity.ok(websiteUserService.getAllStudentsPageable(filter, pageable));
     }
 
     @GetMapping("/page/all-teachers")
-    public ResponseEntity<Page<SimplifiedUserDTO>> getAllTeachersPaged(String searchText, Pageable pageable) {
-        return ResponseEntity.ok(websiteUserService.getAllTeachersPageable(searchText, pageable));
+    public ResponseEntity<Page<SimplifiedUserDTO>> getAllTeachersPaged(UserFilter filter, Pageable pageable) {
+        return ResponseEntity.ok(websiteUserService.getAllTeachersPageable(filter, pageable));
     }
 
     @PutMapping("/edit/my-profile")
