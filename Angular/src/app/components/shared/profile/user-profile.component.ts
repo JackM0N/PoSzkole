@@ -25,7 +25,6 @@ export class UserAccountComponent implements OnInit{
     this.websiteUserService.loadUserProfile(+userId!).subscribe({
       next: response => {
         this.user = response;
-        console.log(response)
       },
       error: error => {
         console.error("Wystąpił problem z wczytaniem profilu użytkownika", error);

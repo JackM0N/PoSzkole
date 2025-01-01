@@ -15,11 +15,10 @@ import pl.poszkole.PoSzkole.dto.WebsiteUserDTO;
 import pl.poszkole.PoSzkole.filter.UserFilter;
 import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.WebsiteUserMapper;
-import pl.poszkole.PoSzkole.model.Role;
-import pl.poszkole.PoSzkole.model.Subject;
-import pl.poszkole.PoSzkole.model.WebsiteUser;
+import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.repository.RoleRepository;
 import pl.poszkole.PoSzkole.repository.SubjectRepository;
+import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 import pl.poszkole.PoSzkole.security.AuthenticationFacade;
 
@@ -37,6 +36,7 @@ public class WebsiteUserService {
     private final RoleRepository roleRepository;
     private final SubjectRepository subjectRepository;
     private final SimplifiedUserMapper simplifiedUserMapper;
+    private final TutoringClassRepository tutoringClassRepository;
 
     public WebsiteUserDTO getCurrentUserProfile(){
         WebsiteUser currentUser = getCurrentUser();
@@ -159,6 +159,64 @@ public class WebsiteUserService {
         WebsiteUser updatedUser = websiteUserRepository.save(websiteUser);
 
         return websiteUserMapper.toDto(updatedUser);
+    }
+
+    public WebsiteUserDTO restoreUser(Long websiteUserId) {
+        WebsiteUser websiteUser = websiteUserRepository.findById(websiteUserId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        websiteUser.setIsDeleted(false);
+        websiteUserRepository.save(websiteUser);
+        return websiteUserMapper.toDtoWithoutSensitiveData(websiteUser);
+    }
+
+    public WebsiteUserDTO deleteUser(Long websiteUserId) {
+        WebsiteUser currentUser = getCurrentUser();
+        WebsiteUser userToDelete = websiteUserRepository.findById(websiteUserId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        //Check all role info about user
+        boolean isSiteOwner = currentUser.getRoles().stream()
+                .anyMatch(role -> "OWNER".equals(role.getRoleName()));
+        boolean isManager = currentUser.getRoles().stream()
+                .anyMatch(role -> "MANAGER".equals(role.getRoleName()));
+        boolean isTeacher = currentUser.getRoles().stream()
+                .anyMatch(role -> "TEACHER".equals(role.getRoleName()));
+        boolean isStudent = currentUser.getRoles().stream()
+                .anyMatch(role -> "STUDENT".equals(role.getRoleName()));
+        boolean isProfileOwner = currentUser.getId().equals(userToDelete.getId());
+
+        //Check if current user can make this operation
+        if (!isSiteOwner && !isManager && !isProfileOwner) {
+            throw new RuntimeException("You dont have permission to delete this user");
+        }
+
+        if (isStudent) {
+            //Check if student is not a part of ongoing class
+            List<TutoringClass> tutoringClasses = userToDelete.getClasses();
+            tutoringClasses.forEach(tutoringClass -> {
+                if (!tutoringClass.getIsCompleted()) {
+                    throw new RuntimeException("This user is a part of an active tutoring class");
+                }
+            });
+
+            //Check if student is not a part of ongoing course
+            List<Course> courses = userToDelete.getCourses();
+            courses.forEach(course -> {
+                if (!course.getIsDone()) {
+                    throw new RuntimeException("This user is a part of an active course");
+                }
+            });
+        }
+
+        if (isTeacher) {
+            if(!tutoringClassRepository.findByTeacherIdAndIsCompleted(userToDelete.getId(), false).isEmpty()) {
+                throw new RuntimeException("This user is a teacher of an active tutoring class");
+            }
+        }
+
+        userToDelete.setIsDeleted(true);
+        websiteUserRepository.save(userToDelete);
+        return websiteUserMapper.toDtoWithoutSensitiveData(userToDelete);
     }
 
     public WebsiteUser getCurrentUser() {

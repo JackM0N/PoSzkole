@@ -75,4 +75,11 @@ export class WebsiteUserService {
     return this.http.put<WebsiteUser>(`${this.baseUrl}/edit/subjects/${teacherId}`, subjects)
   }
 
+  deleteUser(userId: number): Observable<WebsiteUser> {
+    return this.http.put<WebsiteUser>(`${this.baseUrl}/delete`, userId)
+  }
+
+  restoreUser(userId: number): Observable<WebsiteUser> {
+    return this.http.put<WebsiteUser>(`${this.baseUrl}/restore`, userId)
+  }
 }

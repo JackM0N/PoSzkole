@@ -58,4 +58,14 @@ public class WebsiteUserController {
     public ResponseEntity<WebsiteUserDTO> editTeacherSubjects(@PathVariable Long userId, @RequestBody List<SubjectDTO> subjects) {
         return ResponseEntity.ok(websiteUserService.editTeachersSubjects(userId, subjects));
     }
+
+    @PutMapping("/delete")
+    public ResponseEntity<WebsiteUserDTO> deleteUser(@RequestBody Long userId) {
+        return ResponseEntity.ok(websiteUserService.deleteUser(userId));
+    }
+
+    @PutMapping("/restore")
+    public ResponseEntity<WebsiteUserDTO> restoreUser(@RequestBody Long userId) {
+        return ResponseEntity.ok(websiteUserService.restoreUser(userId));
+    }
 }

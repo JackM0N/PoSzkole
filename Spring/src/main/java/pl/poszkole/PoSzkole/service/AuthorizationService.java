@@ -13,9 +13,11 @@ public class AuthorizationService {
 
     public boolean cantModifyEntity(HasUser entity){
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
-        boolean isAdmin = currentUser.getRoles().stream()
+        boolean isOwner = currentUser.getRoles().stream()
+                .anyMatch(role -> "OWNER".equals(role.getRoleName()));
+        boolean isManager = currentUser.getRoles().stream()
                 .anyMatch(role -> "MANAGER".equals(role.getRoleName()));
         boolean isAuthor = currentUser.equals(entity.getUser());
-        return !isAdmin && !isAuthor;
+        return !isOwner && !isManager && !isAuthor;
     }
 }
