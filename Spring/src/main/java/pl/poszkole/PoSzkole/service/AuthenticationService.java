@@ -14,6 +14,7 @@ import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 import pl.poszkole.PoSzkole.security.AuthenticationResponse;
 import pl.poszkole.PoSzkole.security.JWTService;
 
+import javax.naming.AuthenticationException;
 import java.util.Collections;
 
 @Service
@@ -77,9 +78,12 @@ public class AuthenticationService {
         return new AuthenticationResponse(token);
     }
 
-    public AuthenticationResponse login(WebsiteUserDTO request){
+    public AuthenticationResponse login(WebsiteUserDTO request) throws AuthenticationException {
         WebsiteUser user = websiteUserRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("Incorrect username or password"));
+                .orElseThrow(() -> new AuthenticationException("Incorrect username or password"));
+        if (user.getIsDeleted()){
+            throw new AuthenticationException("Username or password is incorrect");
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

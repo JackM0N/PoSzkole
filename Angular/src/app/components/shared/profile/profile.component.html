@@ -135,4 +135,13 @@
       </mat-card-content>
     </mat-card>
   }
+
+  @if(isOwner || currentUserIsManager){
+    <br/>
+    @if (account?.isDeleted) {
+      <button mat-raised-button class="restore-button" color="primary" (click)="restoreUser()">Przywróć</button>
+    }@else {
+      <button mat-raised-button class="delete-button" style="background-color: red;" (click)="confirmDeleteUser()">Usuń konto</button>
+    }
+  }
 </div>

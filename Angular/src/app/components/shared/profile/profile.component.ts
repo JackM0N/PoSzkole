@@ -8,6 +8,10 @@ import { EditSubjectsComponent } from './edit-subjects.component';
 import { AuthService } from '../../../services/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Role } from '../../../models/role.model';
+import { WebsiteUserService } from '../../../services/website-user.service';
+import { ToastrService } from 'ngx-toastr';
+import { AppComponent } from '../../../app.component';
+import { PopUpDialogComponent } from '../pop-up/pop-up-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -26,7 +30,10 @@ export class AccountComponent implements OnInit, OnChanges{
 
   constructor(
     private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private websiteUserService: WebsiteUserService,
+    private toastr: ToastrService,
+    private appComponent: AppComponent,
   ){}
 
   ngOnInit(): void {
@@ -101,6 +108,66 @@ export class AccountComponent implements OnInit, OnChanges{
         this.refreshAccount();
       }
     });
+  }
+
+  confirmDeleteUser(): void {
+      const dialogRef = this.dialog.open(PopUpDialogComponent, {
+        width: '400px',
+        data: {
+          title: 'Potwierdzenie usunięcia',
+          content: 'Czy na pewno chcesz usunąć to konto?',
+          submitText: 'Usuń',
+          cancelText: 'Anuluj'
+        }
+      });
+    
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.deleteUser();
+        }
+      });
+    }
+
+  deleteUser() {
+    this.websiteUserService.deleteUser(this.account?.id!).subscribe({
+      next: () => {
+        this.toastr.success('Konto zostało usunięte!', 'Sukces!')
+        if(this.isOwner){
+          this.authService.logout();
+          this.appComponent.reloadRoles();
+        }else{
+          this.refreshAccount();
+        }
+      },
+      error: error => {
+        if (error.error === "This user is a part of an active tutoring class") {
+          this.toastr.error('Nie można usunąć konta, ponieważ uczeń chodzi na aktywne zajęcia', 'Błąd!');
+        }
+        else if (error.error === "This user is a part of an active course") {
+          this.toastr.error('Nie można usunąć konta, ponieważ uczeń chodzi na aktywny kurs', 'Błąd!');
+        }
+        else if (error.error === "This user is a teacher of an active tutoring class") {
+          this.toastr.error('Nie można usunąć konta, ponieważ nauczyciel ma niezakończone zajęcia', 'Błąd!');
+        }
+        else{
+          this.toastr.error('Coś poszło nie tak podczas usuwania konta!', 'Błąd!');
+          console.error(error)
+        }
+      }
+    })
+  }
+
+  restoreUser() {
+    this.websiteUserService.restoreUser(this.account?.id!).subscribe({
+      next: () => {
+        this.refreshAccount();
+        this.toastr.success('Konto zostało przywrócone!', 'Sukces!');
+      },
+      error: (error) => {
+        this.toastr.error('Coś poszło nie tak podczas przywracania konta!', 'Błąd!');
+        console.error(error);
+      }
+    })
   }
 
   refreshAccount(): void {

@@ -175,15 +175,18 @@ public class WebsiteUserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         //Check all role info about user
+        //Current user roles
         boolean isSiteOwner = currentUser.getRoles().stream()
                 .anyMatch(role -> "OWNER".equals(role.getRoleName()));
         boolean isManager = currentUser.getRoles().stream()
                 .anyMatch(role -> "MANAGER".equals(role.getRoleName()));
-        boolean isTeacher = currentUser.getRoles().stream()
-                .anyMatch(role -> "TEACHER".equals(role.getRoleName()));
-        boolean isStudent = currentUser.getRoles().stream()
-                .anyMatch(role -> "STUDENT".equals(role.getRoleName()));
         boolean isProfileOwner = currentUser.getId().equals(userToDelete.getId());
+
+        //Viewed user roles
+        boolean isTeacher = userToDelete.getRoles().stream()
+                .anyMatch(role -> "TEACHER".equals(role.getRoleName()));
+        boolean isStudent = userToDelete.getRoles().stream()
+                .anyMatch(role -> "STUDENT".equals(role.getRoleName()));
 
         //Check if current user can make this operation
         if (!isSiteOwner && !isManager && !isProfileOwner) {

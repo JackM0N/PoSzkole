@@ -11,6 +11,8 @@ import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.security.AuthenticationResponse;
 import pl.poszkole.PoSzkole.service.AuthenticationService;
 
+import javax.naming.AuthenticationException;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthenticationController {
@@ -33,7 +35,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody WebsiteUserDTO websiteUser) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody WebsiteUserDTO websiteUser) throws AuthenticationException {
         return ResponseEntity.ok(authenticationService.login(websiteUser));
     }
 }
