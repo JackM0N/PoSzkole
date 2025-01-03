@@ -2,6 +2,7 @@
   <h1>Wybierz ucznia, którego chcesz dodać kursu: {{data.course.courseName}}</h1>
   <form [formGroup]="addStudentForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
+      <mat-label>Wybierz ucznia</mat-label>
       <input type="text" matInput placeholder="Wybierz ucznia*"
         [matAutocomplete]="studentAuto" formControlName="student" required>
         <mat-autocomplete #studentAuto="matAutocomplete" [displayWith]="displayStudent">

@@ -1,7 +1,9 @@
-<h2 mat-dialog-title>Rozpocznij kurs: {{data.course.courseName}}</h2>
+<h1 mat-dialog-title>Rozpocznij kurs: {{data.course.courseName}}</h1>
 <mat-dialog-content>
   <form [formGroup]="startCourseForm" (ngSubmit)="onSubmit()">
+    <h3>Wybierz nauczyciela, który będzie prowadził zajęcia</h3>
     <mat-form-field>
+      <mat-label>Nauczyciel</mat-label>
       <input type="text" matInput placeholder="Wybierz nauczyciela*"
         [matAutocomplete]="studentAuto" formControlName="teacher" required>
         <mat-autocomplete #studentAuto="matAutocomplete" [displayWith]="displayTeacher">
@@ -15,12 +17,15 @@
     <mat-divider></mat-divider>
 
     <div class="form-section">
-      <h3>Zajęcia</h3>
+      <h3>Utwórz zajęcia</h3>
+      
       <mat-form-field>
+        <mat-label>Nazwa zajęć</mat-label>
         <input type="text" matInput placeholder="Nazwa zajęć" formControlName="className" required>
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Przedmiot</mat-label>
         <input type="text" matInput placeholder="Wybierz przedmiot*"
           [matAutocomplete]="subjectAuto" formControlName="subject" required>
           <mat-autocomplete #subjectAuto="matAutocomplete" [displayWith]="displaySubject">
@@ -35,7 +40,7 @@
     <mat-divider></mat-divider>
 
     <div class="form-section">
-      <h3>Termin zajęć</h3>
+      <h3>Ustal termin zajęć</h3>
       <mat-form-field>
         <mat-label>Dzień zajęć</mat-label>
         <mat-select formControlName="dayOfWeek" required>
@@ -48,14 +53,17 @@
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Od godziny</mat-label>
         <input matInput type="time" placeholder="Od godziny" formControlName="timeFrom" required>
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Do godziny</mat-label>
         <input matInput type="time" placeholder="Do godziny" formControlName="timeTo" required>
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Data zakończenia</mat-label>
         <input matInput [matDatepicker]="datepicker" placeholder="Wybierz datę zakończenia" formControlName="repeatUntil">
         <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
         <mat-datepicker #datepicker></mat-datepicker>
@@ -63,10 +71,11 @@
 
       <mat-checkbox formControlName="isOnline">Czy zajęcia mają być zdalne?</mat-checkbox>
     </div>
-
-    <div class="button-group">
-      <button mat-button type="button" (click)="dialogRef.close()">Anuluj</button>
-      <button mat-raised-button color="primary" type="submit">Wyślij</button>
-    </div>
   </form>
 </mat-dialog-content>
+<mat-dialog-actions>
+  <div class="button-group">
+    <button mat-button type="button" (click)="dialogRef.close()">Anuluj</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()">Wyślij</button>
+  </div>
+</mat-dialog-actions>

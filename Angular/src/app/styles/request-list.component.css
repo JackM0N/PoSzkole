@@ -2,18 +2,19 @@
 .table-container {
   background-color: white;
   border: 1px solid #cccccc;
-  border-radius: 5px;
+  border-radius: 0.3rem;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 1800px; 
+  padding: clamp(1rem, 2vw, 2rem); 
+  margin: 1rem auto;
+  max-width: 100%;
+  width: clamp(300px, 90%, 1800px);
 }
 
 /* Table header */
 .table-container h2 {
   color: #4a4a4a;
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  margin-bottom: 1rem;
   text-align: center;
 }
 
@@ -27,14 +28,16 @@ table.mat-table {
   font-weight: bold;
   color: #3366cc;
   background-color: #f7f9fc;
-  padding: 10px;
+  padding: 0.625rem;
   text-align: center;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
 }
 
 .mat-cell {
-  padding: 10px;
+  padding: 0.625rem;
   text-align: center;
   color: #4a4a4a;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
 }
 
 .mat-row {
@@ -48,6 +51,7 @@ table.mat-table {
 .no-data-message {
   text-align: center;
   color: #4a4a4a;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
 }
 
 /* Sort arrow styling */
@@ -99,28 +103,41 @@ table.mat-table {
 /* Filter container */
 .filter-container {
   background-color: #ffffff;
-  margin: 20 auto;
+  margin: 1.25rem auto;
 }
 
 .filter-container h3 {
-  font-size: 18px;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
   color: #4a4a4a;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .filter-container .filter-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 1rem;
 }
 
 .filter-container .mat-button {
   background-color: #3366cc;
   color: #ffffff;
-  padding: 10px 16px;
-  border-radius: 5px;
+  padding: 0.625rem 1rem;
+  border-radius: 0.3rem;
 }
 
 .filter-container .mat-button:hover {
   background-color: #274b9f;
+}
+
+/* Media queries */
+@media (max-width: 1200px) {
+  .table-container {
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .filter-container {
+    padding: 1rem;
+  }
 }

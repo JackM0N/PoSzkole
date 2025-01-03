@@ -35,31 +35,28 @@ export class RegisterTeacherComponent {
   }
 
   onSubmit() {
-    if (this.registerTeacherForm.invalid) {
-      this.toastr.error('Formularz zawiera błędy. Popraw dane i spróbuj ponownie.', 'Błąd');
-      return;
+    if (!this.registerTeacherForm.valid) {
+      const teacherData: WebsiteUser = {
+        ...this.registerTeacherForm.value,
+        gender: Object.keys(Gender).find(
+          key => Gender[key as keyof typeof Gender]
+        )
+      };
+
+      this.authService.registerTeacher(teacherData).subscribe({
+        next: () => {
+          this.toastr.success('Rejestracja zakończona sukcesem.', 'Sukces');
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          this.toastr.error('Wystąpił błąd podczas rejestracji.', 'Błąd');
+          console.error(error);
+        }
+      });
     }
-
-    const teacherData: WebsiteUser = {
-      ...this.registerTeacherForm.value,
-      gender: Object.keys(Gender).find(
-        key => Gender[key as keyof typeof Gender]
-      )
-    };
-
-    this.authService.registerTeacher(teacherData).subscribe({
-      next: (response) => {
-        this.toastr.success('Rejestracja zakończona sukcesem.', 'Sukces');
-        this.dialogRef.close(true);
-      },
-      error: (err) => {
-        this.toastr.error('Wystąpił błąd podczas rejestracji.', 'Błąd');
-        console.error(err);
-      }
-    });
   }
 
   onCancel(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(true);
   }
 }

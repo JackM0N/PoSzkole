@@ -5,28 +5,41 @@
   display: flex;
   flex-direction: column;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  max-width: 500px;
-  margin: 40px auto;
-  border-radius: 5px;
+  padding: clamp(1rem, 2vw, 2rem);
+  max-width: 90%;
+  width: clamp(300px, 50%, 500px);
+  margin: 2rem auto;
+  border-radius: 0.3rem;
 }
 
 /* Header */
-.form-container h1 {
+h1 {
   color: #4a4a4a;
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: clamp(1.8rem, 2.2vw, 2.2rem);
+  margin-bottom: 1rem;
   text-align: center;
+}
+
+h2 {
+  color: #4a4a4a;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  margin-bottom: 1rem;
+}
+
+h3 {
+  color: #4a4a4a;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  margin: 1rem 0;
 }
 
 /* Fields */
 mat-form-field {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
 }
 
 mat-checkbox {
-  margin: 10px 0;
+  margin: 0.625rem 0;
   color: #4a4a4a;
 }
 
@@ -44,8 +57,7 @@ mat-checkbox {
   color: #3366cc;
   border: 1px solid #3366cc;
   background-color: white;
-  margin-right: 10px;
-  height: 36px;
+  height: 2.25rem;
 }
 
 .button-group button[type="button"]:hover {
@@ -64,8 +76,10 @@ mat-checkbox {
 
 .button-group {
   display: flex;
+  flex-wrap: wrap;
   justify-content: left;
-  margin-top: 20px;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
 }
 
 /* Text editor */
@@ -73,3 +87,46 @@ mat-checkbox {
   height: 25em;
 }
 
+/* Media queries */
+@media (max-width: 1200px) {
+  .form-container {
+    max-width: 70%;
+  }
+}
+
+@media (max-width: 780px) {
+  .form-container {
+    max-width: 90%;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-group button[type="button"] {
+    color: #3366cc;
+    border: 1px solid #3366cc;
+    background-color: white;
+    height: 36px;
+  }
+  
+  .button-group button[type="button"]:hover {
+    background-color: #e0e7ff;
+  }
+  
+  /* Send */
+  .button-group button[type="submit"] {
+    background-color: #3366cc;
+    color: white;
+  }
+  
+  .button-group button[type="submit"]:hover {
+    background-color: #6699ff;
+  }
+}

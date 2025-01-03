@@ -56,6 +56,13 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
       return scheduleDateISO === activeDayISO;
     });
   });
+  daysWithClasses: Signal<Set<any>> = computed(() => {
+    return new Set(
+      this.classes().map((schedule) => 
+        DateTime.fromISO(schedule.classDateFrom as unknown as string).toISODate()
+      )
+    );
+  });
 
   constructor(
     private dialog: MatDialog,
@@ -66,7 +73,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     this.currentMonth = this.firstDayOfActiveMonth().monthShort;
-    this.isCurrentUserTeacher = this.checkIfUserIsTeacher();
+    this.isCurrentUserTeacher = this.authService.hasRole("TEACHER");
   }
 
   ngAfterViewInit(): void {
@@ -107,24 +114,12 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
   }
 
   hasClassesForDay(day: DateTime): boolean {
-    return this.classes().some((classSchedule) =>
-      day.hasSame(DateTime.fromISO(classSchedule.classDateFrom as unknown as string), 'day')
-    );
+    const dayISO = day.toISODate();
+    return dayISO ? this.daysWithClasses().has(dayISO) : false;
   }
 
   trackByFn(index: number, item: ClassSchedule): number | undefined {
     return item.id;
-  }
-
-  checkIfUserIsTeacher(){
-    const token = this.authService.getToken();
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      const userRoles: Role[] = decodedToken.roles || [];
-  
-      return userRoles.some((role: Role) => role.roleName === "TEACHER");
-    }
-    return false;
   }
 
   openDetailsDialog(selectedClass: ClassSchedule): void {
