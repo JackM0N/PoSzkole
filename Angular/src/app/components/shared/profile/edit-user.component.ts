@@ -87,7 +87,7 @@ export class EditUserComponent {
       },
       error: error => {
         this.toastr.success('Coś poszło nie tak podczas edycji profilu');
-        console.error("Błąd edycji profilu użytkownika", error)
+        console.error("User update error", error)
       }
     })
   }

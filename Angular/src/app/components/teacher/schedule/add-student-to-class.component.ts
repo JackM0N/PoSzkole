@@ -64,13 +64,13 @@ export class AddStudentToClassComponent implements OnInit{
       const selectedStudent = this.addStudentForm.get('student')!.value;
 
       this.tutoringClassService.addStudentToTutoringClass(selectedStudent.id, this.data.classId).subscribe({
-        next: response => {
+        next: () => {
           this.toastr.success("Pomyślnie dodano wybranego ucznia do zajęć");
           this.dialogRef.close(true);
         },
         error: error => {
           this.toastr.error("Coś poszło nie tak podczas próby dodania ucznia do zajęć");
-          console.error('Something went wrong when adding student to class', error);
+          console.error('Adding student to class error', error);
         }
       });
     }

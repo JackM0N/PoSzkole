@@ -19,12 +19,12 @@ export class AuthService {
     return this.http.post<{token: string}>(environment.apiUrl + '/login', loginForm);
   }
 
-  registerStudent(userData: WebsiteUser): Observable<any> {
-    return this.http.post<any>(environment.apiUrl + '/register', userData);
+  registerStudent(userData: WebsiteUser): Observable<{ token: string}> {
+    return this.http.post<{ token: string}>(environment.apiUrl + '/register', userData);
   }
 
-  registerTeacher(userData: WebsiteUser): Observable<WebsiteUser> {
-    return this.http.post<WebsiteUser>(environment.apiUrl + '/registration/teacher', userData);
+  registerTeacher(userData: WebsiteUser): Observable<{ token: string}> {
+    return this.http.post<{ token: string}>(environment.apiUrl + '/registration/teacher', userData);
   }
 
   //Token decoding methods

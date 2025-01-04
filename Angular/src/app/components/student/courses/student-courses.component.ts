@@ -49,7 +49,7 @@ export class StudentCoursesComponent implements AfterViewInit{
         }
       },
       error: error => {
-        console.error(error);
+        console.error('Loading bought courses error', error);
       },
       complete: () => {}
     };

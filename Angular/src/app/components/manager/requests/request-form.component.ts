@@ -100,7 +100,7 @@ export class RequestFormComponent implements OnInit {
       }
 
       this.requestService.createRequest(formValue).subscribe({
-        next: response => {
+        next: () => {
           this.toastr.success("Pomyślnie utworzono prośbę o stworzenie nowych zajęć");
           this.resetForm();
         },

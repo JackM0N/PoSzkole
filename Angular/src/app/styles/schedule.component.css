@@ -276,3 +276,7 @@
   margin-top: 1rem !important;
   width: 100% !important;
 }
+
+::ng-deep .small-container .calendar-grid-cell {
+  padding: 1rem;
+}

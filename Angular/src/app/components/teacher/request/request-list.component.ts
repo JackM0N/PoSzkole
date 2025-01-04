@@ -57,7 +57,7 @@ export class RequestListComponent implements AfterViewInit{
         }
       },
       error: error => {
-        console.error(error);
+        console.error("Loading requests error", error)
       },
       complete: () => {}
     };

@@ -47,7 +47,7 @@ export class CancelScheduleComponent {
           this.dialogRef.close(true);
         },
         error: error => {
-          console.error('Błąd podczas odwoływania zajęć', error);
+          console.error('Class update error', error);
           this.toastr.error('Nie udało się odwołać zajęć');
         }
       });

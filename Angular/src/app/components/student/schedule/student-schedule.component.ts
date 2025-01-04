@@ -56,7 +56,7 @@ export class StudentScheduleComponent implements OnInit{
         }));
       },
       error: (err) => {
-        console.error('Błąd podczas pobierania harmonogramu:', err);
+        console.error('Loading schedule error', err);
       },
     });
   }

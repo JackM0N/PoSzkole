@@ -84,7 +84,7 @@ export class ClassDetailsComponent implements OnInit{
         this.students = response;
       },
       error: error => {
-        console.error(error);
+        console.error('Loading students error',error);
       }
     })
   }
@@ -98,7 +98,7 @@ export class ClassDetailsComponent implements OnInit{
         }));
       },
       error: error => {
-        console.error(error);
+        console.error('Loading change log error',error);
       }
     })
   }
@@ -165,7 +165,7 @@ export class ClassDetailsComponent implements OnInit{
         }
       },
       error: error => {
-        console.error('Błąd podczas sprawdzania obecności', error);
+        console.error('Attendance check error', error);
         this.toastr.error('Nie udało się sprawdzić obecności');
       }
     });
@@ -209,7 +209,7 @@ export class ClassDetailsComponent implements OnInit{
       },
       error: error => {
         this.toastr.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", "Błąd!")
-        console.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", error)
+        console.error("Class chedule update error", error)
       }
     })
   }
@@ -225,7 +225,7 @@ export class ClassDetailsComponent implements OnInit{
           this.toastr.error("Nie można usunąć z zajęć jedynego ucznia, który na nie uczęszcza", "Błąd!")
         }else{
           this.toastr.error("Coś poszło nie tak przy próbie usunięcia ucznia z zajęć", "Błąd!")
-          console.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", error)
+          console.error("Class chedule update error", error)
         }
       }
     })

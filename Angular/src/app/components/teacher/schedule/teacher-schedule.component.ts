@@ -54,8 +54,8 @@ export class TeacherScheduleComponent implements OnInit{
           }),
         }));
       },
-      error: (err) => {
-        console.error('Błąd podczas pobierania harmonogramu:', err);
+      error: (error) => {
+        console.error('Loading schedule error', error);
       },
     });
   }

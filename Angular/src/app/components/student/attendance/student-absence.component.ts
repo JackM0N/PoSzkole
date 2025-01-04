@@ -68,7 +68,7 @@ export class StudentAbsenceComponent{
         }
       },
       error: error => {
-        console.error(error);
+        console.error('Loading absence error',error);
       },
       complete: () => {}
     };

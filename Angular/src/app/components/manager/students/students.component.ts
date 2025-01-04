@@ -7,6 +7,7 @@ import { WebsiteUserService } from '../../../services/website-user.service';
 import { Observer } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterStudentComponent } from './register-student.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-students',
@@ -26,7 +27,8 @@ export class StudentsComponent implements AfterViewInit{
 
   constructor(
     private websiteUserService: WebsiteUserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngAfterViewInit(): void {
@@ -71,7 +73,7 @@ export class StudentsComponent implements AfterViewInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log("Add displaying newly added teacher")
+        this.router.navigate([`/profile/${result}`])
       }
     });
   }

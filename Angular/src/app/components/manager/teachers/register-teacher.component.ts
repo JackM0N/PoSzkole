@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { WebsiteUser } from '../../../models/website-user.model';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Gender } from '../../../enums/gender.enum';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-register-teacher',
@@ -14,6 +15,7 @@ import { Gender } from '../../../enums/gender.enum';
 export class RegisterTeacherComponent {
   registerTeacherForm: FormGroup;
   genders: Gender[] = [];
+  jwtHelper = new JwtHelperService();
 
   constructor(
     private fb: FormBuilder,
@@ -44,9 +46,12 @@ export class RegisterTeacherComponent {
       };
 
       this.authService.registerTeacher(teacherData).subscribe({
-        next: () => {
+        next: (response) => {
+          const decodedToken = this.jwtHelper.decodeToken(response.token);
+          const userId = decodedToken.id;
+
           this.toastr.success('Rejestracja zakończona sukcesem.', 'Sukces');
-          this.dialogRef.close(true);
+          this.dialogRef.close(userId);
         },
         error: (error) => {
           this.toastr.error('Wystąpił błąd podczas rejestracji.', 'Błąd');

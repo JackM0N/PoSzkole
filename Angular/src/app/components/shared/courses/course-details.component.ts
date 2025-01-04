@@ -38,7 +38,7 @@ export class CourseDetailsComponent implements OnInit{
       },
       error: error => {
         this.toastr.error("Wystąpił błąd podczas wczytywania szcegółów kursu", "Błąd!")
-        console.error("Error loading course details",error)
+        console.error("Loading courses error",error)
       }
     })
   }

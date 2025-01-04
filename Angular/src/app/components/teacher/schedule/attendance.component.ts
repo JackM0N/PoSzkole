@@ -30,7 +30,7 @@ export class AttendanceComponent implements OnInit{
       },
       error: error =>{
         console.error('Błąd podczas wczytywania obecności', error);
-        this.toastr.error('Nie udało się wczytać obecności');
+        this.toastr.error('Loading attendance error');
       }
     })
   }
@@ -42,7 +42,7 @@ export class AttendanceComponent implements OnInit{
         this.dialogRef.close();
       },
       error: error => {
-        console.error('Błąd podczas zapisywania obecności', error);
+        console.error('Attendance update error', error);
         this.toastr.error('Nie udało się zapisać obecności');
       },
     });

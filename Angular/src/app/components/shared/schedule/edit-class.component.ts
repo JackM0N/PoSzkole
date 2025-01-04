@@ -98,7 +98,7 @@ export class EditClassComponent {
         } else if (error.error === "You must provide a reason for making changes in this class"){
           this.toastr.error('Musisz podać powód swoich zmian.', 'Błąd!');
         } else {
-        console.error(error);
+        console.error('Class update error',error);
         this.toastr.error('Nie udało się zaktualizować zajęć.', 'Błąd!');
         }
       }

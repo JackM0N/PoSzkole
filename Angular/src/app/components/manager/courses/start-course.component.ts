@@ -133,6 +133,7 @@ export class StartCourseComponent implements OnInit {
             this.toastr.error("Nie można dodać zajęć. Wybrane godziny nakładają się z innymi zajęciami.", "Błąd przyjęcia zajęć");
           } else {
             this.toastr.error("Wystąpił nieoczekiwany błąd", "Błąd");
+            console.log("Start course error", error)
           }
         }
       });

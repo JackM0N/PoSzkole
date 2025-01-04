@@ -60,12 +60,12 @@ export class ReserveRoomComponent implements OnInit{
     }
 
     this.roomReservationService.reserveRoom(roomId, this.data.id).subscribe({
-      next: response => {
+      next: () => {
         this.toastr.success('Sala została pomyślnie zarezerwowana');
         this.dialogRef.close(true);
       },
       error: error => {
-        console.error('Błąd podczas rezerwacji sali', error);
+        console.error('Room reservation error', error);
         this.toastr.error('Nie udało się zarezerwować sali');
       }
     });

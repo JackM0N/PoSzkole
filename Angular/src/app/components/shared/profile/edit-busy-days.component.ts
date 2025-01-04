@@ -83,8 +83,9 @@ export class EditBusyDaysComponent {
         this.toastr.success('Zajęty dzień został pomyślnie zaktualizowany.', 'Sukces');
         this.dialogRef.close(true);
       },
-      error: () => {
+      error: (error) => {
         this.toastr.error('Wystąpił błąd podczas edycji zajętego dnia.', 'Błąd');
+        console.error("Busy day update error", error)
       }
     });
   }
@@ -95,8 +96,9 @@ export class EditBusyDaysComponent {
         this.toastr.success('Zajęty dzień został pomyślnie zaktualizowany.', 'Sukces');
         this.dialogRef.close(true);
       },
-      error: () => {
+      error: (error) => {
         this.toastr.error('Wystąpił błąd podczas edycji zajętego dnia.', 'Błąd');
+        console.error("Busy day delete error", error)
       }
     });
   }

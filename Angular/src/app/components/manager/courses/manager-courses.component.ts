@@ -107,7 +107,7 @@ export class ManagerCoursesComponent {
       },
       error: error => {
         this.toastr.error("Coś poszło nie tak przy zmianie statusu kursu", "Błąd!")
-        console.error("Coś poszło nie tak przy zmianie statusu kursu", error)
+        console.error("Course updating error", error)
       }
     })
   }

@@ -22,7 +22,7 @@ export class MyAccountComponent implements OnInit{
         this.currentUser = response;
       },
       error: error => {
-        console.error("Wystąpił problem z wczytaniem twojego profilu", error);
+        console.error("Loading profile error", error);
       }
     })
   }

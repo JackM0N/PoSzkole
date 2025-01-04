@@ -1,7 +1,7 @@
 <div class="account-container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ account?.firstName }} {{ account?.lastName }}</mat-card-title>
+      <mat-card-title>{{ account?.id }} - {{ account?.firstName }} {{ account?.lastName }}</mat-card-title>
       @for (role of account?.roles; track role) {
         <mat-card-subtitle> {{getRole(role.roleName)}} </mat-card-subtitle>
       }

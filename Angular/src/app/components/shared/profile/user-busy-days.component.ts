@@ -40,7 +40,7 @@ export class UserBusyDaysComponent {
         this.organizeBusyDays();
       },
       error: error => {
-        console.error("Wystąpił problem z wczytaniem twojego profilu", error);
+        console.error("Loading profile error", error);
       }
     })
   }

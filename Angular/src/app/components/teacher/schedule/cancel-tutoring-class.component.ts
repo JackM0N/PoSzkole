@@ -46,8 +46,8 @@ export class CancelTutoringClassComponent {
           this.toastr.success('Wszystkie pozostałe terminy zajęć zostały pomyślnie odwołane.', 'Sukces!');
           this.dialogRef.close(true);
         },
-        error: (err) => {
-          console.error(err);
+        error: (error) => {
+          console.error('Class update error', error);
           this.toastr.error('Nie udało się odwołać zajęć.', 'Błąd!');
         }
       })

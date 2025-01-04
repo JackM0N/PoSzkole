@@ -56,7 +56,7 @@ export class AvailableCoursesComponent implements AfterViewInit{
         }
       },
       error: error => {
-        console.error(error);
+        console.error('Loading available courses error',error);
       },
       complete: () => {}
     };

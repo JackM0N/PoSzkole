@@ -37,7 +37,7 @@ export class EditSubjectsComponent implements OnInit{
       },
       error: error => {
         this.toastr.error("Coś poszło nie tak podczas próby wczytania przedmiotów");
-        console.error('Błąd wczytywania przedmiotów', error);
+        console.error('Loading subjects error', error);
       }
     })
   }
@@ -62,7 +62,7 @@ export class EditSubjectsComponent implements OnInit{
       },
       error: error => {
         this.toastr.error("Coś poszło nie tak podczas edytowania przedmiotów");
-        console.error('Błąd edycji przedmiotów', error);
+        console.error('Subject update error', error);
       }
     })
   }

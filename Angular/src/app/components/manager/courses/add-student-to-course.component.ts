@@ -71,7 +71,7 @@ export class AddStudentToCourseComponent implements OnInit{
         },
         error: error => {
           this.toastr.error("Coś poszło nie tak podczas próby dodania ucznia do zajęć");
-          console.error('Something went wrong when adding student to class', error);
+          console.error('Adding student to class error', error);
         }
       });
     }

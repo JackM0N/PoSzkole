@@ -6,6 +6,7 @@ import pl.poszkole.PoSzkole.model.WebsiteUser;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface WebsiteUserMapper {
+    @Mapping(target = "isDeleted", constant = "false")
     WebsiteUser toEntity(WebsiteUserDTO websiteUserDTO);
 
     @Mapping(target = "classes", ignore = true)

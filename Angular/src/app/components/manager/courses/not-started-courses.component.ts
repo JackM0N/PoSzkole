@@ -127,7 +127,7 @@ export class NotStartedCoursesComponent implements AfterViewInit{
       },
       error: error => {
         this.toastr.error("Coś poszło nie tak przy otwieraniu kursu", "Błąd!")
-        console.error("Coś poszło nie tak przy otwieraniu kursu", error)
+        console.error("Course update error", error)
       }
     })
   }

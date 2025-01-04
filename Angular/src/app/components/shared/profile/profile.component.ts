@@ -151,7 +151,7 @@ export class AccountComponent implements OnInit, OnChanges{
         }
         else{
           this.toastr.error('Coś poszło nie tak podczas usuwania konta!', 'Błąd!');
-          console.error(error)
+          console.error('User delete error',error)
         }
       }
     })
@@ -165,7 +165,7 @@ export class AccountComponent implements OnInit, OnChanges{
       },
       error: (error) => {
         this.toastr.error('Coś poszło nie tak podczas przywracania konta!', 'Błąd!');
-        console.error(error);
+        console.error('User restore error',error);
       }
     })
   }

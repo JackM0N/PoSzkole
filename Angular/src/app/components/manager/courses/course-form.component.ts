@@ -72,7 +72,7 @@ export class CourseFormComponent implements OnInit, OnDestroy{
           },
           error: error => {
             this.toastr.error('Wystąpił błąd podczas tworzenia kursu.', 'Błąd');
-            console.error(error);
+            console.error('Course creation error',error);
           }
         });
       }

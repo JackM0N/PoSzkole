@@ -27,7 +27,7 @@ export class UserAccountComponent implements OnInit{
         this.user = response;
       },
       error: error => {
-        console.error("Wystąpił problem z wczytaniem profilu użytkownika", error);
+        console.error("Loading profile error", error);
       }
     })
   }

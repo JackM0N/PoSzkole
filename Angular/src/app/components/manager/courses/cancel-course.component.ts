@@ -54,7 +54,7 @@ export class CancelCourseComponent implements OnInit{
         },
         error: error => {
           this.toastr.error('Wystąpił błąd podczas odwoływania kursu.', 'Błąd');
-          console.error(error);
+          console.error('Course cancelation error',error);
         }
       });
     }

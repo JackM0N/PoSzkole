@@ -134,7 +134,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
 
   openCheckRoomAvailability(): void{
     if (!this.activeDay) {
-      console.error("Nie wybrano dnia.");
+      console.error("No day was chosen");
       return;
     }
 

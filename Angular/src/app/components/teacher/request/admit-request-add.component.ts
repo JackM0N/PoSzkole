@@ -51,7 +51,7 @@ export class AdmitRequestAddComponent implements OnInit{
               if (parsedDate.isValid) {
                 tutoringClass.nextClassSchedule.classDateFromFormatted = parsedDate.toFormat('dd.MM.yyyy, HH:mm');
               } else {
-                console.error('Nie udało się sparsować daty:', dateArray);
+                console.error('Date parse error', dateArray);
               }
             }
           }
@@ -60,7 +60,7 @@ export class AdmitRequestAddComponent implements OnInit{
       },
       error: (error) => {
         this.toastr.error('Nie można załadować aktywnych zajęć', 'Błąd');
-        console.error('Nie można załadować aktywnych zajęć', error);
+        console.error('Loading active classes error', error);
       }
     });
   }
@@ -80,7 +80,7 @@ export class AdmitRequestAddComponent implements OnInit{
           this.toastr.error("Nie można dodać ucznia na te zajęcia, ponieważ nachodzą one na inne zajęcia, na które już uczęszcza.", "Błąd dodawania do zajęć");
         }else{
           this.toastr.error("Nie udało się dodać ucznia na zajęcia", "Błąd");
-          console.error("Nie udało się dodać ucznia na zajęcia", error);
+          console.error("Class update error", error);
         }
       }
     })
