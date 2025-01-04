@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.ClassScheduleDTO;
+import pl.poszkole.PoSzkole.dto.DateAndTimeDTO;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
 import pl.poszkole.PoSzkole.dto.ScheduleChangesLogDTO;
 import pl.poszkole.PoSzkole.mapper.ClassScheduleMapper;
@@ -21,6 +22,7 @@ import pl.poszkole.PoSzkole.model.TutoringClass;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
 import pl.poszkole.PoSzkole.repository.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
@@ -40,6 +42,7 @@ public class ClassScheduleService {
     private final ScheduleChangesLogRepository scheduleChangesLogRepository;
     private final TutoringClassRepository tutoringClassRepository;
     private final WebsiteUserRepository websiteUserRepository;
+    private final UserBusyDayService userBusyDayService;
 
     //This cannot be universal since checking role here would do bad stuff for ppl with 2 roles (T and S)
     public List<ClassScheduleDTO> getAllClassSchedulesForCurrentStudent(Long userId) {
@@ -114,14 +117,15 @@ public class ClassScheduleService {
 
         //Check for overlap with other class schedules
         if (!classScheduleRepository.findOverlappingSchedulesForStudent(
-                studentId, classSchedule.getClassDateFrom(), classSchedule.getClassDateTo()).isEmpty()){
+                studentId, classSchedule.getClassDateFrom(), classSchedule.getClassDateTo(), null).isEmpty()){
             throw new RuntimeException("Class schedule overlaps with existing student's class");
         }
 
         if (!classScheduleRepository.findOverlappingSchedulesForTeacher(
                 tutoringClass.getTeacher().getId(),
                 classSchedule.getClassDateFrom(),
-                classSchedule.getClassDateTo()
+                classSchedule.getClassDateTo(),
+                null
         ).isEmpty()){
             throw new RuntimeException("Class schedule overlaps with existing teacher's class");
         }
@@ -133,7 +137,6 @@ public class ClassScheduleService {
     @Transactional
     public void createRepeatingClassSchedule(DayAndTimeDTO dayAndTimeDTO, TutoringClass tutoringClass,
                                                       boolean isOnline, LocalDate repeatUntil, List<WebsiteUser> students) {
-        //TODO: MAYBE add intervals to easily create classes every 2 weeks for example
         LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.nextOrSame(dayAndTimeDTO.getDay()));
 
         if (firstDate.equals(LocalDate.now())) {
@@ -153,7 +156,8 @@ public class ClassScheduleService {
             if (!classScheduleRepository.findOverlappingSchedulesForTeacher(
                     tutoringClass.getTeacher().getId(),
                     newClassSchedule.getClassDateFrom(),
-                    newClassSchedule.getClassDateTo()
+                    newClassSchedule.getClassDateTo(),
+                    null
             ).isEmpty()){
                 throw new RuntimeException("Class schedule overlaps with existing teacher's class");
             }
@@ -162,7 +166,11 @@ public class ClassScheduleService {
             students.forEach(student ->{
                 //Check if this class schedule overlaps any existing one for every student
                 if (!classScheduleRepository.findOverlappingSchedulesForStudent(
-                        student.getId(), newClassSchedule.getClassDateFrom(), newClassSchedule.getClassDateTo()).isEmpty()){
+                        student.getId(),
+                        newClassSchedule.getClassDateFrom(),
+                        newClassSchedule.getClassDateTo(),
+                        null
+                ).isEmpty()){
                     throw new RuntimeException("Class schedule overlaps with existing student's class with id " + student.getId());
                 }
             });
@@ -185,7 +193,7 @@ public class ClassScheduleService {
 
 
     public ClassScheduleDTO updateClassSchedule(
-            Long scheduleId, ClassScheduleDTO classScheduleDTO, DayAndTimeDTO dayAndTimeDTO, ScheduleChangesLogDTO changesLogDTO
+            Long scheduleId, ClassScheduleDTO classScheduleDTO, DateAndTimeDTO dateAndTimeDTO, ScheduleChangesLogDTO changesLogDTO
     ) {
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
         //Check if class existsSchedule exists, currently logged teacher can edit it and if reason for change was given
@@ -210,17 +218,22 @@ public class ClassScheduleService {
         }
 
         //Update class dates
-        if (dayAndTimeDTO.getTimeFrom() != null){
+        if (dateAndTimeDTO.getTimeFrom() != null){
             LocalDateTime timeFrom = classSchedule.getClassDateFrom();
             LocalDateTime timeTo = classSchedule.getClassDateTo();
 
-            if (dayAndTimeDTO.getDay() == null){
-                classSchedule.setClassDateFrom(timeFrom.withHour(dayAndTimeDTO.getTimeFrom().getHour()));
-                classSchedule.setClassDateTo(timeTo.withHour(dayAndTimeDTO.getTimeTo().getHour()));
+            //Check if times were given properly
+            if (dateAndTimeDTO.getTimeFrom().isAfter(dateAndTimeDTO.getTimeTo())) {
+                throw new RuntimeException("Time from is after time to");
+            }
+
+            if (dateAndTimeDTO.getDate() == null){
+                classSchedule.setClassDateFrom(timeFrom.withHour(dateAndTimeDTO.getTimeFrom().getHour()).withMinute(dateAndTimeDTO.getTimeFrom().getMinute()));
+                classSchedule.setClassDateTo(timeTo.withHour(dateAndTimeDTO.getTimeTo().getHour()).withMinute(dateAndTimeDTO.getTimeTo().getMinute()));
             }else {
-                LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.nextOrSame(dayAndTimeDTO.getDay()));
-                classSchedule.setClassDateFrom(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeTo()));
-                classSchedule.setClassDateTo(LocalDateTime.of(firstDate, dayAndTimeDTO.getTimeFrom()));
+                LocalDate firstDate = dateAndTimeDTO.getDate();
+                classSchedule.setClassDateFrom(LocalDateTime.of(firstDate, dateAndTimeDTO.getTimeFrom()));
+                classSchedule.setClassDateTo(LocalDateTime.of(firstDate, dateAndTimeDTO.getTimeTo()));
             }
         }
 
@@ -230,6 +243,39 @@ public class ClassScheduleService {
             classSchedule.setRoom(roomRepository.findById(classScheduleDTO.getRoom().getId())
                     .orElseThrow(() -> new RuntimeException("Room not found")));
         }
+
+        //Check for schedule collisions
+        //Check if this class schedule overlaps any existing one for the teacher
+        if (!classScheduleRepository.findOverlappingSchedulesForTeacher(
+                classSchedule.getTutoringClass().getTeacher().getId(),
+                classSchedule.getClassDateFrom(),
+                classSchedule.getClassDateTo(),
+                classSchedule.getId()
+        ).isEmpty()){
+            throw new RuntimeException("Class schedule overlaps with your schedule");
+        }
+
+        //Check if this class schedule overlaps any existing one for any of the students or their busy days
+        classSchedule.getTutoringClass().getStudents().forEach(student -> {
+            //Schedule
+            if (!classScheduleRepository.findOverlappingSchedulesForStudent(
+                    student.getId(),
+                    classSchedule.getClassDateFrom(),
+                    classSchedule.getClassDateTo(),
+                    classSchedule.getId()
+            ).isEmpty()){
+                throw new RuntimeException("Class schedule overlaps with one of the student's class");
+            }
+            //Busy days
+            if (userBusyDayService.isOverlapping(
+                    student,
+                    null,
+                    DayOfWeek.from(classSchedule.getClassDateFrom()),
+                    classSchedule.getClassDateFrom().toLocalTime(),
+                    classSchedule.getClassDateTo().toLocalTime())){
+                throw new RuntimeException("Class schedule overlaps with busy day of one of the students");
+            }
+        });
 
         //Save changes
         classScheduleRepository.save(classSchedule);

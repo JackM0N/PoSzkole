@@ -7,6 +7,7 @@ import { DaysOfTheWeek } from '../../../enums/days-of-the-week.enum';
 import { ClassAndChangeLog } from '../../../models/class-and-change-log.model';
 import { ClassScheduleService } from '../../../services/class-schedule.service';
 import { ToastrService } from 'ngx-toastr';
+import { timeOrderValidator } from '../../../validators/time-order.validator';
 
 function getEnumKeyByValue<T extends object>(enumObject: T, value: string): string | undefined {
   return Object.keys(enumObject).find(key => enumObject[key as keyof T] === value);
@@ -44,11 +45,11 @@ export class EditClassComponent {
         isOnline: [this.data.isOnline],
         isCanceled: [this.data.isCanceled]
       }),
-      dayAndTime: this.fb.group({
-        day: [null],
+      dateAndTime: this.fb.group({
+        date: [null],
         timeFrom: [null],
         timeTo: [null]
-      }),
+      }, {validators: timeOrderValidator}),
       scheduleChangesLog: this.fb.group({
         reason: [null, Validators.required],
         explanation: [null]
@@ -65,6 +66,8 @@ export class EditClassComponent {
 
     const formData = this.editForm.value;
 
+    console.log(formData)
+
     const payload: ClassAndChangeLog = {
       classScheduleDTO: {
         ...formData.classSchedule,
@@ -73,7 +76,7 @@ export class EditClassComponent {
           className: formData.classSchedule.tutoringClass.className
         }
       },
-      dayAndTimeDTO: formData.dayAndTime,
+      dateAndTimeDTO: formData.dateAndTime,
       changeLogDTO: {
         ...formData.scheduleChangesLog,
         reason: getEnumKeyByValue(Reason, formData.scheduleChangesLog.reason) as Reason
@@ -82,12 +85,22 @@ export class EditClassComponent {
 
     this.classScheduleService.updateClassSchedule(payload.classScheduleDTO.id!, payload).subscribe({
       next: () => {
-        this.toastr.success('Zajęcia zostały pomyślnie zaktualizowane.');
+        this.toastr.success('Zajęcia zostały pomyślnie zaktualizowane.', 'Błąd!');
         this.dialogRef.close(true);
       },
-      error: (err) => {
-        console.error(err);
-        this.toastr.error('Nie udało się zaktualizować zajęć.');
+      error: (error) => {
+        if (error.error === "Class schedule overlaps with your schedule"){
+          this.toastr.error('Wybrany termin zajęć koliduje z twoim harmonogramem.', 'Błąd!');
+        } else if (error.error === "Class schedule overlaps with one of the student's class"){
+          this.toastr.error('Wybrany termin zajęć koliduje z harmonogramem jednego z uczniów.', 'Błąd!');
+        } else if (error.error === "Class schedule overlaps with busy day of one of the students"){
+          this.toastr.error('Wybrany termin zajęć koliduje z dniami niedostępnymi jednego z uczniów.', 'Błąd!');
+        } else if (error.error === "You must provide a reason for making changes in this class"){
+          this.toastr.error('Musisz podać powód swoich zmian.', 'Błąd!');
+        } else {
+        console.error(error);
+        this.toastr.error('Nie udało się zaktualizować zajęć.', 'Błąd!');
+        }
       }
     });
   }

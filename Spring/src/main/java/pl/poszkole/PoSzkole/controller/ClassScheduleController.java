@@ -3,10 +3,7 @@ package pl.poszkole.PoSzkole.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.poszkole.PoSzkole.dto.ClassAndChangeLogDTO;
-import pl.poszkole.PoSzkole.dto.ClassScheduleDTO;
-import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
-import pl.poszkole.PoSzkole.dto.ScheduleChangesLogDTO;
+import pl.poszkole.PoSzkole.dto.*;
 import pl.poszkole.PoSzkole.service.ClassScheduleService;
 
 import java.util.List;
@@ -32,9 +29,9 @@ public class ClassScheduleController {
             @PathVariable Long scheduleId,
             @RequestBody ClassAndChangeLogDTO classAndChangeLogDTO) {
         ClassScheduleDTO classScheduleDTO = classAndChangeLogDTO.getClassScheduleDTO();
-        DayAndTimeDTO dayAndTimeDTO = classAndChangeLogDTO.getDayAndTimeDTO();
+        DateAndTimeDTO dateAndTimeDTO = classAndChangeLogDTO.getDateAndTimeDTO();
         ScheduleChangesLogDTO changesLogDTO = classAndChangeLogDTO.getChangeLogDTO();
-        return ResponseEntity.ok(classScheduleService.updateClassSchedule(scheduleId,classScheduleDTO, dayAndTimeDTO, changesLogDTO));
+        return ResponseEntity.ok(classScheduleService.updateClassSchedule(scheduleId,classScheduleDTO, dateAndTimeDTO, changesLogDTO));
     }
 
     @PutMapping("/complete/{scheduleId}")

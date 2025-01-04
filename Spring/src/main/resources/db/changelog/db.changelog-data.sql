@@ -234,13 +234,13 @@ VALUES
     (4, null, '2025-06-10 15:30:00.000', '2025-06-10 17:30:00.000', true, false, false),
     (4, null, '2025-06-17 15:30:00.000', '2025-06-17 17:30:00.000', true, false, false);
 
-INSERT INTO attendance (attendance_id, class_schedule_id, student_id, is_present)
+INSERT INTO attendance (class_schedule_id, student_id, is_present)
 VALUES
-    (1, 1, 10000, true),
-    (2, 30, 10000, false),
-    (3, 2, 10000, true),
-    (4, 31, 10000, true),
-    (5, 3, 10000, false),
-    (6, 32, 10000, true),
-    (7, 4, 10000, true),
-    (8, 33, 10000, true);
+    (1, 10000, true),
+    (30, 10000, false),
+    (2, 10000, true),
+    (31, 10000, true),
+    (3, 10000, false),
+    (32, 10000, true),
+    (4, 10000, true),
+    (33, 10000, true);

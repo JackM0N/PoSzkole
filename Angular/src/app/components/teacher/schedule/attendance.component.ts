@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
-  styleUrl: '../../../styles/attendance.component.css'
+  styleUrl: '../../../styles/request-form.component.css'
 })
 export class AttendanceComponent implements OnInit{
   attendances: Attendance[] = [];

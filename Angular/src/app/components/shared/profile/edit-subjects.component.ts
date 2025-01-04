@@ -8,8 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-subjects',
-  templateUrl: './edit-subjects.component.html',
-  styleUrls: ['../../../styles/edit-subjects.component.css']
+  templateUrl: './edit-subjects.component.html'
 })
 export class EditSubjectsComponent implements OnInit{
   allSubjects: Subject[] = [];

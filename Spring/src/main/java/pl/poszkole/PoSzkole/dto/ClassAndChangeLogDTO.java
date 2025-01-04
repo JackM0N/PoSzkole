@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 public class ClassAndChangeLogDTO {
     private ClassScheduleDTO classScheduleDTO;
-    private DayAndTimeDTO dayAndTimeDTO;
+    private DateAndTimeDTO dateAndTimeDTO;
     private ScheduleChangesLogDTO changeLogDTO;
 }

@@ -109,7 +109,7 @@ public class TutoringClassService {
         }
 
         if (!classScheduleRepository.findOverlappingSchedulesForStudent(
-                studentUser.getId(), classSchedule.getClassDateFrom(), classSchedule.getClassDateTo()).isEmpty()){
+                studentUser.getId(), classSchedule.getClassDateFrom(), classSchedule.getClassDateTo(), null).isEmpty()){
             throw new RuntimeException("Class schedule overlaps with existing class of this student");
         }
 
