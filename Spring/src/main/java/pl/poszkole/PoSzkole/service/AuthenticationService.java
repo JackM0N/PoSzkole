@@ -1,5 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +17,8 @@ import pl.poszkole.PoSzkole.security.JWTService;
 
 import javax.naming.AuthenticationException;
 import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,5 +95,21 @@ public class AuthenticationService {
         );
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
+    }
+
+    public void changeUserRoles(Long websiteUserId, Set<Role> roles){
+        WebsiteUser user = websiteUserRepository.findById(websiteUserId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        //Getting the roles from database
+        Set<Role> managedRoles = roles.stream()
+                .map(role -> roleRepository.findByRoleName(role.getRoleName())
+                        .orElseThrow(() -> new EntityNotFoundException("Role not found: " + role.getId())))
+                .collect(Collectors.toSet());
+
+        user.setRoles(managedRoles);
+        roles.forEach(role -> System.out.println(role.getRoleName()));
+        System.out.println(websiteUserMapper.toDto(user));
+        websiteUserRepository.save(user);
     }
 }

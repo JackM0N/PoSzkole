@@ -42,3 +42,11 @@
 .user-info .info-row:last-child {
   border-bottom: none;
 }
+
+/* Role form */
+.role-form {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-top: 16px;
+  background-color: #f9f9f9;
+}

@@ -48,7 +48,7 @@ public class RequestService {
 
         // Check if the teacher has subjects assigned
         if (currentUser.getSubjects() == null || currentUser.getSubjects().isEmpty()) {
-            throw new IllegalArgumentException("Teacher has no subjects assigned");
+            throw new RuntimeException("Teacher has no subjects assigned");
         }
 
         //Find request that this teacher teaches and were not admitted yet

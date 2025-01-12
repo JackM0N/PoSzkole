@@ -10,6 +10,7 @@ import { AdmitRequestCreateComponent } from './admit-request-create.component';
 import { Router } from '@angular/router';
 import { AdmitRequestAddComponent } from './admit-request-add.component';
 import { Subject } from '../../../models/subject.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-request-list',
@@ -28,7 +29,8 @@ export class RequestListComponent implements AfterViewInit{
   constructor(
     private requestService: RequestService, 
     private dialog: MatDialog,
-    private router: Router){}
+    private router: Router,
+    private toastr: ToastrService){}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -57,6 +59,9 @@ export class RequestListComponent implements AfterViewInit{
         }
       },
       error: error => {
+        if(error.error === "Teacher has no subjects assigned"){
+          this.toastr.info("Nie zadeklarowałeś/aś jakich przedmiotów nauczasz. Ustaw przedmioty, których nauczasz w swoim profilu!", "Informacja")
+        }
         console.error("Loading requests error", error)
       },
       complete: () => {}

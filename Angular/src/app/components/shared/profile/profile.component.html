@@ -2,9 +2,7 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ account?.id }} - {{ account?.firstName }} {{ account?.lastName }}</mat-card-title>
-      @for (role of account?.roles; track role) {
-        <mat-card-subtitle> {{getRole(role.roleName)}} </mat-card-subtitle>
-      }
+      <mat-card-subtitle> @if(isSiteOwner){Właściciel } @if(isManager){Kierownik } @if(isTeacher){Nauczyciel } @if(isStudent){Uczeń } </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -12,6 +10,23 @@
         <div>
           <p>Nie znaleziono użytkownika o podanym ID.</p>
         </div>
+      }
+      @if (currentUserIsManager) {
+        <button mat-raised-button color="accent" (click)="toggleRoleForm()">Zmień role</button>
+        @if(showRoleForm){
+          <div class="role-form">
+            <h4>Edycja ról użytkownika</h4>
+            <form (ngSubmit)="updateRoles()">
+              <div *ngFor="let role of allRoles">
+                <mat-checkbox [(ngModel)]="role.selected" name="role-{{role.roleName}}">
+                  {{ getRole(role.roleName) }}
+                </mat-checkbox>
+              </div>
+              <button mat-raised-button color="primary" type="submit">Zapisz zmiany</button>
+              <button mat-raised-button color="warn" type="button" (click)="toggleRoleForm()">Anuluj</button>
+            </form>
+          </div>
+        }
       }
       @if (account) {
         <div>
@@ -84,7 +99,7 @@
         }
       </div>
 
-      @if (isTeacher && account?.subjects!.length > 0) {
+      @if (isTeacher) {
         <div>
           <h3>Nauczane przedmioty:</h3>
           @for (subject of account?.subjects; track subject) {

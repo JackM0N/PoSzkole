@@ -35,11 +35,11 @@ public class SecurityConfig {
                                 "/course/finish/**", "/course/active-courses", "/course/attendants/**",
                                 "/course/add-student", "/course/remove-student", "/course/not-started-courses",
                                 "/course/delete/**", "/course/cancel/**","/registration/teacher",
-                                "/registration/manager")
+                                "/registration/manager", "/user/all-students", "/user/all-teachers")
                         .hasAnyRole("MANAGER", "OWNER")
 
                         .requestMatchers("/class/add-student", "/class/create", "/class/student-list/**",
-                                "/user/edit/subjects/**", "/user/page/**", "/user/all-students", "/user/all-teachers")
+                                "/user/edit/subjects/**", "/user/page/**")
                         .hasAnyRole("MANAGER", "TEACHER")
 
                         .requestMatchers("/request/list/**", "/request/admit/**", "/attendance/list/**",

@@ -8,12 +8,13 @@
         </div>
         <hr class="divider">
         @if(authService.isLoggedIn()){
-          @if (currentUserIsStudent){
-            <div class="student-navbar">
-              <p>Uczeń</p>
-              <li><a routerLink="/student-schedule">Harmonogram ucznia</a></li>
-              <li><a routerLink="/student-courses">Kursy</a></li>
-              <li><a routerLink="/attendance">Obecność</a></li>
+          @if (currentUserIsManager){
+            <div class="manager-navbar">
+              <p>Kierownik</p>
+              <li><a routerLink="/request-form">Nowe zajęcia</a></li>
+              <li><a routerLink="/teachers">Nauczyciele</a></li>
+              <li><a routerLink="/students">Uczniowie</a></li>
+              <li><a routerLink="/manager-courses">Kursy</a></li>
             </div>
           }
           @if (currentUserIsTeacher){
@@ -23,13 +24,12 @@
               <li><a routerLink="/request-list">Decyzje</a></li>
             </div>
           }
-          @if (currentUserIsManager){
-            <div class="manager-navbar">
-              <p>Kierownik</p>
-              <li><a routerLink="/request-form">Nowe zajęcia</a></li>
-              <li><a routerLink="/teachers">Nauczyciele</a></li>
-              <li><a routerLink="/students">Uczniowie</a></li>
-              <li><a routerLink="/manager-courses">Kursy</a></li>
+          @if (currentUserIsStudent){
+            <div class="student-navbar">
+              <p>Uczeń</p>
+              <li><a routerLink="/student-schedule">Harmonogram ucznia</a></li>
+              <li><a routerLink="/student-courses">Kursy</a></li>
+              <li><a routerLink="/attendance">Obecność</a></li>
             </div>
           }
       }

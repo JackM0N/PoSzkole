@@ -27,6 +27,10 @@ export class AccountComponent implements OnInit, OnChanges{
   currentUserIsManager: boolean = false;
   isStudent: boolean = false;
   isTeacher: boolean = false;
+  isManager: boolean = false;
+  isSiteOwner: boolean = false;
+  showRoleForm: boolean = false;
+  allRoles: { roleName: string, selected: boolean }[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -50,6 +54,8 @@ export class AccountComponent implements OnInit, OnChanges{
     if (this.account?.roles) {
       this.isTeacher = this.hasRole('TEACHER');
       this.isStudent = this.hasRole('STUDENT');
+      this.isManager = this.hasRole('MANAGER');
+      this.isSiteOwner = this.hasRole('OWNER');
     }
   }
 
@@ -172,5 +178,38 @@ export class AccountComponent implements OnInit, OnChanges{
 
   refreshAccount(): void {
     this.refreshAccountRequested.emit();
+  }
+
+  toggleRoleForm(): void {
+    this.showRoleForm = !this.showRoleForm;
+  
+    if (this.showRoleForm && this.account?.roles) {
+      this.allRoles = Object.keys(Roles)
+      .filter(roleName => roleName !== 'OWNER')
+      .map(roleName => ({
+        roleName,
+        selected: this.hasRole(roleName)
+      }));
+    }
+  }
+
+  updateRoles(): void {
+    const updatedRoles = this.allRoles
+      .filter(role => role.selected)
+      .map(role => ({ roleName: role.roleName }));
+  
+    if (this.account) {
+      this.authService.changeRoles(this.account.id!, updatedRoles).subscribe({
+        next: () => {
+          this.toastr.success('Role użytkownika zostały zaktualizowane!', 'Sukces!');
+          this.refreshAccount();
+          this.toggleRoleForm();
+        },
+        error: (error) => {
+          this.toastr.error('Nie udało się zaktualizować ról użytkownika.', 'Błąd!');
+          console.error('User role update error', error);
+        }
+      });
+    }
   }
 }

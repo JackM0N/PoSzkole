@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { WebsiteUser } from '../models/website-user.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { Role } from '../models/role.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,21 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   //Login methods
-  login(loginForm: {username: string, password: string}): Observable<{ token: string}>{
-    return this.http.post<{token: string}>(environment.apiUrl + '/login', loginForm);
+  login(loginForm: {username: string, password: string}): Observable<{ token: string }>{
+    return this.http.post<{ token: string }>(environment.apiUrl + '/login', loginForm);
   }
 
-  registerStudent(userData: WebsiteUser): Observable<{ token: string}> {
-    return this.http.post<{ token: string}>(environment.apiUrl + '/register', userData);
+  registerStudent(userData: WebsiteUser): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(environment.apiUrl + '/register', userData);
   }
 
-  registerTeacher(userData: WebsiteUser): Observable<{ token: string}> {
-    return this.http.post<{ token: string}>(environment.apiUrl + '/registration/teacher', userData);
+  registerTeacher(userData: WebsiteUser): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(environment.apiUrl + '/registration/teacher', userData);
+  }
+
+  //Changing roles
+  changeRoles(userId: number, roles: Role[]): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/change-roles/${userId}`, roles)
   }
 
   //Token decoding methods
