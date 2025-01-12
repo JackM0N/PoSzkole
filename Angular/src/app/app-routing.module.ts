@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule,Routes } from '@angular/router';
 
 import { LoginComponent } from './components/authentication/login.component';
 import { RegistrationComponent } from './components/authentication/registration.component';
@@ -15,30 +15,35 @@ import { StudentAttendanceComponent } from './components/student/attendance/stud
 import { StudentsComponent } from './components/manager/students/students.component';
 import { TeachersComponent } from './components/manager/teachers/teachers.component';
 import { ManagerCoursesComponent } from './components/manager/courses/manager-courses.component';
+import { AccessDeniedComponent } from './components/shared/access-denied/access-denied.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   //auth
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegistrationComponent },
 
   //profile
-  {path: 'profile/:id', component: UserAccountComponent},
-  {path: 'my-profile', component: MyAccountComponent},
+  { path: 'profile/:id', component: UserAccountComponent },
+  { path: 'my-profile', component: MyAccountComponent },
 
-  //manager
-  {path: 'request-form', component: RequestFormComponent},
-  {path: 'teachers', component: TeachersComponent},
-  {path: 'students', component: StudentsComponent},
-  {path: 'manager-courses', component: ManagerCoursesComponent},
+  // manager
+  { path: 'request-form', component: RequestFormComponent, canActivate: [AuthGuard], data: { roles: ['MANAGER'] } },
+  { path: 'teachers', component: TeachersComponent, canActivate: [AuthGuard], data: { roles: ['MANAGER'] } },
+  { path: 'students', component: StudentsComponent, canActivate: [AuthGuard], data: { roles: ['MANAGER'] } },
+  { path: 'manager-courses', component: ManagerCoursesComponent, canActivate: [AuthGuard], data: { roles: ['MANAGER'] } },
 
-  //teacher
-  {path: 'request-list', component: RequestListComponent},
-  {path: 'teacher-schedule', component: TeacherScheduleComponent},
-  
-  //student
-  {path: 'student-schedule', component: StudentScheduleComponent},
-  {path: 'student-courses', component: StudentCoursesComponent},
-  {path: 'attendance', component: StudentAttendanceComponent}
+  // teacher
+  { path: 'request-list', component: RequestListComponent, canActivate: [AuthGuard], data: { roles: ['TEACHER'] } },
+  { path: 'teacher-schedule', component: TeacherScheduleComponent, canActivate: [AuthGuard], data: { roles: ['TEACHER'] } },
+
+  // student
+  { path: 'student-schedule', component: StudentScheduleComponent, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
+  { path: 'student-courses', component: StudentCoursesComponent, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
+  { path: 'attendance', component: StudentAttendanceComponent, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
+
+  //auth guard
+  { path: 'access-denied', component: AccessDeniedComponent }
 ];
 
 @NgModule({
