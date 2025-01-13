@@ -2,6 +2,13 @@
 <div class="table-container">
   <h2>Lista obecności</h2>
 
+  <div class="filter-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Wyszukaj</mat-label>
+      <input matInput [(ngModel)]="searchText" (ngModelChange)="onFilterChange()" placeholder="Filtruj">
+    </mat-form-field>
+  </div>
+
   <table mat-table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="subjectName">

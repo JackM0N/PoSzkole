@@ -29,8 +29,8 @@ export class AttendanceComponent implements OnInit{
         this.attendances = response;
       },
       error: error =>{
-        console.error('Błąd podczas wczytywania obecności', error);
-        this.toastr.error('Loading attendance error');
+        console.error('Loading attendance error', error);
+        this.toastr.error('Błąd podczas wczytywania obecności');
       }
     })
   }

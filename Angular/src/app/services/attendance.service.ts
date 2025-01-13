@@ -13,21 +13,31 @@ export class AttendanceService {
 
   constructor(private http: HttpClient){}
 
-  getAttendancePresent(page: number, size: number, sortBy: string, sortDir: string): Observable<Attendance[]> {
+  getAttendancePresent(page: number, size: number, sortBy: string, sortDir: string, searchText?: string): Observable<Attendance[]> {
     var params = new HttpParams()
       .set('page', (page - 1).toString())
       .set('size', size.toString())
       .set('sort', sortBy + ',' + sortDir
     );
+
+    if (searchText) {
+      params = params.set('searchText', searchText);
+    }
+
     return this.http.get<Attendance[]>(`${this.baseUrl}/presence`, { params })
   }
 
-  getAttendancAbsent(page: number, size: number, sortBy: string, sortDir: string): Observable<Attendance[]> {
+  getAttendancAbsent(page: number, size: number, sortBy: string, sortDir: string, searchText?: string): Observable<Attendance[]> {
     var params = new HttpParams()
       .set('page', (page - 1).toString())
       .set('size', size.toString())
       .set('sort', sortBy + ',' + sortDir
     );
+
+    if (searchText) {
+      params = params.set('searchText', searchText);
+    }
+
     return this.http.get<Attendance[]>(`${this.baseUrl}/absence`, { params })
   }
   

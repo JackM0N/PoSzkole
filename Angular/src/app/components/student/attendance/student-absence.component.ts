@@ -18,6 +18,7 @@ export class StudentAbsenceComponent{
   protected totalAttendance: number = 0;
   protected displayedColumns: string[] = ['subjectName', 'classDateFrom', 'time', 'className'];
   protected noAttendance = false;
+  protected searchText: string = '';
 
   @ViewChild('paginator') protected paginator!: MatPaginator;
   @ViewChild(MatSort) protected sort!: MatSort;
@@ -73,7 +74,7 @@ export class StudentAbsenceComponent{
       complete: () => {}
     };
   
-    this.attendanceService.getAttendancAbsent(page, size, sortBy, sortDir).subscribe(observer);
+    this.attendanceService.getAttendancAbsent(page, size, sortBy, sortDir, this.searchText).subscribe(observer);
   }
 
   private convertArrayToDateTime(dateArray: number[]): DateTime {
@@ -84,5 +85,10 @@ export class StudentAbsenceComponent{
       hour: dateArray[3],
       minute: dateArray[4]
     });
+  }
+
+  onFilterChange() {
+    this.paginator.pageIndex = 0;
+    this.loadPresentAttendance();
   }
 }
