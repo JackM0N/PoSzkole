@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.poszkole.PoSzkole.dto.AttendanceDTO;
-import pl.poszkole.PoSzkole.filter.AttendanceFilter;
 import pl.poszkole.PoSzkole.service.AttendanceService;
 
 import java.util.List;
@@ -28,10 +27,8 @@ public class AttendanceController {
     }
 
     @GetMapping("/list/{scheduleId}")
-    public ResponseEntity<List<AttendanceDTO>> getAttendanceForClassSchedule(
-            @PathVariable("scheduleId") Long scheduleId, AttendanceFilter attendanceFilter
-    ) {
-        return ResponseEntity.ok(attendanceService.findAllForClassSchedule(scheduleId,attendanceFilter));
+    public ResponseEntity<List<AttendanceDTO>> getAttendanceForClassSchedule(@PathVariable("scheduleId") Long scheduleId) {
+        return ResponseEntity.ok(attendanceService.findAllForClassSchedule(scheduleId));
     }
 
     @GetMapping("/exists/{scheduleId}")

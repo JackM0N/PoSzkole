@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.AttendanceDTO;
-import pl.poszkole.PoSzkole.filter.AttendanceFilter;
 import pl.poszkole.PoSzkole.mapper.AttendanceMapper;
 import pl.poszkole.PoSzkole.model.Attendance;
 import pl.poszkole.PoSzkole.model.ClassSchedule;
@@ -30,7 +29,7 @@ public class AttendanceService {
     private final WebsiteUserService websiteUserService;
 
     public List<AttendanceDTO> findAllForClassSchedule(
-            Long classScheduleId, AttendanceFilter attendanceFilter
+            Long classScheduleId
     ) {
         //Check if classSchedule exists
         ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
@@ -40,20 +39,6 @@ public class AttendanceService {
         Specification<Attendance> spec = ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("classSchedule"), classSchedule));
 
-        //Filter is_present
-        if (attendanceFilter.getIsPresent() != null) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("isPresent"), attendanceFilter.getIsPresent()));
-        }
-
-        //Filter students first or last name
-        if (attendanceFilter.getTextSearch() != null){
-            String likePattern = "%" + attendanceFilter.getTextSearch() + "%";
-            spec = spec.and(((root, query, criteriaBuilder) -> criteriaBuilder.or(
-                    criteriaBuilder.like(criteriaBuilder.lower(root.get("student").get("fistName")), likePattern),
-                    criteriaBuilder.like(criteriaBuilder.lower(root.get("student").get("lastName")), likePattern)
-            )));
-        }
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Sort.Order.asc("student.firstName")));
         Page<Attendance> attendances = attendanceRepository.findAll(spec, pageable);
 
@@ -71,7 +56,7 @@ public class AttendanceService {
             String likePattern = "%" + searchText.toLowerCase() + "%";
             spec = spec.and((root, query, builder) ->
                     builder.like(
-                            builder.lower(root.get("classSchedule").get("tutoringClass").get("subject").get("subjectName")),
+                            builder.lower(root.get("classSchedule").get("tutoringClass").get("className")),
                             likePattern
                     )
             );
