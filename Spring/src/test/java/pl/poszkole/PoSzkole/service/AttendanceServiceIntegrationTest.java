@@ -4,7 +4,6 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -92,7 +91,6 @@ class AttendanceServiceIntegrationTest {
     }
 
     @Test
-    @Order(1)
     void testFindAllForClassSchedule_Success() {
         // Arrange: Create attendance records
         Attendance attendance = new Attendance();
@@ -112,7 +110,6 @@ class AttendanceServiceIntegrationTest {
 
     @WithMockUser(username = "john.doe")
     @Test
-    @Order(2)
     void testFindAllAttendanceForStudent_Success() {
         // Arrange: Create attendance
         Attendance attendance = new Attendance();
@@ -133,7 +130,6 @@ class AttendanceServiceIntegrationTest {
     }
 
     @Test
-    @Order(3)
     void testCheckIfExists_Success() {
         // Arrange: Create attendance
         Attendance attendance = new Attendance();
@@ -150,7 +146,6 @@ class AttendanceServiceIntegrationTest {
     }
 
     @Test
-    @Order(4)
     void testCreateForClassSchedule_Success() {
         // Cleanup and verify initial state
         attendanceRepository.deleteAll();
@@ -173,7 +168,6 @@ class AttendanceServiceIntegrationTest {
     }
 
     @Test
-    @Order(5)
     void testCreateForClassSchedule_ClassAttendanceExists() {
         // Arrange: Create attendance
         Attendance attendance = new Attendance();
@@ -187,7 +181,6 @@ class AttendanceServiceIntegrationTest {
     }
 
     @Test
-    @Order(6)
     void testCheckAttendanceForClassSchedule_Success() {
         // Arrange: Create attendance
         Attendance attendance = new Attendance();

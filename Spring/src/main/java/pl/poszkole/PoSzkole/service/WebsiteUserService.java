@@ -16,7 +16,6 @@ import pl.poszkole.PoSzkole.filter.UserFilter;
 import pl.poszkole.PoSzkole.mapper.SimplifiedUserMapper;
 import pl.poszkole.PoSzkole.mapper.WebsiteUserMapper;
 import pl.poszkole.PoSzkole.model.*;
-import pl.poszkole.PoSzkole.repository.RoleRepository;
 import pl.poszkole.PoSzkole.repository.SubjectRepository;
 import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
@@ -33,7 +32,6 @@ public class WebsiteUserService {
     private final WebsiteUserRepository websiteUserRepository;
     private final AuthenticationFacade authenticationFacade;
     private final WebsiteUserMapper websiteUserMapper;
-    private final RoleRepository roleRepository;
     private final SubjectRepository subjectRepository;
     private final SimplifiedUserMapper simplifiedUserMapper;
     private final TutoringClassRepository tutoringClassRepository;
@@ -47,7 +45,6 @@ public class WebsiteUserService {
     }
 
     public WebsiteUserDTO getUserProfile(Long websiteUserId){
-        WebsiteUser currentUser = getCurrentUser();
         WebsiteUser websiteUser = websiteUserRepository.findById(websiteUserId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
@@ -138,8 +135,12 @@ public class WebsiteUserService {
         }
 
         // Get teachers subjects
-        Set<Subject> currentSubjects = new HashSet<>(websiteUser.getSubjects());
-
+        Set<Subject> currentSubjects;
+        if (websiteUser.getSubjects() != null && !websiteUser.getSubjects().isEmpty()) {
+            currentSubjects = new HashSet<>(websiteUser.getSubjects());
+        } else {
+            currentSubjects = new HashSet<>();
+        }
         // DTO -> Entity
         Set<Subject> newSubjects = subjectDTOS.stream()
                 .map(subjectDTO -> subjectRepository.findBySubjectName(subjectDTO.getSubjectName())
