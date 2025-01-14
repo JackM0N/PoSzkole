@@ -5,12 +5,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import pl.poszkole.PoSzkole.model.Role;
 import pl.poszkole.PoSzkole.model.WebsiteUser;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface WebsiteUserRepository extends JpaRepository<WebsiteUser, Long>, JpaSpecificationExecutor<WebsiteUser> {

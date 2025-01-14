@@ -13,10 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.test.context.support.WithMockUser;
 import pl.poszkole.PoSzkole.dto.AttendanceDTO;
-import pl.poszkole.PoSzkole.mapper.AttendanceMapper;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.repository.AttendanceRepository;
-import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

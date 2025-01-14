@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,7 +22,6 @@ import pl.poszkole.PoSzkole.repository.CourseRepository;
 import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 

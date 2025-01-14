@@ -93,7 +93,8 @@ public class AttendanceService {
 
     public Boolean checkAttendanceForClassSchedule(Long classScheduleId, List<AttendanceDTO> attendanceDTOs) {
         //Check if classSchedule exists
-        classScheduleRepository.findById(classScheduleId).orElseThrow(EntityNotFoundException::new);
+        classScheduleRepository.findById(classScheduleId)
+                .orElseThrow(() -> new EntityNotFoundException("Class schedule not found"));
 
         //Check attendance
         attendanceDTOs.forEach(attendanceDTO -> {
