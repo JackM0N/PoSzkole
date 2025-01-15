@@ -69,12 +69,16 @@ export class AdmitRequestCreateComponent implements OnInit{
       this.requestService.admitRequestCreateClass(requestId, requestAdmit).subscribe({
         next: () => {
           //TODO: Add some sort of refresh after admiting request
-          this.toastr.success("Request admitted successfully!");
+          this.toastr.success("Zajęcia zostały utworzone!", "Sukces!");
           this.closePopup();
         },
         error: (error) => {
-          if (error.error === "Class schedule overlaps with existing class") {
-            this.toastr.error("Nie można dodać zajęć. Wybrane godziny nakładają się z innymi zajęciami.", "Błąd przyjęcia zajęć");
+          if (error.error === "Class schedule overlaps with existing student's class") {
+            this.toastr.error("Nie można dodać zajęć.Wybrany termin nakłada się z innymi zajęciami w harmonogramie ucznia.", "Błąd przyjęcia zajęć");
+          } else if (error.error === "Class schedule overlaps with existing teacher's class") {
+            this.toastr.error("Nie można dodać zajęć. Wybrany termin nakłada się z innymi zajęciami w twoim harmonogramie.", "Błąd przyjęcia zajęć");
+          } else if (error.error === "You cannot admit class on users busy day") {
+            this.toastr.error("Nie można utworzyć zajęć. Wybrany termin zajmuje się w czasie, gdy uczeń jest niedostępny.", "Błąd przyjęcia zajęć");
           } else {
             this.toastr.error("Wystąpił nieoczekiwany błąd", "Błąd");
             console.error("Request update error", error)

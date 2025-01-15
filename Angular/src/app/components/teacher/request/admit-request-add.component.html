@@ -1,16 +1,17 @@
-<div class="class-container">
+<div class="room-container">
   <h2>Aktywne zajęcia z przedmiotu: {{data.subject.subjectName}}</h2>
+  <br>
 
   @if (tutoringClasses.length === 0) {
-    <div class="no-classes">
-      Brak dostępnych sal w tym terminie
+    <div class="no-rooms">
+      Brak zajęć w tym terminie
     </div>
   }
 
   @if (tutoringClasses.length > 0) {
-    <div class="class-cards">
+    <div class="room-cards">
       @for (tutoringClass of tutoringClasses; track tutoringClass) {
-        <mat-card class="class-card">
+        <mat-card class="room-card">
           <mat-card-title>{{ tutoringClass.className }}</mat-card-title>
           <mat-card-content>
             <p>Przedmiot: {{ tutoringClass.subject?.subjectName }}</p>

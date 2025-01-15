@@ -171,7 +171,7 @@ public class ClassScheduleService {
                         newClassSchedule.getClassDateTo(),
                         null
                 ).isEmpty()){
-                    throw new RuntimeException("Class schedule overlaps with existing student's class with id " + student.getId());
+                    throw new RuntimeException("Class schedule overlaps with existing student's class");
                 }
             });
             //If it doesn't add it to list of class schedules

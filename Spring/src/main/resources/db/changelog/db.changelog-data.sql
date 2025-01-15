@@ -244,3 +244,8 @@ VALUES
     (32, 10000, true),
     (4, 10000, true),
     (33, 10000, true);
+
+--changeset Przemyslaw:5 labels:init,data
+INSERT INTO user_busy_day (user_id, day_of_the_week, time_from, time_to)
+VALUES (10000, 'SATURDAY', '08:00:00', '20:00:00'),
+       (10000, 'SUNDAY', '08:00:00', '20:00:00');

@@ -1,5 +1,6 @@
 <h1 mat-dialog-title>Przyjmij prośbę ucznia {{data.studentId}} - {{data.studentName}}</h1>
 <div class="form-container" mat-dialog-content>
+  <br>
   <h1>Utwórz zajęcia</h1>
   <form [formGroup]="admitRequestForm" (ngSubmit)="onSubmit(data.requestId)">
 

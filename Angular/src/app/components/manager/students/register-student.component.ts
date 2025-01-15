@@ -36,8 +36,8 @@ export class RegisterStudentComponent {
       gender: ['', [Validators.required]],
       phone: ['', [Validators.required]],
       level: [null, Validators.required],
-      guardianPhone: [''],
-      guardianEmail: ['', Validators.email],
+      guardianPhone: [null],
+      guardianEmail: [null, Validators.email],
       isCashPayment: [false, [Validators.required]],
       issueInvoice: [false, [Validators.required]]
     }, {validators: passwordMatchValidator });
