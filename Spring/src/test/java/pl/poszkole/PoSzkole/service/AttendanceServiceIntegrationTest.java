@@ -1,7 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
 import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import pl.poszkole.PoSzkole.dto.AttendanceDTO;
 import pl.poszkole.PoSzkole.model.*;
 import pl.poszkole.PoSzkole.repository.AttendanceRepository;
+import pl.poszkole.PoSzkole.repository.ClassScheduleRepository;
+import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
+import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,10 +34,17 @@ class AttendanceServiceIntegrationTest {
     private AttendanceRepository attendanceRepository;
 
     @Autowired
-    private EntityManager entityManager;
+    private WebsiteUserRepository websiteUserRepository;
+
+    @Autowired
+    private TutoringClassRepository tutoringClassRepository;
+
+    @Autowired
+    private ClassScheduleRepository classScheduleRepository;
 
     private Long classScheduleId;
     private WebsiteUser student;
+
 
     @BeforeEach
     void setup() {
@@ -52,7 +61,7 @@ class AttendanceServiceIntegrationTest {
         student.setIsCashPayment(false);
         student.setIssueInvoice(true);
         student.setIsDeleted(false);
-        student = entityManager.merge(student);
+        websiteUserRepository.save(student);
 
         WebsiteUser teacher = new WebsiteUser();
         teacher.setId(1100L);
@@ -65,7 +74,7 @@ class AttendanceServiceIntegrationTest {
         teacher.setPhone("0987654321");
         teacher.setHourlyRate(BigDecimal.valueOf(100));
         teacher.setIsDeleted(false);
-        teacher = entityManager.merge(teacher);
+        websiteUserRepository.save(teacher);
 
         Subject subject = new Subject();
         subject.setId(1L);
@@ -77,7 +86,7 @@ class AttendanceServiceIntegrationTest {
         tutoringClass.setSubject(subject);
         tutoringClass.setIsCompleted(false);
         tutoringClass.setTeacher(teacher);
-        tutoringClass = entityManager.merge(tutoringClass);
+        tutoringClassRepository.save(tutoringClass);
 
         ClassSchedule classSchedule = new ClassSchedule();
         classSchedule.setTutoringClass(tutoringClass);
@@ -85,7 +94,7 @@ class AttendanceServiceIntegrationTest {
         classSchedule.setClassDateTo(LocalDateTime.now().plusMinutes(50));
         classSchedule.setIsCompleted(false);
         classSchedule.setIsCanceled(false);
-        classSchedule = entityManager.merge(classSchedule);
+        classScheduleRepository.save(classSchedule);
 
         classScheduleId = classSchedule.getId();
     }
@@ -94,10 +103,10 @@ class AttendanceServiceIntegrationTest {
     void testFindAllForClassSchedule_Success() {
         // Arrange: Create attendance records
         Attendance attendance = new Attendance();
-        attendance.setClassSchedule(entityManager.find(ClassSchedule.class, classScheduleId));
-        attendance.setStudent(entityManager.find(WebsiteUser.class, student.getId()));
+        attendance.setClassSchedule(classScheduleRepository.findById(classScheduleId).get());
+        attendance.setStudent(websiteUserRepository.findById(student.getId()).get());
         attendance.setIsPresent(true);
-        entityManager.persist(attendance);
+        attendanceRepository.save(attendance);
 
         // Act
         List<AttendanceDTO> result = attendanceService.findAllForClassSchedule(classScheduleId);
@@ -113,10 +122,10 @@ class AttendanceServiceIntegrationTest {
     void testFindAllAttendanceForStudent_Success() {
         // Arrange: Create attendance
         Attendance attendance = new Attendance();
-        attendance.setClassSchedule(entityManager.find(ClassSchedule.class, classScheduleId));
+        attendance.setClassSchedule(classScheduleRepository.findById(classScheduleId).get());
         attendance.setStudent(student);
         attendance.setIsPresent(true);
-        entityManager.persist(attendance);
+        attendanceRepository.save(attendance);
 
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -133,10 +142,10 @@ class AttendanceServiceIntegrationTest {
     void testCheckIfExists_Success() {
         // Arrange: Create attendance
         Attendance attendance = new Attendance();
-        attendance.setClassSchedule(entityManager.find(ClassSchedule.class, classScheduleId));
+        attendance.setClassSchedule(classScheduleRepository.findById(classScheduleId).get());
         attendance.setStudent(student);
         attendance.setIsPresent(true);
-        entityManager.persist(attendance);
+        attendanceRepository.save(attendance);
 
         // Act
         Boolean exists = attendanceService.checkIfExists(classScheduleId);
@@ -171,10 +180,10 @@ class AttendanceServiceIntegrationTest {
     void testCreateForClassSchedule_ClassAttendanceExists() {
         // Arrange: Create attendance
         Attendance attendance = new Attendance();
-        attendance.setClassSchedule(entityManager.find(ClassSchedule.class, classScheduleId));
+        attendance.setClassSchedule(classScheduleRepository.findById(classScheduleId).get());
         attendance.setStudent(student);
         attendance.setIsPresent(true);
-        entityManager.persist(attendance);
+        attendanceRepository.save(attendance);
 
         // Act & Assert
         assertThrows(EntityExistsException.class, () -> attendanceService.createForClassSchedule(classScheduleId));
@@ -184,10 +193,10 @@ class AttendanceServiceIntegrationTest {
     void testCheckAttendanceForClassSchedule_Success() {
         // Arrange: Create attendance
         Attendance attendance = new Attendance();
-        attendance.setClassSchedule(entityManager.find(ClassSchedule.class, classScheduleId));
+        attendance.setClassSchedule(classScheduleRepository.findById(classScheduleId).get());
         attendance.setStudent(student);
         attendance.setIsPresent(false);
-        entityManager.persist(attendance);
+        attendanceRepository.save(attendance);
 
         AttendanceDTO attendanceDTO = new AttendanceDTO();
         attendanceDTO.setId(attendance.getId());

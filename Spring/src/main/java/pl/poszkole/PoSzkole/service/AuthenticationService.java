@@ -73,6 +73,12 @@ public class AuthenticationService {
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
+        Long minId = 100L;
+        Long maxId = 999L;
+        Long highestId = websiteUserRepository.findHighestIdInRange(minId, maxId);
+
+        user.setId(highestId + 1);
+
         Role role = roleRepository.findByRoleName("MANAGER")
                 .orElseThrow(() -> new RuntimeException("Role not found"));
         user.setRoles((Collections.singleton(role)));
