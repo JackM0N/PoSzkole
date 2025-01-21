@@ -351,6 +351,7 @@ public class ClassScheduleService {
         }
         //Cancel chosen schedule
         classSchedule.setIsCanceled(true);
+        classScheduleRepository.save(classSchedule);
 
         //Create log entry
         ScheduleChangesLog log = scheduleChangesLogMapper.toEntity(changesLogDTO);

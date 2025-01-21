@@ -7,6 +7,7 @@ import org.junit.platform.suite.api.Suite;
 @SelectClasses({
         AttendanceServiceUnitTest.class,
         AuthenticationServiceUnitTest.class,
+        ClassScheduleServiceUnitTest.class,
         WebsiteUserServiceUnitTest.class,
 })
 public class AllUnitTestsSuite {

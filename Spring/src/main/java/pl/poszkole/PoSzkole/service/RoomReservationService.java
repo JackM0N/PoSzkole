@@ -39,9 +39,7 @@ public class RoomReservationService {
 
         //Get all reserved rooms for chosen schedules' timeframe
         List<Room> reservedRooms = new ArrayList<>();
-        roomReservations.forEach(roomReservation -> {
-            reservedRooms.add(roomReservation.getRoom());
-        });
+        roomReservations.forEach(roomReservation -> reservedRooms.add(roomReservation.getRoom()));
 
         //Remove all rooms that are reserved
         rooms.removeAll(reservedRooms);
@@ -79,6 +77,4 @@ public class RoomReservationService {
 
         return roomReservationMapper.toDto(roomReservation);
     }
-
-    //TODO: Consider making editRoomReservation and deleteRoomReservation. For now reservation is set in stone (time saving)
 }
