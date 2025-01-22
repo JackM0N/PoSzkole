@@ -121,7 +121,7 @@ public class RequestService {
 
         //Admit chosen request
         Request request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Request not found"));
         request.setAcceptanceDate(LocalDate.now());
         request.setTeacher(currentUser);
 
