@@ -104,9 +104,10 @@ public class CourseService {
             ClassSchedule classSchedule = classScheduleRepository.findLastScheduleByClassId(course.getTutoringClass().getId())
                     .orElse(null);
             CourseDTO courseDTO = courseMapper.toDto(course);
-            assert classSchedule != null;
-            courseDTO.setTeacher(simplifiedUserMapper.toSimplifiedUserDTO(classSchedule.getTutoringClass().getTeacher()));
-            courseDTO.setLastScheduleDate(classSchedule.getClassDateFrom());
+            if(classSchedule != null) {
+                courseDTO.setTeacher(simplifiedUserMapper.toSimplifiedUserDTO(classSchedule.getTutoringClass().getTeacher()));
+                courseDTO.setLastScheduleDate(classSchedule.getClassDateFrom());
+            }
             return courseDTO;
         });
     }
@@ -127,7 +128,6 @@ public class CourseService {
 
     @Transactional
     public CourseDTO startCourse(StartCourseDTO startCourseDTO) {
-        System.out.println(startCourseDTO);
         //Get course
         Course course = courseRepository.findById(startCourseDTO.getCourseId())
                 .orElseThrow(() -> new EntityNotFoundException("Course not found"));
@@ -212,9 +212,10 @@ public class CourseService {
 
     public CourseDTO editCourse(Long courseId, CourseDTO courseDTO) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
         courseMapper.partialUpdate(courseDTO, course);
-        return courseMapper.toDto(courseRepository.save(course));
+        courseRepository.save(course);
+        return courseMapper.toDto(course);
     }
 
     public CourseDTO openCourseForRegistration(Long courseId) {

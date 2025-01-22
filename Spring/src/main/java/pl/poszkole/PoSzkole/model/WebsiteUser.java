@@ -114,8 +114,8 @@ public class WebsiteUser {
     }
 
     public void removeCourse(Course course) {
-        if (!courses.contains(course)) {
-            courses.add(course);
+        if (courses.contains(course)) {
+            courses.remove(course);
             course.getStudents().remove(this);
         }
     }
@@ -137,5 +137,35 @@ public class WebsiteUser {
     public void removeSubject(Subject subject) {
         this.subjects.remove(subject);
         subject.getTeachers().remove(this);
+    }
+
+    //Overrides
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WebsiteUser that = (WebsiteUser) o;
+        return Objects.equals(id, that.id)
+                && Objects.equals(username, that.username)
+                && Objects.equals(password, that.password)
+                && Objects.equals(roles, that.roles)
+                && Objects.equals(firstName, that.firstName)
+                && Objects.equals(lastName, that.lastName)
+                && Objects.equals(gender, that.gender)
+                && Objects.equals(email, that.email)
+                && Objects.equals(phone, that.phone)
+                && Objects.equals(level, that.level)
+                && Objects.equals(hourlyRate, that.hourlyRate)
+                && Objects.equals(priceList, that.priceList)
+                && Objects.equals(discountPercentage, that.discountPercentage)
+                && Objects.equals(isCashPayment, that.isCashPayment)
+                && Objects.equals(issueInvoice, that.issueInvoice)
+                && Objects.equals(isDeleted, that.isDeleted);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, roles, firstName, lastName, gender, email, phone, level,
+                hourlyRate, priceList, discountPercentage, isCashPayment, issueInvoice, isDeleted);
     }
 }

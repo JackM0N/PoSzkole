@@ -8,6 +8,7 @@ import org.junit.platform.suite.api.Suite;
         AttendanceServiceUnitTest.class,
         AuthenticationServiceUnitTest.class,
         ClassScheduleServiceUnitTest.class,
+        CourseServiceUnitTest.class,
         WebsiteUserServiceUnitTest.class,
 })
 public class AllUnitTestsSuite {

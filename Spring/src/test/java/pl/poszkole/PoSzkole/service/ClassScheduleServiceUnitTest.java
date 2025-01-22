@@ -48,6 +48,9 @@ public class ClassScheduleServiceUnitTest {
     private ScheduleChangesLogRepository scheduleChangesLogRepository;
 
     @Mock
+    private TutoringClassRepository tutoringClassRepository; //This has to stay
+
+    @Mock
     private WebsiteUserRepository websiteUserRepository;
 
     @Mock

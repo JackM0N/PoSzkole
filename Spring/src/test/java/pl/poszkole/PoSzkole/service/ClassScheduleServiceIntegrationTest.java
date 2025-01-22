@@ -319,7 +319,7 @@ public class ClassScheduleServiceIntegrationTest {
         simpleTeacher.setLastName("Doe");
 
         TutoringClassDTO tutoringClassDTO = new TutoringClassDTO();
-        tutoringClassDTO.setClassName("Math Class");
+        tutoringClassDTO.setClassName("Zajęcia z Przetmiotu");
         tutoringClassDTO.setTeacher(simpleTeacher);
 
         ClassSchedule schedule = new ClassSchedule();
@@ -453,6 +453,9 @@ public class ClassScheduleServiceIntegrationTest {
     @WithMockUser(username = "teacher")
     void testCancelClassSchedule_NoReasonProvided() {
         // Arrange
+        classSchedule.setClassDateFrom(LocalDateTime.now().plusDays(2));
+        classSchedule.setClassDateTo(LocalDateTime.now().plusDays(2).plusHours(1));
+        classScheduleRepository.save(classSchedule);
         ScheduleChangesLogDTO changesLogDTO = new ScheduleChangesLogDTO(); // No reason provided
 
         // Act & Assert
