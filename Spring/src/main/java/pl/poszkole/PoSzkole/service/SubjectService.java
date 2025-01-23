@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.SubjectDTO;
 import pl.poszkole.PoSzkole.mapper.SubjectMapper;
-import pl.poszkole.PoSzkole.model.Subject;
 import pl.poszkole.PoSzkole.repository.SubjectRepository;
 
 import java.util.List;
@@ -18,11 +17,5 @@ public class SubjectService {
 
     public List<SubjectDTO> getAllSubjects() {
         return subjectRepository.findAll().stream().map(subjectMapper::toDto).collect(Collectors.toList());
-    }
-
-    public SubjectDTO getSubjectById(Long id) {
-        Subject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subject not found"));
-        return subjectMapper.toDto(subject);
     }
 }

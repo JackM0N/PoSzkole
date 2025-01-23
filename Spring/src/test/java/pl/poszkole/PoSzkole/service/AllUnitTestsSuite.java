@@ -12,6 +12,7 @@ import org.junit.platform.suite.api.Suite;
         RequestServiceUnitTest.class,
         RoomReservationServiceUnitTest.class,
         ScheduleChangesLogServiceUnitTest.class,
+        SubjectServiceUnitTest.class,
         WebsiteUserServiceUnitTest.class,
 })
 public class AllUnitTestsSuite {
