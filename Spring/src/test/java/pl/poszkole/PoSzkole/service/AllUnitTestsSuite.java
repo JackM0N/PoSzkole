@@ -9,6 +9,8 @@ import org.junit.platform.suite.api.Suite;
         AuthenticationServiceUnitTest.class,
         ClassScheduleServiceUnitTest.class,
         CourseServiceUnitTest.class,
+        RequestServiceUnitTest.class,
+        RoomReservationServiceUnitTest.class,
         WebsiteUserServiceUnitTest.class,
 })
 public class AllUnitTestsSuite {

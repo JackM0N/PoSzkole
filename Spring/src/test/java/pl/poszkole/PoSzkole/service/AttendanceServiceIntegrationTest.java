@@ -101,7 +101,7 @@ class AttendanceServiceIntegrationTest {
 
     @Test
     void testFindAllForClassSchedule_Success() {
-        // Arrange: Create attendance records
+        // Arrange
         Attendance attendance = new Attendance();
         attendance.setClassSchedule(classScheduleRepository.findById(classScheduleId).get());
         attendance.setStudent(websiteUserRepository.findById(student.getId()).get());
@@ -140,7 +140,7 @@ class AttendanceServiceIntegrationTest {
 
     @Test
     void testCheckIfExists_Success() {
-        // Arrange: Create attendance
+        // Arrange
         Attendance attendance = new Attendance();
         attendance.setClassSchedule(classScheduleRepository.findById(classScheduleId).get());
         attendance.setStudent(student);
