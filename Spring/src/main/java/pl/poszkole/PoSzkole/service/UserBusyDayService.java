@@ -85,7 +85,7 @@ public class UserBusyDayService {
         userBusyDayRepository.deleteById(bdId);
     }
 
-    //TODO: Could be probably used in site itself to add in-real time info if given time is wrong for chosen day
+
     public boolean isOverlapping(WebsiteUser websiteUser, Long ubdId, DayOfWeek dayOfWeek, LocalTime timeFrom, LocalTime timeTo) {
         List<UserBusyDay> userBusyDays = userBusyDayRepository.findByUserIdOrderByTimeTo(websiteUser.getId());
         boolean timeFromOk;
