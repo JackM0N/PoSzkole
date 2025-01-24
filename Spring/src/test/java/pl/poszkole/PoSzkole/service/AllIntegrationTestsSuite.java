@@ -13,6 +13,7 @@ import org.junit.platform.suite.api.Suite;
         RoomReservationServiceIntegrationTest.class,
         ScheduleChangesLogServiceIntegrationTest.class,
         SubjectServiceIntegrationTest.class,
+        TutoringClassServiceIntegrationTest.class,
         WebsiteUserServiceIntegrationTest.class,
 })
 public class AllIntegrationTestsSuite {

@@ -176,14 +176,13 @@ public class TutoringClassService {
             classSchedule.setIsCanceled(true);
             classScheduleRepository.save(classSchedule);
 
-            //TODO: Ask if it should create one for chosen schedule or all of em` (as in where did the cancellation started)
             //Create changelogs
             ScheduleChangesLog scheduleChangesLog = scheduleChangesLogMapper.toEntity(scheduleChangesLogDTO);
             scheduleChangesLog.setUser(currentUser);
             scheduleChangesLog.setClassSchedule(classSchedule);
             scheduleChangesLogRepository.save(scheduleChangesLog);
         });
-        //TODO: Not sure if that can be
+
         tutoringClass.setIsCompleted(true);
 
         return tutoringClassMapper.toDto(tutoringClass);
@@ -208,8 +207,6 @@ public class TutoringClassService {
 
         student.removeClass(tutoringClass);
         websiteUserRepository.save(student);
-
-        //TODO: Kinda same vibe here. Should this create a changelog? (I think not but maybe?)
 
         return tutoringClassMapper.toDto(tutoringClass);
     }
