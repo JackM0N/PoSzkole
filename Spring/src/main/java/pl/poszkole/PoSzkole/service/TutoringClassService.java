@@ -26,6 +26,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,7 +76,10 @@ public class TutoringClassService {
         TutoringClass tutoringClass = tutoringClassRepository.findById(tutoringClassId)
                 .orElseThrow(() -> new EntityNotFoundException("Tutoring class not found"));
         List<WebsiteUser> tutoredStudents = tutoringClass.getStudents();
-        return tutoredStudents.stream().map(simplifiedUserMapper::toSimplifiedUserDTO).collect(Collectors.toList());
+        return tutoredStudents.stream()
+                .sorted(Comparator.comparing(WebsiteUser::getId))
+                .map(simplifiedUserMapper::toSimplifiedUserDTO)
+                .collect(Collectors.toList());
     }
 
     public TutoringClassDTO addToTutoringClass(Long userId, Long classId) {

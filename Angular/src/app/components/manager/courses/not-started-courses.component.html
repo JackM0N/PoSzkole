@@ -27,7 +27,10 @@
 
     <ng-container matColumnDef="isOpenForRegistration">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Rejestracja</th>
-      <td mat-cell *matCellDef="let course">{{course.isOpenForRegistration ? 'Otwarta':'Zamknięta'}}</td>
+      <td mat-cell *matCellDef="let course">
+        {{ !course.isOpenForRegistration && course.students.length === 0 ? 'Nieotwarta' : 
+        course.isOpenForRegistration ? 'Otwarta' : 'Zamknięta' }}
+       </td>
     </ng-container>
 
     <ng-container matColumnDef="action">
