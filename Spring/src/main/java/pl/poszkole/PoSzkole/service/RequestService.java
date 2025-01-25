@@ -5,7 +5,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.DayAndTimeDTO;
@@ -51,10 +53,17 @@ public class RequestService {
             throw new RuntimeException("Teacher has no subjects assigned");
         }
 
+        // Add sorting by issueDate in ascending order
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.ASC, "issueDate")
+        );
+
         //Find request that this teacher teaches and were not admitted yet
         Specification<Request> rSpec = getRequestSpecification(subject, currentUser, gotAdmitted);
 
-        Page<Request> requests = requestRepository.findAll(rSpec, pageable);
+        Page<Request> requests = requestRepository.findAll(rSpec, sortedPageable);
         return requests.map(requestMapper::toDto);
     }
 

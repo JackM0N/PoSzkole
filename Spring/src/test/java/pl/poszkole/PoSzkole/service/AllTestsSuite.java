@@ -5,10 +5,28 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @SelectClasses({
-    AttendanceServiceUnitTest.class,
-    AttendanceServiceIntegrationTest.class,
-    WebsiteUserServiceUnitTest.class,
-    WebsiteUserServiceIntegrationTest.class,
+        AttendanceServiceIntegrationTest.class,
+        AuthenticationServiceIntegrationTest.class,
+        ClassScheduleServiceIntegrationTest.class,
+        CourseServiceIntegrationTest.class,
+        RequestServiceIntegrationTest.class,
+        RoomReservationServiceIntegrationTest.class,
+        ScheduleChangesLogServiceIntegrationTest.class,
+        SubjectServiceIntegrationTest.class,
+        TutoringClassServiceIntegrationTest.class,
+        UserBusyDayServiceIntegrationTest.class,
+        WebsiteUserServiceIntegrationTest.class,
+        AttendanceServiceUnitTest.class,
+        AuthenticationServiceUnitTest.class,
+        ClassScheduleServiceUnitTest.class,
+        CourseServiceUnitTest.class,
+        RequestServiceUnitTest.class,
+        RoomReservationServiceUnitTest.class,
+        ScheduleChangesLogServiceUnitTest.class,
+        SubjectServiceUnitTest.class,
+        TutoringClassServiceUnitTest.class,
+        UserBusyDayServiceUnitTest.class,
+        WebsiteUserServiceUnitTest.class,
 })
 public class AllTestsSuite {
     // yes, this should be empty
