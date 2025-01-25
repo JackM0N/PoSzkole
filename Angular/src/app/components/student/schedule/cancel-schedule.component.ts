@@ -42,13 +42,21 @@ export class CancelScheduleComponent {
       };
   
       this.scheduleService.cancelClassSchedule(scheduleId, scheduleChangeLog).subscribe({
-        next: response => {
+        next: () => {
           this.toastr.success('Zajęcia zostały pomyślnie odwołane');
           this.dialogRef.close(true);
         },
         error: error => {
-          console.error('Class update error', error);
-          this.toastr.error('Nie udało się odwołać zajęć');
+          if(error.error === "You can only cancel individual classes"){
+            this.toastr.error("Nie możesz odwołać zajęć na które uczęszczają inni uczniowie. W razie potrzeby skontaktuj się z nauczycielem!", "Błąd")
+          }
+          if(error.error === "You cannot cancel a class that starts in less than 24 hours"){
+            this.toastr.error("Nie możesz odwołać zajęć, które mają się zacząć za mniej niż 24 godziny", "Błąd")
+          }
+          else{
+            console.error('Class update error', error);
+            this.toastr.error('Nie udało się odwołać zajęć');
+          }
         }
       });
     }

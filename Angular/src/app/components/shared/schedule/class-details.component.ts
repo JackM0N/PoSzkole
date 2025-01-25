@@ -104,17 +104,19 @@ export class ClassDetailsComponent implements OnInit{
   }
 
   openCancelSchedule(selectedClass: ClassSchedule): void {
-    this.close();
-    this.dialog.open(CancelScheduleComponent, {
+    const dialogRef = this.dialog.open(CancelScheduleComponent, {
       width: '50%',
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',
       data: selectedClass,
     });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.ngOnInit();
+    });
   }
 
   openEditClass(selectedClass: ClassSchedule): void {
-    this.close();
     this.dialog.open(EditClassComponent, {
       width: '50%',
       enterAnimationDuration:'200ms',
@@ -124,7 +126,6 @@ export class ClassDetailsComponent implements OnInit{
   }
 
   openReserveRoom(scheduleId: number, classDateFrom: DateTime, classDateTo: DateTime): void {
-    this.close();
     this.dialog.open(ReserveRoomComponent, {
       width: '50%',
       enterAnimationDuration:'200ms',

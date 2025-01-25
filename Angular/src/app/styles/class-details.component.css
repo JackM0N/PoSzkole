@@ -15,6 +15,17 @@ mat-dialog-actions {
   margin: 0;
 }
 
+/* Style przycisków w szczegółach zajęć*/
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+mat-dialog-actions button {
+  min-width: 7.5rem;
+}
+
 /* Styl przycisku, aby wyglądał jak tekst */
 .unstyled-button {
   background: transparent;

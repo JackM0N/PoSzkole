@@ -58,25 +58,26 @@
     </div>
   }
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions class="button-container">
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
+    <button mat-raised-button color="warn" (click)="openCancelClass()">Odowłaj resztę terminów zajęć</button>
+  }
   @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.tutoringClass.isCompleted) {
-    <button mat-raised-button color="primary" class="" (click)="openAddStudentToClass()">Dodaj ucznia na zajęcia</button>
+    <button mat-raised-button color="primary" (click)="openAddStudentToClass()">Dodaj ucznia na zajęcia</button>
   }
   @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
-    <button mat-raised-button class="" (click)="openAttendance(data.id!)">Obecność</button>
-    <button mat-raised-button class="" (click)="openReserveRoom(data.id!, data.classDateFrom, data.classDateTo)">Zarezerwuj salę</button>
-  }
-  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.tutoringClass.isCompleted) {
-    <button mat-raised-button class="" (click)="openEditClass(data)">Edytuj zajęcia</button>
+    <button mat-raised-button (click)="openAttendance(data.id!)">Obecność</button>
+    <button mat-raised-button (click)="openReserveRoom(data.id!, data.classDateFrom, data.classDateTo)">Zarezerwuj salę</button>
   }
   @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCompleted && !data.isCanceled) {
-    <button mat-raised-button color="primary" (click)="completeClassSchedule(data.id!)">Zakończ zajęcia</button>
+    <button mat-raised-button (click)="completeClassSchedule(data.id!)">Zakończ zajęcia</button>
+  }
+  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.tutoringClass.isCompleted) {
+    <button mat-raised-button color="primary" (click)="openEditClass(data)">Edytuj zajęcia</button>
   }
   @if (currentUserIsStudent && !data.isCanceled) {
     <button mat-raised-button class="canceled" (click)="openCancelSchedule(data)">Odwołaj</button>
   }
-  @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id && !data.isCanceled) {
-    <button mat-raised-button color="warn" (click)="openCancelClass()">Odowłaj resztę terminów zajęć</button>
-  }
+  
   <button mat-raised-button color="primary" (click)="close()">Zamknij</button>
 </mat-dialog-actions>
