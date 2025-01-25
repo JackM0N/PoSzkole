@@ -14,6 +14,7 @@ import org.junit.platform.suite.api.Suite;
         ScheduleChangesLogServiceUnitTest.class,
         SubjectServiceUnitTest.class,
         TutoringClassServiceUnitTest.class,
+        UserBusyDayServiceUnitTest.class,
         WebsiteUserServiceUnitTest.class,
 })
 public class AllUnitTestsSuite {

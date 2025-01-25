@@ -63,8 +63,12 @@ public class UserBusyDayService {
             throw new RuntimeException("You do not have permission to edit this schedule");
         }
 
+        //Get wanted user
+        WebsiteUser websiteUser = websiteUserRepository.findById(userBusyDay.getUser().getId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
         //Check for overlapping
-        if (isOverlapping(userBusyDay.getUser(), userBusyDayDTO.getId(), userBusyDayDTO.getDayOfTheWeek(),
+        if (isOverlapping(websiteUser, userBusyDayDTO.getId(), userBusyDayDTO.getDayOfTheWeek(),
                 userBusyDayDTO.getTimeFrom(), userBusyDayDTO.getTimeTo())) {
             throw new RuntimeException("Chosen schedule is overlapping with already existing one");
         }
