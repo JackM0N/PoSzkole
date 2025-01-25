@@ -1,43 +1,5 @@
 --liquibase formatted sql
 --changeset Przemyslaw:1 labels:testing,data
-
-INSERT INTO website_user (
-    user_id,
-    username,
-    password,
-    first_name,
-    last_name,
-    gender,
-    email,
-    phone,
-    hourly_rate,
-    level_id,
-    guardian_phone,
-    guardian_email,
-    price_list_id,
-    discount_percentage,
-    is_cash_payment,
-    issue_invoice
-) VALUES (
-             10151,
-             'user1',
-             '$2a$10$o9OcOIN.1bmooaFQJ.1PAOyZxHBA9IXo8qj2dECXrj8Vk9YpvxstO',
-             'Maria',
-             'Nowak',
-             'M',
-             'user1@example.com',
-             '+48215089999',
-             51,
-             'HIGH_SCHOOL',
-             NULL,
-             NULL,
-             1,
-             15,
-             TRUE,
-             FALSE
-         );
-
-
 INSERT INTO website_user (
     user_id,
     username,
@@ -5550,6 +5512,41 @@ INSERT INTO website_user (
              FALSE
          );
 
+INSERT INTO website_user (
+    user_id,
+    username,
+    password,
+    first_name,
+    last_name,
+    gender,
+    email,
+    phone,
+    hourly_rate,
+    level_id,
+    guardian_phone,
+    guardian_email,
+    price_list_id,
+    discount_percentage,
+    is_cash_payment,
+    issue_invoice
+) VALUES (
+             10151,
+             'user1',
+             '$2a$10$o9OcOIN.1bmooaFQJ.1PAOyZxHBA9IXo8qj2dECXrj8Vk9YpvxstO',
+             'Maria',
+             'Nowak',
+             'M',
+             'user1@example.com',
+             '+48215089999',
+             51,
+             'HIGH_SCHOOL',
+             NULL,
+             NULL,
+             1,
+             15,
+             TRUE,
+             FALSE
+         );
 
 INSERT INTO user_role (user_id, role_id)
 VALUES

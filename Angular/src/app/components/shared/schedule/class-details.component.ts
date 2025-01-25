@@ -217,7 +217,7 @@ export class ClassDetailsComponent implements OnInit{
 
   removeStudent(studentId: number){
     this.tutoringClassService.removeStudentFromTutoringClass(studentId, this.data.tutoringClass.id!).subscribe({
-      next: response => {
+      next: () => {
         this.toastr.success(`Uczeń został usunięty z zajęć: ${this.data.tutoringClass.className}`,"Sukces!")
         this.dialogRef.close(true)
       },

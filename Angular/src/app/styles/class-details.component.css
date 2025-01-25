@@ -9,10 +9,32 @@ mat-dialog-actions {
 }
 
 /* Resetowanie stylów listy */
+.students-container {
+  max-height: 8.75rem;
+  padding: 0.625rem;
+  border-radius: 0.3125rem;
+  border: none;
+}
+
+.students-container:has(.student-list li:nth-child(n+6)) {
+  overflow-y: auto;
+  border: 0.0625rem solid #ddd;
+}
+
 .student-list {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.student-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3125rem;
+}
+
+.student-list li:last-child {
+  margin-bottom: 0;
 }
 
 /* Style przycisków w szczegółach zajęć*/
@@ -65,7 +87,15 @@ button {
 }
 
 .delete-button mat-icon {
-  font-size: 1em; 
+  font-size: 1rem;
+}
+
+.delete-button material-icons {
+  line-height: 0,65;
+}
+
+.material-icons {
+  line-height: 0.6 !important;
 }
 
 .delete-button:hover {

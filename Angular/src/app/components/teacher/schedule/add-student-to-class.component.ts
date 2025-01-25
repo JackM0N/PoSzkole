@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { WebsiteUserService } from "../../../services/website-user.service";
 import { CompactUser } from "../../../models/compact-user.model";
@@ -69,8 +69,16 @@ export class AddStudentToClassComponent implements OnInit{
           this.dialogRef.close(true);
         },
         error: error => {
-          this.toastr.error("Coś poszło nie tak podczas próby dodania ucznia do zajęć");
-          console.error('Adding student to class error', error);
+          if (error.error === "You can't add this student to a class that he is already attending") {
+            this.toastr.error("Nie można dodać ucznia na zajęcia, na które już uczęszcza.", "Błąd dodawania do zajęć");
+          }else if (error.error === "You cannot add student to a class that's on students busy day") {
+            this.toastr.error("Nie można dodać ucznia na te zajęcia, ponieważ jest on w ten dzień niedostępny.", "Błąd dodawania do zajęć");
+          }else if (error.error === "Class schedule overlaps with existing class of this student") {
+            this.toastr.error("Nie można dodać ucznia na te zajęcia, ponieważ nachodzą one na inne zajęcia, na które już uczęszcza.", "Błąd dodawania do zajęć");
+          }else{
+            this.toastr.error("Coś poszło nie tak podczas próby dodania ucznia do zajęć");
+            console.error('Adding student to class error', error);
+          }
         }
       });
     }

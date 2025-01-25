@@ -40,9 +40,9 @@
     </div>
   }
   @if (currentUserIsTeacher && userId === data.tutoringClass.teacher?.id) {
+    <br/>
+    <h3>Uczniowie:</h3>
     <div class="students-container">
-      <br/>
-      <h3>Uczniowie:</h3>
       @if (students.length > 0) {
         <ul class="student-list">
           @for (student of students; track student) {
