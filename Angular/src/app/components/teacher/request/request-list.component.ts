@@ -46,7 +46,7 @@ export class RequestListComponent implements AfterViewInit{
     const page = this.paginator.pageIndex + 1;
     const size = this.paginator.pageSize;
     const sortBy = this.sort.active || 'issueDate';
-    const sortDir = this.sort.direction || 'desc';
+    const sortDir = this.sort.direction || 'asc';
 
     const observer: Observer<any> = {
       next: response => {

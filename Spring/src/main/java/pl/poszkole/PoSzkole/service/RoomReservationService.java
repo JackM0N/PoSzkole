@@ -52,6 +52,15 @@ public class RoomReservationService {
         WebsiteUser currentUser = websiteUserService.getCurrentUser();
         ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
                 .orElseThrow(() -> new RuntimeException("Class schedule not found"));
+        if (classSchedule.getRoom() != null){
+            RoomReservation existingReservation = roomReservationRepository.findByRoomIdAndTeacherIdAndReservationFromAndReservationTo(
+                    classSchedule.getRoom().getId(),
+                    currentUser.getId(),
+                    classSchedule.getClassDateFrom(),
+                    classSchedule.getClassDateTo()
+            ).orElseThrow(() -> new RuntimeException("Class reservation not found"));
+            roomReservationRepository.delete(existingReservation);
+        }
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
 

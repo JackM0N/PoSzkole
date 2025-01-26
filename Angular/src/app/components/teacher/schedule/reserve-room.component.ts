@@ -22,7 +22,7 @@ export class ReserveRoomComponent implements OnInit{
     public dialogRef: MatDialogRef<ReserveRoomComponent>,
     private roomReservationService: RoomReservationService,
     @Inject(MAT_DIALOG_DATA) public data:{
-      id: number;
+      scheduleId: number;
       classDateFrom: DateTime;
       classDateTo: DateTime;
     },
@@ -54,12 +54,13 @@ export class ReserveRoomComponent implements OnInit{
   }
 
   reserveRoom(roomId: number) {
-    if (this.data.id === null){
+    console.log(this.data.scheduleId);
+    if (this.data.scheduleId === null){
       this.toastr.error('Nie można zarezerwować sali');
       return;
     }
 
-    this.roomReservationService.reserveRoom(roomId, this.data.id).subscribe({
+    this.roomReservationService.reserveRoom(roomId, this.data.scheduleId).subscribe({
       next: () => {
         this.toastr.success('Sala została pomyślnie zarezerwowana');
         this.dialogRef.close(true);
@@ -71,4 +72,7 @@ export class ReserveRoomComponent implements OnInit{
     });
   }
 
+  close(): void {
+    this.dialogRef.close();
+  }
 }

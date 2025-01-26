@@ -25,17 +25,17 @@ export class RegistrationComponent {
     private toastr: ToastrService,
   ){
     this.registrationForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-      email: ['', [Validators.required, Validators.email]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      gender: ['', [Validators.required]],
-      phone: ['', [Validators.required]],
+      username: [null, [Validators.required, Validators.minLength(3)]],
+      password: [null, [Validators.required, Validators.minLength(6)]],
+      confirmPassword: [null, [Validators.required, Validators.minLength(6)]],
+      email: [null, [Validators.required, Validators.email]],
+      firstName: [null, [Validators.required]],
+      lastName: [null, [Validators.required]],
+      gender: [null, [Validators.required]],
+      phone: [null, [Validators.required]],
       level: [null, Validators.required],
-      guardianPhone: [''],
-      guardianEmail: ['', Validators.email],
+      guardianPhone: [null],
+      guardianEmail: [null, Validators.email],
       isCashPayment: [false, [Validators.required]],
       issueInvoice: [false, [Validators.required]]
     }, {validators: passwordMatchValidator });

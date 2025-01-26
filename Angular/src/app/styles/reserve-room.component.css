@@ -10,10 +10,12 @@
 }
 
 .room-cards {
+  color: black;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   justify-content: center;
+  overflow-y: auto;
 }
 
 .room-card {

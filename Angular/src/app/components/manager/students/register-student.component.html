@@ -29,6 +29,11 @@
     <mat-form-field>
       <mat-label>Potwierdź hasło</mat-label>
       <input matInput id="confirmPassword" formControlName="confirmPassword" placeholder="Potwierdź hasło" type="password" />
+      @if (registerStudentForm.get('confirmPassword')?.hasError('passwordMismatch')) {
+        <mat-error>
+          Hasła nie są takie same
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field>

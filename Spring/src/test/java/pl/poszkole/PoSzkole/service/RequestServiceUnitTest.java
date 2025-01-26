@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import pl.poszkole.PoSzkole.dto.*;
 import pl.poszkole.PoSzkole.mapper.RequestMapper;
@@ -17,6 +19,7 @@ import pl.poszkole.PoSzkole.repository.RequestRepository;
 import pl.poszkole.PoSzkole.repository.SubjectRepository;
 import pl.poszkole.PoSzkole.repository.TutoringClassRepository;
 import pl.poszkole.PoSzkole.repository.WebsiteUserRepository;
+import org.springframework.data.domain.Pageable;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
@@ -80,19 +83,14 @@ public class RequestServiceUnitTest {
     void testGetRequestsForTeacher_Success() throws Exception {
         // Arrange
         Pageable pageable = PageRequest.of(0, 10);
-        Pageable sortedPageable = PageRequest.of(
-                pageable.getPageNumber(),
-                pageable.getPageSize(),
-                Sort.by(Sort.Direction.ASC, "issueDate")
-        );
         Subject subject = new Subject();
         WebsiteUser teacher = new WebsiteUser();
         teacher.setSubjects(Set.of(subject));
         teacher.setRoles(Set.of(teacherRole));
         Page<Request> requestPage = new PageImpl<>(List.of(new Request()));
-
+        
         when(websiteUserService.getCurrentUser()).thenReturn(teacher);
-        when(requestRepository.findAll(any(Specification.class), eq(sortedPageable))).thenReturn(requestPage);
+        when(requestRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(requestPage);
         when(requestMapper.toDto(any())).thenReturn(new RequestDTO());
 
         // Act
@@ -101,7 +99,7 @@ public class RequestServiceUnitTest {
         // Assert
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
-        verify(requestRepository).findAll(any(Specification.class), eq(sortedPageable));
+        verify(requestRepository).findAll(any(Specification.class), eq(pageable));
     }
 
     @Test

@@ -6,6 +6,15 @@
   <p><strong>Przedmiot:</strong> {{data.tutoringClass.subject?.subjectName}}</p>
   <p><strong>Online:</strong> {{ data.isOnline ? 'Tak' : 'Nie' }}</p>
   <p>{{data.isCompleted? "Stan: Zakończone":"Stan: Nieodbyte"}}</p>
+  @if (data.room!=null) {
+    <div>
+      <br/>
+      <h3>Miejsce zajęć:</h3>
+      <p><strong>Budynek:</strong> {{ data.room.building }}</p>
+      <p><strong>Piętro:</strong> {{ data.room.floor }}</p>
+      <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
+    </div>
+  }
   @if (changeLogs.length > 0) {
     <div>
       <br/>
@@ -19,15 +28,6 @@
           <p><strong>Wyjaśnienie:</strong> {{log.explanation}}</p>
         }
       }
-    </div>
-  }
-  @if (data.room!=null) {
-    <div>
-      <br/>
-      <h3>Miejsce zajęć:</h3>
-      <p><strong>Budynek:</strong> {{ data.room.building }}</p>
-      <p><strong>Piętro:</strong> {{ data.room.floor }}</p>
-      <p><strong>Pokój:</strong> {{ data.room.roomNumber }}</p>
     </div>
   }
   @if (currentUserIsStudent) {

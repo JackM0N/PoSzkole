@@ -53,17 +53,10 @@ public class RequestService {
             throw new RuntimeException("Teacher has no subjects assigned");
         }
 
-        // Add sorting by issueDate in ascending order
-        Pageable sortedPageable = PageRequest.of(
-                pageable.getPageNumber(),
-                pageable.getPageSize(),
-                Sort.by(Sort.Direction.ASC, "issueDate")
-        );
-
         //Find request that this teacher teaches and were not admitted yet
         Specification<Request> rSpec = getRequestSpecification(subject, currentUser, gotAdmitted);
 
-        Page<Request> requests = requestRepository.findAll(rSpec, sortedPageable);
+        Page<Request> requests = requestRepository.findAll(rSpec, pageable);
         return requests.map(requestMapper::toDto);
     }
 

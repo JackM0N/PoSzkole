@@ -32,12 +32,17 @@
           </mat-error>
         }
       </mat-form-field>
-
+      
       <mat-form-field>
         <mat-label>Potwierdź hasło</mat-label>
         <input matInput id="confirmPassword" formControlName="confirmPassword" placeholder="Potwierdź hasło" type="password" />
+        @if (registrationForm.get('confirmPassword')?.hasError('passwordMismatch')) {
+          <mat-error>
+            Hasła nie są takie same
+          </mat-error>
+        }
       </mat-form-field>
-
+      
       <mat-form-field>
         <mat-label>Imię</mat-label>
         <input matInput id="firstName" formControlName="firstName" placeholder="Wpisz imię" />

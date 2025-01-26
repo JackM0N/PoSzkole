@@ -8,6 +8,7 @@ import pl.poszkole.PoSzkole.model.RoomReservation;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RoomReservationRepository extends JpaRepository<RoomReservation, Long> {
@@ -28,4 +29,8 @@ public interface RoomReservationRepository extends JpaRepository<RoomReservation
     List<RoomReservation> findOverlappingReservationsForRoom(
             @Param("roomId") Long roomId, @Param("startTime") LocalDateTime startTime,
             @Param("endTime") LocalDateTime endTime);
+
+    Optional<RoomReservation> findByRoomIdAndTeacherIdAndReservationFromAndReservationTo(
+            Long roomId, Long teacherId, LocalDateTime startTime, LocalDateTime endTime
+    );
 }
