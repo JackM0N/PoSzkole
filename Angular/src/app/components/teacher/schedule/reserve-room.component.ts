@@ -54,7 +54,6 @@ export class ReserveRoomComponent implements OnInit{
   }
 
   reserveRoom(roomId: number) {
-    console.log(this.data.scheduleId);
     if (this.data.scheduleId === null){
       this.toastr.error('Nie można zarezerwować sali');
       return;

@@ -66,8 +66,6 @@ export class EditClassComponent {
 
     const formData = this.editForm.value;
 
-    console.log(formData)
-
     const payload: ClassAndChangeLog = {
       classScheduleDTO: {
         ...formData.classSchedule,
@@ -85,7 +83,7 @@ export class EditClassComponent {
 
     this.classScheduleService.updateClassSchedule(payload.classScheduleDTO.id!, payload).subscribe({
       next: () => {
-        this.toastr.success('Zajęcia zostały pomyślnie zaktualizowane.', 'Błąd!');
+        this.toastr.success('Zajęcia zostały pomyślnie zaktualizowane.', 'Sukces!');
         this.dialogRef.close(true);
       },
       error: (error) => {
