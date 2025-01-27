@@ -114,8 +114,6 @@ public class AuthenticationService {
                 .collect(Collectors.toSet());
 
         user.setRoles(managedRoles);
-        roles.forEach(role -> System.out.println(role.getRoleName()));
-        System.out.println(websiteUserMapper.toDto(user));
         websiteUserRepository.save(user);
     }
 }

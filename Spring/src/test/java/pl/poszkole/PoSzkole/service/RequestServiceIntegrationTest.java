@@ -93,7 +93,6 @@ public class RequestServiceIntegrationTest {
         teacher.setSubjects(Set.of(subject));
         websiteUserRepository.save(teacher);
 
-
         tutoringClass = new TutoringClass();
         tutoringClass.setId(1L);
         tutoringClass.setClassName("Zajęcia z Przedmiotu");

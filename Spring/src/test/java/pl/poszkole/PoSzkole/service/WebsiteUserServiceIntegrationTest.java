@@ -97,8 +97,6 @@ class WebsiteUserServiceIntegrationTest {
         // Act
         WebsiteUserDTO result = websiteUserService.getUserProfile(testUser.getId());
 
-        System.out.println(result);
-
         // Assert
         assertNotNull(result);
         assertEquals(testUser.getFirstName(), result.getFirstName());
@@ -107,7 +105,7 @@ class WebsiteUserServiceIntegrationTest {
     }
 
     @Test
-    void testGetUserProfile_USER_NOT_FOUND() {
+    void testGetUserProfile_UserNotFound() {
         // Act & Assert
         assertThrows(EntityNotFoundException.class, () -> websiteUserService.getUserProfile(10L));
     }
@@ -206,7 +204,7 @@ class WebsiteUserServiceIntegrationTest {
 
     @Test
     @WithMockUser(username = "testManager")
-    void testDeleteUser_USER_NOT_FOUND() {
+    void testDeleteUser_UserNotFound() {
         // Act & Assert
         // Try deleting non-existing user
         assertThrows(EntityNotFoundException.class, () -> websiteUserService.deleteUser(10L));
@@ -214,9 +212,8 @@ class WebsiteUserServiceIntegrationTest {
 
     @Test
     @WithMockUser(username = "testTeacher")
-    void testDeleteUser_PERMISSION_DENIED() {
+    void testDeleteUser_PermissionDenied() {
         // Act & Assert
-        // Try deleting a user without permission
         assertThrows(RuntimeException.class, () -> websiteUserService.deleteUser(testUser.getId()));
     }
 }

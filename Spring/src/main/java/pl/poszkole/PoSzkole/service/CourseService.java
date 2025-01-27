@@ -169,7 +169,6 @@ public class CourseService {
     }
 
     public CourseDTO createCourse(CourseDTO courseDTO) {
-        System.out.println(courseDTO);
         Course course = courseMapper.toEntity(courseDTO);
         return courseMapper.toDto(courseRepository.save(course));
     }

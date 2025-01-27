@@ -199,7 +199,7 @@ class WebsiteUserServiceUnitTest {
     }
 
     @Test
-    void editChosenUserProfile_ShouldThrowException_WhenUserNotFound() {
+    void editChosenUserProfile_UserNotFound() {
         // Arrange
         Long userId = 1L;
         WebsiteUserDTO updatedDTO = new WebsiteUserDTO();
