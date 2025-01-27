@@ -134,7 +134,7 @@ class WebsiteUserServiceIntegrationTest {
 
     @Test
     @WithMockUser(username = "testUser")
-    void testEditUserProfile_Success() {
+    void testEditOwnUserProfile_Success() {
         // Arrange
         WebsiteUserDTO updatedUserDTO = new WebsiteUserDTO();
         updatedUserDTO.setId(testUser.getId());
@@ -142,7 +142,25 @@ class WebsiteUserServiceIntegrationTest {
         updatedUserDTO.setLastName("Name");
 
         // Act
-        WebsiteUserDTO result = websiteUserService.editUserProfile(updatedUserDTO);
+        WebsiteUserDTO result = websiteUserService.editOwnUserProfile(updatedUserDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("Updated", result.getFirstName());
+        assertEquals("Name", result.getLastName());
+    }
+
+    @Test
+    @WithMockUser(username = "manager")
+    void editChosenUserProfile_Success() {
+        // Arrange
+        WebsiteUserDTO updatedUserDTO = new WebsiteUserDTO();
+        updatedUserDTO.setId(testUser.getId());
+        updatedUserDTO.setFirstName("Updated");
+        updatedUserDTO.setLastName("Name");
+
+        // Act
+        WebsiteUserDTO result = websiteUserService.editChosenUserProfile(testUser.getId(), updatedUserDTO);
 
         // Assert
         assertNotNull(result);

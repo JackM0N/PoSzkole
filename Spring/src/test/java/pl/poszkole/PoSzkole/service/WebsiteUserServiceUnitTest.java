@@ -1,5 +1,6 @@
 package pl.poszkole.PoSzkole.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -153,7 +154,7 @@ class WebsiteUserServiceUnitTest {
     }
 
     @Test
-    void testEditUserProfile_Success() {
+    void testEditOwnUserProfile_Success() {
         // Arrange
         WebsiteUserDTO updatedUserDTO = new WebsiteUserDTO();
         updatedUserDTO.setFirstName("Updated");
@@ -165,11 +166,51 @@ class WebsiteUserServiceUnitTest {
         when(websiteUserMapper.toDto(mockUser)).thenReturn(updatedUserDTO);
 
         // Act
-        WebsiteUserDTO result = websiteUserService.editUserProfile(updatedUserDTO);
+        WebsiteUserDTO result = websiteUserService.editOwnUserProfile(updatedUserDTO);
 
         // Assert
         assertNotNull(result);
         assertEquals("Updated", result.getFirstName());
+    }
+
+    @Test
+    void editChosenUserProfile_Success() {
+        // Arrange
+        Long userId = mockUser.getId();
+
+        WebsiteUserDTO updatedDTO = new WebsiteUserDTO();
+        updatedDTO.setEmail("updated@example.com");
+
+        WebsiteUser updatedUser = new WebsiteUser();
+        updatedUser.setId(userId);
+        updatedUser.setEmail("updated@example.com");
+
+        when(websiteUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+        when(websiteUserMapper.partialFullProfileUpdate(updatedDTO, mockUser)).thenReturn(updatedUser);
+        when(websiteUserRepository.save(mockUser)).thenReturn(mockUser);
+        when(websiteUserMapper.toDto(mockUser)).thenReturn(updatedDTO);
+
+        // Act
+        WebsiteUserDTO result = websiteUserService.editChosenUserProfile(userId, updatedDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("updated@example.com", result.getEmail());
+    }
+
+    @Test
+    void editChosenUserProfile_ShouldThrowException_WhenUserNotFound() {
+        // Arrange
+        Long userId = 1L;
+        WebsiteUserDTO updatedDTO = new WebsiteUserDTO();
+
+        when(websiteUserRepository.findById(userId)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        Exception exception = assertThrows(EntityNotFoundException.class,
+                () -> websiteUserService.editChosenUserProfile(userId, updatedDTO));
+        assertEquals("User not found", exception.getMessage());
+        verifyNoInteractions(websiteUserMapper);
     }
 
     @Test
