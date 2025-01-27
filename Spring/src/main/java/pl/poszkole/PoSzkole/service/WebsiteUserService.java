@@ -107,7 +107,7 @@ public class WebsiteUserService {
     }
 
 
-    public WebsiteUserDTO editUserProfile(WebsiteUserDTO websiteUserDTO){
+    public WebsiteUserDTO editOwnUserProfile(WebsiteUserDTO websiteUserDTO){
         WebsiteUser currentUser = getCurrentUser();
 
         //Update all shared rows that user should be able to edit
@@ -115,6 +115,17 @@ public class WebsiteUserService {
         websiteUserRepository.save(currentUser);
 
         return websiteUserMapper.toDto(currentUser);
+    }
+
+    public WebsiteUserDTO editChosenUserProfile(Long userId, WebsiteUserDTO websiteUserDTO){
+        WebsiteUser websiteUser = websiteUserRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        //Update all shared rows that manager can edit
+        websiteUserMapper.partialFullProfileUpdate(websiteUserDTO, websiteUser);
+        websiteUserRepository.save(websiteUser);
+
+        return websiteUserMapper.toDto(websiteUser);
     }
 
     public WebsiteUserDTO editTeachersSubjects(Long websiteUserId, List<SubjectDTO> subjectDTOS){

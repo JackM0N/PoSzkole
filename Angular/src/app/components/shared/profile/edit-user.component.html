@@ -55,37 +55,35 @@
 
     <!-- Education Level, Guardian Info (if Student) -->
     @if (isStudent) {
-      <div>
+      <mat-form-field class="full-width">
+        <mat-label>Poziom kształcenia</mat-label>
+        <mat-select formControlName="level">
+          @for (level of levels; track level) {
+            <mat-option [value]="level">{{ level }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Telefon opiekuna</mat-label>
+        <input matInput type="tel" formControlName="guardianPhone" />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Email opiekuna</mat-label>
+        <input matInput type="email" formControlName="guardianEmail" />
+      </mat-form-field>
+      @if (currentUserIsManager) {
         <mat-form-field class="full-width">
-          <mat-label>Poziom kształcenia</mat-label>
-          <mat-select formControlName="level">
-            @for (level of levels; track level) {
-              <mat-option [value]="level">{{ level }}</mat-option>
-            }
-          </mat-select>
+          <mat-label>Zniżka</mat-label>
+          <input matInput type="number" formControlName="discountProcentage" />
         </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>Telefon opiekuna</mat-label>
-          <input matInput type="tel" formControlName="guardianPhone" />
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>Email opiekuna</mat-label>
-          <input matInput type="email" formControlName="guardianEmail" />
-        </mat-form-field>
-        @if (currentUserIsManager) {
-          <mat-form-field class="full-width">
-            <mat-label>Zniżka</mat-label>
-            <input matInput type="number" formControlName="discountProcentage" />
-          </mat-form-field>
-        }
-        <mat-form-field class="full-width">
-          <mat-label>Faktura</mat-label>
-          <mat-select formControlName="issueInvoice">
-            <mat-option [value]="true">Tak</mat-option>
-            <mat-option [value]="false">Nie</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      }
+      <mat-form-field class="full-width">
+        <mat-label>Faktura</mat-label>
+        <mat-select formControlName="issueInvoice">
+          <mat-option [value]="true">Tak</mat-option>
+          <mat-option [value]="false">Nie</mat-option>
+        </mat-select>
+      </mat-form-field>
     }
   </form>
   <div class="button-group">

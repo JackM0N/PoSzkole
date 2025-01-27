@@ -71,6 +71,10 @@ export class WebsiteUserService {
     return this.http.put<WebsiteUser>(`${this.baseUrl}/edit/my-profile`, websiteUser)
   }
 
+  editChosenUserProfile(userId: number, websiteUser: WebsiteUser): Observable<WebsiteUser> {
+    return this.http.put<WebsiteUser>(`${this.baseUrl}/edit/profile/${userId}`, websiteUser)
+  }
+
   editTeacherSubjects(teacherId: number, subjects: Subject[]): Observable<WebsiteUser> {
     return this.http.put<WebsiteUser>(`${this.baseUrl}/edit/subjects/${teacherId}`, subjects)
   }

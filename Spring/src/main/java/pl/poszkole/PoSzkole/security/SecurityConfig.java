@@ -35,7 +35,7 @@ public class SecurityConfig {
                                 "/course/finish/**", "/course/active-courses", "/course/attendants/**",
                                 "/course/add-student", "/course/remove-student", "/course/not-started-courses",
                                 "/course/delete/**", "/course/cancel/**","/registration/teacher",
-                                "/registration/manager", "/user/all-teachers")
+                                "/registration/manager", "/user/all-teachers", "/user/edit/profile/{userId}")
                         .hasAnyRole("MANAGER", "OWNER")
 
                         .requestMatchers("/class/add-student", "/class/create", "/class/student-list/**",

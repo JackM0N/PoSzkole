@@ -51,7 +51,12 @@ public class WebsiteUserController {
 
     @PutMapping("/edit/my-profile")
     public ResponseEntity<WebsiteUserDTO> editMyProfile(@RequestBody WebsiteUserDTO userDTO) {
-        return ResponseEntity.ok(websiteUserService.editUserProfile(userDTO));
+        return ResponseEntity.ok(websiteUserService.editOwnUserProfile(userDTO));
+    }
+
+    @PutMapping("/edit/profile/{userId}")
+    public ResponseEntity<WebsiteUserDTO> editUserProfile(@PathVariable Long userId, @RequestBody WebsiteUserDTO userDTO) {
+        return ResponseEntity.ok(websiteUserService.editChosenUserProfile(userId, userDTO));
     }
 
     @PutMapping("/edit/subjects/{userId}")

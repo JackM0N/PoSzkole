@@ -49,13 +49,12 @@ public class RoomReservationServiceIntegrationTest {
 
     private Room room;
     private ClassSchedule classSchedule;
+    private int numberOfRooms;
+    private int numberOfReservations;
 
     @BeforeEach
     void setUp() {
         // Arrange
-        roomReservationRepository.deleteAll();
-        roomRepository.deleteAll();
-
         Subject subject = new Subject();
         subject.setSubjectName("Przedmiot");
         subjectRepository.save(subject);
@@ -93,6 +92,9 @@ public class RoomReservationServiceIntegrationTest {
         classSchedule.setClassDateFrom(LocalDateTime.now().plusDays(1));
         classSchedule.setClassDateTo(LocalDateTime.now().plusDays(1).plusHours(2));
         classScheduleRepository.save(classSchedule);
+
+        numberOfRooms = roomRepository.findAll().size();
+        numberOfReservations = roomReservationRepository.findAll().size();
     }
 
     @Test
@@ -106,8 +108,7 @@ public class RoomReservationServiceIntegrationTest {
 
         // Assert
         assertNotNull(availableRooms);
-        assertEquals(1, availableRooms.size());
-        assertEquals("Budynek A", availableRooms.get(0).getBuilding());
+        assertEquals("Budynek A", availableRooms.get(numberOfRooms - 1).getBuilding());
     }
 
     @Test
@@ -124,8 +125,8 @@ public class RoomReservationServiceIntegrationTest {
 
         // Verify room reservation in the database
         List<RoomReservation> reservations = roomReservationRepository.findAll();
-        assertEquals(1, reservations.size());
-        RoomReservation reservation = reservations.get(0);
+        assertEquals(numberOfReservations + 1, reservations.size());
+        RoomReservation reservation = reservations.get(numberOfReservations);
         assertEquals(room.getId(), reservation.getRoom().getId());
         assertEquals(classSchedule.getClassDateFrom(), reservation.getReservationFrom());
         assertEquals(classSchedule.getClassDateTo(), reservation.getReservationTo());

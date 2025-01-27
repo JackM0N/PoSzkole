@@ -80,16 +80,29 @@ export class EditUserComponent {
       return;
     }
 
-    this.websiteUserService.editUserProfile(updatedUser).subscribe({
-      next: response => {
-        this.toastr.success('Dane użytkownika zostały zapisane');
-        this.dialogRef.close(response);
-      },
-      error: error => {
-        this.toastr.success('Coś poszło nie tak podczas edycji profilu');
-        console.error("User update error", error)
-      }
-    })
+    if (this.currentUserIsManager){
+      this.websiteUserService.editChosenUserProfile(this.data.user.id!, updatedUser).subscribe({
+        next: response => {
+          this.toastr.success('Dane użytkownika zostały zapisane');
+          this.dialogRef.close(response);
+        },
+        error: error => {
+          this.toastr.error('Coś poszło nie tak podczas edycji profilu');
+          console.error("User update error", error)
+        }
+      })
+    }else{
+      this.websiteUserService.editUserProfile(updatedUser).subscribe({
+        next: response => {
+          this.toastr.success('Dane użytkownika zostały zapisane');
+          this.dialogRef.close(response);
+        },
+        error: error => {
+          this.toastr.error('Coś poszło nie tak podczas edycji profilu');
+          console.error("User update error", error)
+        }
+      })
+    }
   }
 
   onCancel() {

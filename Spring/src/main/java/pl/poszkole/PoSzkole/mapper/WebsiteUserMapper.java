@@ -40,4 +40,8 @@ public interface WebsiteUserMapper {
     @Mapping(target = "discountPercentage", ignore = true)
     @Mapping(target = "isCashPayment", ignore = true)
     WebsiteUser partialProfileUpdate(WebsiteUserDTO websiteUserDTO, @MappingTarget WebsiteUser websiteUser);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    WebsiteUser partialFullProfileUpdate(WebsiteUserDTO websiteUserDTO, @MappingTarget WebsiteUser websiteUser);
 }
