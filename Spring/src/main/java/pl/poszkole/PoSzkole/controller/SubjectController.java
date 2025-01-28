@@ -20,4 +20,9 @@ public class SubjectController {
     public ResponseEntity<List<SubjectDTO>> getAllSubjects() {
         return ResponseEntity.ok(subjectService.getAllSubjects());
     }
+
+    @GetMapping("/current-teacher")
+    public ResponseEntity<List<SubjectDTO>> getCurrentTeachersSubjects() {
+        return ResponseEntity.ok(subjectService.getCurrentTeacherSubjects());
+    }
 }

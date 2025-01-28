@@ -76,6 +76,7 @@ import { CourseFormComponent } from './components/manager/courses/course-form.co
 import { AddStudentToCourseComponent } from './components/manager/courses/add-student-to-course.component';
 import { CancelCourseComponent } from './components/manager/courses/cancel-course.component';
 import { AccessDeniedComponent } from './components/shared/access-denied/access-denied.component';
+import { CreateTutoringClassComponent } from './components/teacher/schedule/create-tutoring-class.component';
 
 export const POLISH_DATE_FORMATS = {
     parse: {
@@ -134,6 +135,7 @@ export const POLISH_DATE_FORMATS = {
         AddStudentToCourseComponent,
         CancelCourseComponent,
         AccessDeniedComponent,
+        CreateTutoringClassComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

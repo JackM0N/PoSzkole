@@ -32,6 +32,7 @@
         <h3>{{ activeDay()?.toLocaleString(DATE_MED) }}</h3>
         @if (!isReadOnly && isCurrentUserTeacher){
           <button mat-raised-button color="primary" style="margin: 20px;" (click)="openCheckRoomAvailability()">Sprawdź dostępność sal</button>
+          <button mat-raised-button color="primary" style="margin: 20px;" (click)="openCreateTutoringClass()">Stwórz nowe zajęcia</button>
         }
         @if (activeDayClasses().length === 0) {
           <div>
@@ -61,6 +62,7 @@
       </div>
     } @else {
       <p>Proszę wybrać datę</p>
+      <button mat-raised-button color="primary" style="margin: 20px;" (click)="openCreateTutoringClass()">Stwórz nowe zajęcia</button>
     }
 
   </div>

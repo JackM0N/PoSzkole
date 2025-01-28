@@ -3,10 +3,11 @@ import { DateTime, Info, Interval } from "luxon";
 import { ClassSchedule } from "../../../models/class-schedule.model";
 import { MatDialog } from "@angular/material/dialog";
 import { ClassDetailsComponent } from "./class-details.component";
-import { Role } from "../../../models/role.model";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { AuthService } from "../../../services/auth.service";
 import { CheckRoomAvailiabilityComponent } from "../../teacher/schedule/check-room-availability.component";
+import { CreateTutoringClassComponent } from "../../teacher/schedule/create-tutoring-class.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-schedule',
@@ -68,7 +69,8 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
     private dialog: MatDialog,
     private el: ElementRef, 
     private renderer: Renderer2,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
   ){}
 
   ngOnInit(): void {
@@ -143,6 +145,18 @@ export class ScheduleComponent implements OnInit, AfterViewInit{
       enterAnimationDuration:'200ms',
       exitAnimationDuration:'200ms',
       data: {activeDay: this.activeDay()?.toISODate()}
+    });
+  }
+
+  openCreateTutoringClass(): void{
+    const dialogRef = this.dialog.open(CreateTutoringClassComponent, {
+      width: '50%',
+      enterAnimationDuration:'200ms',
+      exitAnimationDuration:'200ms',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.router.navigate(['/teacher-schedule']);
     });
   }
 }

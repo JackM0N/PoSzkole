@@ -33,7 +33,7 @@ public class TutoringClassController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<TutoringClassDTO> create(@RequestBody StudentRequestAndDateDTO srdDTO) {
+    public ResponseEntity<TutoringClassDTO> createTutoringClass(@RequestBody StudentRequestAndDateDTO srdDTO) {
         Long studentId = srdDTO.getStudentId();
         TutoringClassDTO tutoringClassDTO = srdDTO.getTutoringClassDTO();
         DayAndTimeDTO dayAndTimeDTO = srdDTO.getDayAndTimeDTO();

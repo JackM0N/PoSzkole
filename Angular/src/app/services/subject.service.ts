@@ -16,4 +16,8 @@ export class SubjectService {
     return this.http.get<Subject[]>(`${this.baseUrl}/all`)
   }
 
+  loadCurrentTeacherSubjects(): Observable<Subject[]> {
+    return this.http.get<Subject[]>(`${this.baseUrl}/current-teacher`)
+  }
+
 }

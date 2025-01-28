@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { SimplifiedUser } from "../models/simplified-user.model";
 import { TutoringClass } from "../models/tutoring-class.model";
 import { ScheduleChangesLog } from "../models/schedule-changes-log.model";
+import { StudentRequestAndDate } from "../models/student-request-and-date.model";
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class TutoringClassService {
       studentId: studentId,
       classId: classId
     });
+  }
+
+  createTutoringClass(srd: StudentRequestAndDate): Observable<TutoringClass> {
+    return this.http.post<TutoringClass>(`${this.baseUrl}/create`, srd);
   }
 
   removeStudentFromTutoringClass(studentId: number, classId: number): Observable<TutoringClass> {

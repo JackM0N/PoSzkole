@@ -136,6 +136,11 @@ public class TutoringClassService {
             throw new RuntimeException("You can't add user to a class that's not a student");
         }
 
+        if (userBusyDayService.isOverlapping(studentUser, null, dayAndTimeDTO.getDay(),
+                dayAndTimeDTO.getTimeFrom(), dayAndTimeDTO.getTimeTo())) {
+            throw new RuntimeException("You cannot create class on users busy day");
+        }
+
         //Create class
         TutoringClass tutoringClass = tutoringClassMapper.toEntity(tutoringClassDTO);
         tutoringClass.setTeacher(currentUser);
