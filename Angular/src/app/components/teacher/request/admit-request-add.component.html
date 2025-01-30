@@ -16,7 +16,7 @@
           <mat-card-content>
             <p>Przedmiot: {{ tutoringClass.subject?.subjectName }}</p>
             <p>Liczba uczniów: {{ tutoringClass.numberOfStudents }}</p>
-            <p>Następne zajęcia: {{ tutoringClass.nextClassSchedule!.classDateFromFormatted }}</p>
+            <p>Następne zajęcia: {{ tutoringClass.nextClassSchedule?.classDateFromFormatted ?? 'brak' }}</p>
           </mat-card-content>
           <mat-card-actions>
             <button mat-button color="primary" (click)="addStudentToClass(tutoringClass.id!)">Wybierz</button>

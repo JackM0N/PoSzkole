@@ -62,7 +62,9 @@
       </div>
     } @else {
       <p>Proszę wybrać datę</p>
-      <button mat-raised-button color="primary" style="margin: 20px;" (click)="openCreateTutoringClass()">Stwórz nowe zajęcia</button>
+      @if (!isReadOnly && isCurrentUserTeacher){
+        <button mat-raised-button color="primary" style="margin: 20px;" (click)="openCreateTutoringClass()">Stwórz nowe zajęcia</button>
+      }
     }
 
   </div>
