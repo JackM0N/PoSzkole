@@ -6,6 +6,8 @@
 
     <include file="/db/changelog/db.changelog-initial.sql"/>
     <include file="/db/changelog/db.changelog-data.sql"/>
+
+<!--    This file was excluded from the final version since it was only made for pagination testing-->
 <!--    <include file="/db/changelog/db.changelog-generated-students.sql"/>-->
 
 </databaseChangeLog>
