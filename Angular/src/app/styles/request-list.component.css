@@ -1,0 +1,143 @@
+/* Table container */
+.table-container {
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 0.3rem;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  padding: clamp(1rem, 2vw, 2rem); 
+  margin: 1rem auto;
+  max-width: 100%;
+  width: clamp(300px, 90%, 1800px);
+}
+
+/* Table header */
+.table-container h2 {
+  color: #4a4a4a;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Mat-table styling */
+table.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  color: #3366cc;
+  background-color: #f7f9fc;
+  padding: 0.625rem;
+  text-align: center;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+}
+
+.mat-cell {
+  padding: 0.625rem;
+  text-align: center;
+  color: #4a4a4a;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+}
+
+.mat-row {
+  border-bottom: 1px solid #cccccc;
+}
+
+.mat-row:hover {
+  background-color: #f1f5ff;
+}
+
+.no-data-message {
+  text-align: center;
+  color: #4a4a4a;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+}
+
+/* Sort arrow styling */
+.mat-sort-header-arrow {
+  color: #3366cc;
+}
+
+/* Button in cells */
+.table-container .mat-button {
+  color: #3366cc;
+}
+
+.table-container .mat-button:hover {
+  background-color: #e0e7ff;
+}
+
+/* Paginator styling */
+.mat-paginator {
+  color: #4a4a4a;
+}
+
+.mat-paginator .mat-form-field .mat-form-field-label {
+  color: #3366cc !important;
+}
+
+.mat-paginator .mat-paginator-range-label,
+.mat-paginator .mat-button {
+  color: #4a4a4a;
+}
+
+.mat-paginator .mat-button:hover {
+  background-color: #e0e7ff;
+}
+
+.mat-paginator .mat-select-value {
+  color: #3366cc;
+}
+
+/* Clickable row */
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: #f1f1f1;
+}
+
+/* Filter container */
+.filter-container {
+  background-color: #ffffff;
+  margin: 1.25rem auto;
+}
+
+.filter-container h3 {
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  color: #4a4a4a;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.filter-container .filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-container .mat-button {
+  background-color: #3366cc;
+  color: #ffffff;
+  padding: 0.625rem 1rem;
+  border-radius: 0.3rem;
+}
+
+.filter-container .mat-button:hover {
+  background-color: #274b9f;
+}
+
+/* Media queries */
+@media (max-width: 1200px) {
+  .table-container {
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .filter-container {
+    padding: 1rem;
+  }
+}

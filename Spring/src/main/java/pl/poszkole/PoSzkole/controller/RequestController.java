@@ -1,109 +1,54 @@
 package pl.poszkole.PoSzkole.controller;
 
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pl.poszkole.PoSzkole.dto.*;
 import pl.poszkole.PoSzkole.model.*;
-import pl.poszkole.PoSzkole.model.Class;
-import pl.poszkole.PoSzkole.repository.UserRepository;
 import pl.poszkole.PoSzkole.service.*;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.nio.file.AccessDeniedException;
 
-@Controller
-@RequestMapping("/requests")
+
+@RestController
+@RequestMapping("/request")
+@RequiredArgsConstructor
 public class RequestController {
+    private final RequestService requestService;
 
-    @Autowired
-    RequestService requestService;
-
-    @Autowired
-    private StudentService studentService;
-
-    @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
-    private ClassService classService;
-
-    @Autowired
-    private StudentClassService studentClassService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @GetMapping
-    public String getRequests(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        String username = userDetails.getUsername();
-        List<Request> requests = requestService.getRequestsForTeacher(username);
-        List<Student> students = studentService.getAllStudents();
-        List<Subject> subjects = subjectService.getAllSubjects();
-
-        for (Request request : requests) {
-            Student student = students.stream()
-                    .filter(s -> s.getId().equals(request.getIdStudent().getId()))
-                    .findFirst()
-                    .orElse(null);
-            Subject subject = subjects.stream()
-                    .filter(sub -> sub.getId().equals(request.getIdSubject().getId()))
-                    .findFirst()
-                    .orElse(null);
-            request.setIdStudent(student);
-            request.setIdSubject(subject);
-        }
-
-        model.addAttribute("requests", requests);
-        return "requests";
+    @GetMapping("/list/not-admitted")
+    public ResponseEntity<Page<RequestDTO>> getNotAdmittedRequests(Subject subject, Pageable pageable) throws AccessDeniedException {
+        return ResponseEntity.ok(requestService.getRequestsForTeacher(false, subject, pageable));
     }
 
-    @PostMapping("/approve/{id}")
-    @ResponseBody
-    public ResponseEntity<String> approveRequest(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        try {
-            Request request = requestService.findById(id);
-            Users users = userRepository.findByUsername(userDetails.getUsername());
-            Teacher teacher = teacherService.getTeacherByIdUser(users);
+    @GetMapping("/list/admitted")
+    public ResponseEntity<Page<RequestDTO>> getAdmittedRequests(Subject subject, Pageable pageable) throws AccessDeniedException {
+        return ResponseEntity.ok(requestService.getRequestsForTeacher(true, subject, pageable));
+    }
 
-            System.out.println(request.getAdmissionDate());
+    @PostMapping("/create")
+    public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) throws BadRequestException {
+        return ResponseEntity.ok(requestService.createRequest(requestDTO));
+    }
 
-            // Set the admission date and teacher
-            request.setAdmissionDate(LocalDate.now());
-            request.setIdTeacher(teacher);
+    @PostMapping("/admit/create/{id}")
+    public ResponseEntity<RequestDTO> approveRequestCreateClass(
+            @PathVariable Long id,
+            @RequestBody StudentRequestAndDateDTO srdDTO
+    ) {
+        TutoringClassDTO tutoringClassDTO = srdDTO.getTutoringClassDTO();
+        DayAndTimeDTO dayAndTimeDTO = srdDTO.getDayAndTimeDTO();
+        Boolean isOnline = srdDTO.getIsOnline();
+        return ResponseEntity.ok(requestService.admitRequestCreateClass(id, tutoringClassDTO, dayAndTimeDTO, isOnline));
+    }
 
-            System.out.println(request.getAdmissionDate());
-
-            // Create a new class
-            Class newClass = new Class();
-            newClass.setIdTeacher(teacher);
-            newClass.setIdSubject(request.getIdSubject());
-            newClass.setName(request.getIdSubject().getName() + " - " + request.getIdStudent().getLastName());
-
-            // Save the new class
-            classService.saveClass(newClass);
-
-            // Create a new student_class record
-            StudentClass studentClass = new StudentClass();
-            studentClass.setIdStudent(request.getIdStudent());
-            studentClass.setIdClass(newClass);
-
-            // Save the student_class record
-            studentClassService.save(studentClass);
-
-            // Update the request
-            requestService.saveRequest(request);
-
-            return ResponseEntity.ok("Request approved successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to approve request: " + e.getMessage());
-        }
+    @PutMapping("/admit/add")
+    public ResponseEntity<RequestDTO> approveRequestAddToClass(@RequestBody RequestAndClassDTO requestAndClassDTO) {
+        Long requestId = requestAndClassDTO.getRequestId();
+        Long classId = requestAndClassDTO.getClassId();
+        return ResponseEntity.ok(requestService.admitRequestAddToClass(requestId, classId));
     }
 }

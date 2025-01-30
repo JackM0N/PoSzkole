@@ -1,0 +1,25 @@
+<div mat-dialog-title>
+  <h2>{{ data.course.courseName }}</h2>
+</div>
+
+<mat-dialog-content>
+  <mat-divider></mat-divider>
+  
+  <div class="course-description" [innerHTML]="courseDetails"></div>
+  
+  <mat-divider></mat-divider>
+  
+  <div class="course-contact">
+    <p>Jeśli jesteś zainteresowany, skontaktuj się z nami pod adresem: 
+      <a href="mailto:kontakt@poszkole.pl">kontakt&#64;poszkole.pl</a>
+    </p>
+    <p>Możesz również zadzwonić pod numer: <strong>+48 123 456 789</strong>.</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="dialogRef.close()">Zamknij</button>
+  @if(currentUserIsManager){
+    <button mat-raised-button (click)="openAttendants()">Wyświetl zapisanych uczniów</button>
+  }
+</mat-dialog-actions>

@@ -1,0 +1,41 @@
+<div mat-dialog-title>
+  <h2>Zapisani uczniowie</h2>
+</div>
+
+<mat-dialog-content>
+  <mat-table [dataSource]="students" class="mat-elevation-z8">
+    <ng-container matColumnDef="student">
+      <mat-header-cell *matHeaderCellDef> Uczeń </mat-header-cell>
+      <mat-cell *matCellDef="let student"> 
+          {{ student.id }} - {{ student.firstName }} {{ student.lastName }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let student"> {{ student.email }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef> Telefon </mat-header-cell>
+      <mat-cell *matCellDef="let student"> {{ student.phone }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="guardianEmail">
+      <mat-header-cell *matHeaderCellDef> Email opiekuna </mat-header-cell>
+      <mat-cell *matCellDef="let student"> {{ student.guardianEmail }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="guardianPhone">
+      <mat-header-cell *matHeaderCellDef> Telefon opiekuna </mat-header-cell>
+      <mat-cell *matCellDef="let student"> {{ student.guardianPhone }} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" class="clickable-row" (click)="navigateToStudentProfile(row.id)"></mat-row>
+  </mat-table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="dialogRef.close()">Zamknij</button>
+</mat-dialog-actions>

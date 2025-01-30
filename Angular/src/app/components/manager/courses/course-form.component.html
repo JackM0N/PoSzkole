@@ -1,0 +1,61 @@
+<h1 mat-dialog-title>
+  {{ data.courseToEdit ? 'Edytuj kurs' : 'Utwórz nowy kurs' }}
+</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="createCourseForm">
+    <mat-form-field>
+      <mat-label>Nazwa kursu</mat-label>
+      <input matInput formControlName="courseName" placeholder="Wprowadź nazwę kursu" required />
+      @if(createCourseForm.get('courseName')?.hasError('minlength')){
+        <mat-error>
+          Nazwa kursu musi mieć co najmniej 3 znaki.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Cena kursu</mat-label>
+      <input matInput formControlName="price" type="number" placeholder="Wprowadź cenę kursu" required />
+      @if(createCourseForm.get('price')?.hasError('min')){
+        <mat-error>
+          Cena nie może być ujemna.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Maksymalna liczba uczestników</mat-label>
+      <input matInput formControlName="maxParticipants" type="number" placeholder="Wprowadź maksymalną liczbę uczestników" required />
+      @if(createCourseForm.get('maxParticipants')?.hasError('min')){
+      <mat-error>
+        Liczba uczestników musi wynosić co najmniej 1.
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Data rozpoczęcia</mat-label>
+      <input matInput [matDatepicker]="datepicker" formControlName="startDate" placeholder="Wybierz datę" required />
+      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker></mat-datepicker>
+    </mat-form-field>
+
+    <h3>Opis kursu</h3>
+    <div class="NgxEditor__Wrapper editor">
+      <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+      <ngx-editor
+        formControlName="description"
+        [editor]="editor"
+        [placeholder]="'Dodaj opis kursu...'"
+        [spellcheck]="true" required >
+      </ngx-editor>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button type="button" (click)="onCancel()">Anuluj</button>
+  <button mat-raised-button color="primary" [disabled]="createCourseForm.invalid" (click)="onSubmit()">
+    {{ data.courseToEdit ? 'Zapisz zmiany' : 'Utwórz' }}
+  </button>
+</mat-dialog-actions>

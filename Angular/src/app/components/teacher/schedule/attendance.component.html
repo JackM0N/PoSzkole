@@ -1,0 +1,21 @@
+<div mat-dialog-title>Obecność uczniów</div>
+<div mat-dialog-content>
+  <form>
+    @for (attendance of attendances; track attendance) {
+      <div class="attendance-row">
+        <span class="attendance-status">
+          {{ attendance.isPresent ? 'Obecny' : 'Nieobecny' }}
+        </span>
+        <mat-checkbox [(ngModel)]="attendance.isPresent" [name]="'attendance-' + attendance.student.id"/>
+        <div class="student-info">
+          {{ attendance.student.id }} - {{ attendance.student.firstName }} {{ attendance.student.lastName }}
+        </div>
+      
+      </div>
+    }
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button color="primary" (click)="onSubmit()">Zapisz obecność</button>
+</div>

@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Odwołaj resztę terminów zajęć</h2>
+<mat-dialog-content>
+  <form [formGroup]="scheduleChangeForm">
+    <h3>Powód odwołania zajęć</h3>
+    <mat-form-field appearance="fill">
+      <mat-label>Powód</mat-label>
+      <mat-select formControlName="reason">
+        @for (reason of reasons; track reason) {
+          <mat-option [value]="reason">{{ reason }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Wyjaśnienie</mat-label>
+      <textarea matInput formControlName="explanation"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Anuluj</button>
+  <button mat-raised-button color="primary" [disabled]="scheduleChangeForm.invalid" (click)="onSubmit()">Zapisz</button>
+</mat-dialog-actions>

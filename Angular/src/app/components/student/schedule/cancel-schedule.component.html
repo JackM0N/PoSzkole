@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Odwołanie zajęć</h2>
+<mat-dialog-content>
+  <form [formGroup]="scheduleChangeForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Wyjaśnij, dlaczego chcesz odwołać zajęcia</mat-label>
+      <textarea
+        matInput
+        formControlName="explanation"
+        placeholder="Podaj powód odwołania zajęć"
+      ></textarea>
+      @if (scheduleChangeForm.get('explanation')?.hasError('required')) {
+        <mat-error>
+          Wyjaśnienie jest wymagane
+        </mat-error>
+      }
+      @if (scheduleChangeForm.get('explanation')?.hasError('minlength')) {
+        <mat-error>
+          Wyjaśnienie musi mieć co najmniej 10 znaków
+        </mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Anuluj</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!scheduleChangeForm.valid"
+    (click)="onSubmit(data.id!)"
+    >
+    Potwierdź
+  </button>
+</mat-dialog-actions>

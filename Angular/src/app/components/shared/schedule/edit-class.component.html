@@ -1,0 +1,81 @@
+<h2 mat-dialog-title>Edytuj zajęcia</h2>
+<mat-dialog-content>
+  <form [formGroup]="editForm">
+    <h3>Informacje ogólne</h3>
+    <div formGroupName="classSchedule">
+      <div formGroupName="tutoringClass">
+        <mat-form-field>
+          <mat-label>Nazwa zajęć</mat-label>
+          <input matInput formControlName="className" />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field>
+        <mat-label>Czy online?</mat-label>
+        <mat-select formControlName="isOnline">
+          <mat-option [value]="true">Tak</mat-option>
+          <mat-option [value]="false">Nie</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Odwołane</mat-label>
+        <mat-select formControlName="isCanceled">
+          <mat-option [value]="true">Tak</mat-option>
+          <mat-option [value]="false">Nie</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <h3>Zmień termin zajęć</h3>
+    <div formGroupName="dateAndTime">
+      <mat-form-field>
+        <mat-label>Data</mat-label>
+        <input matInput [matDatepicker]="datepicker" placeholder="Wybierz datę" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Czas rozpoczęcia</mat-label>
+        <input matInput type="time" formControlName="timeFrom" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Czas zakończenia</mat-label>
+        <input matInput type="time" formControlName="timeTo" />
+      </mat-form-field>
+      @if (editForm.get('dateAndTime')?.hasError('timeOrderMismatch')) {
+        <mat-error>
+          Czas "Od godziny" musi być wcześniejszy niż "Do godziny".
+        </mat-error>
+      }
+      @if(editForm.get('dateAndTime')?.hasError('minTimeDifference')){
+        <mat-error>
+          Zajęcia muszą trwać przynajmniej 1 godzinę.
+        </mat-error>
+      }
+    </div>
+
+    <h3>Powód zmian</h3>
+    <div formGroupName="scheduleChangesLog">
+      <mat-form-field>
+        <mat-label>Powód</mat-label>
+        <mat-select formControlName="reason">
+          @for (reason of reasons; track reason) {
+            <mat-option [value]="reason">{{ reason }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Wyjaśnienie</mat-label>
+        <textarea matInput formControlName="explanation"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Anuluj</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">Zapisz</button>
+</mat-dialog-actions>

@@ -1,0 +1,103 @@
+mat-dialog-content {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Resetowanie stylów listy */
+.students-container {
+  max-height: 8.75rem;
+  padding: 0.625rem;
+  border-radius: 0.3125rem;
+  border: none;
+}
+
+.students-container:has(.student-list li:nth-child(n+6)) {
+  overflow-y: auto;
+  border: 0.0625rem solid #ddd;
+}
+
+.student-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.student-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3125rem;
+}
+
+.student-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Style przycisków w szczegółach zajęć*/
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.7rem;
+}
+
+mat-dialog-actions button {
+  min-width: 7.5rem;
+}
+
+/* Styl przycisku, aby wyglądał jak tekst */
+.unstyled-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit; 
+  cursor: pointer;
+  text-align: left;
+}
+
+.unstyled-button:hover,
+.unstyled-button:focus {
+  text-decoration: underline;
+  outline: none;
+}
+
+button {
+  margin-top: 10px;
+}
+
+.canceled{
+  background-color: red;
+  color: white;
+}
+
+/* Przycisk do usuwania uczniów */
+.delete-button {
+  background: none;
+  border: none; 
+  color: red;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0;
+  height: 1em;
+}
+
+.delete-button mat-icon {
+  font-size: 1rem;
+}
+
+.delete-button material-icons {
+  line-height: 0,65;
+}
+
+.material-icons {
+  line-height: 0.6 !important;
+}
+
+.delete-button:hover {
+  color: darkred;
+}

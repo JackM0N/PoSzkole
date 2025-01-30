@@ -2,9 +2,9 @@ spring:
   jackson:
     time-zone: Europe/Warsaw
   datasource:
-    url: jdbc:postgresql://ep-dawn-pine-a29ln0ec.eu-central-1.aws.neon.tech/poszkole?sslmode=require
-    username: poszkole_owner
-    password: B9LPJTMOHj6b
+    url: jdbc:postgresql://localhost:5432/poszkole
+    username: postgres
+    password: 123456
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -18,3 +18,14 @@ spring:
         format_sql: true
         use_sql_comments: false
         ddl-auto: none
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.xml
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web:
+          filter:
+            OncePerRequestFilter: DEBUG

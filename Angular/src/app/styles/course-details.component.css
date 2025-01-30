@@ -1,0 +1,31 @@
+h2 {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.course-description {
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.course-contact {
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.course-contact a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.course-contact a:hover {
+  text-decoration: underline;
+}
+
+.actions {
+  margin-top: 16px;
+}

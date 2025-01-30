@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pl.poszkole.PoSzkole.model.StudentClass;
 
 @Repository
-public interface StudentClassRepository extends JpaRepository<StudentClass, Integer> {
+public interface StudentClassRepository extends JpaRepository<StudentClass, Long> {
 }

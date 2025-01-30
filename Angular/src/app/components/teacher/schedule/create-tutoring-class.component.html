@@ -1,0 +1,104 @@
+<h1 mat-dialog-title>Utwórz nowe zajęcia</h1>
+<div mat-dialog-content>
+  <form [formGroup]="createClassForm">
+
+    <mat-form-field>
+      <mat-label>Uczeń</mat-label>
+      <input type="text" matInput placeholder="Wybierz ucznia*"
+        [matAutocomplete]="studentAuto" formControlName="student">
+      <mat-autocomplete #studentAuto="matAutocomplete" [displayWith]="displayStudent">
+        @for (student of filteredStudents | async; track student) {
+          <mat-option [value]="student">
+            {{ student.id }} - {{ student.firstName }} {{ student.lastName }}
+          </mat-option>
+        }
+      </mat-autocomplete>
+      @if(createClassForm.get('student')?.hasError('required')){
+        <mat-error>
+          Uczeń jest wymagany.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" formGroupName="tutoringClassDTO">
+      <mat-label>Przedmiot</mat-label>
+      <input type="text" matInput placeholder="Wybierz przedmiot*"
+        [matAutocomplete]="subjectAuto" formControlName="subject">
+      <mat-autocomplete #subjectAuto="matAutocomplete" [displayWith]="displaySubject">
+        @for (subject of filteredSubjects | async; track subject) {
+          <mat-option [value]="subject">
+            {{ subject.subjectName }}
+          </mat-option>
+        }
+      </mat-autocomplete>
+      @if(createClassForm.get('tutoringClassDTO.subject')?.hasError('required')){
+        <mat-error>
+          Przedmiot jest wymagany.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" formGroupName="tutoringClassDTO">
+      <mat-label>Nazwa zajęć</mat-label>
+      <input matInput formControlName="className" placeholder="Wprowadź nazwę zajęć">
+      @if(createClassForm.get('tutoringClassDTO.className')?.hasError('required')){
+        <mat-error>
+          Nazwa zajęć jest wymagana.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-checkbox formControlName="repeat">Powtarzać zajęcia?</mat-checkbox>
+
+    @if (createClassForm.get('repeat')?.value) {
+      <mat-form-field>
+        <input matInput [matDatepicker]="datepicker" placeholder="Wybierz datę zakończenia" formControlName="repeatUntil">
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
+      </mat-form-field>
+    }
+
+    <mat-form-field appearance="fill" formGroupName="dayAndTimeDTO">
+      <mat-label>Dzień zajęć</mat-label>
+      <mat-select formControlName="day">
+        <mat-option *ngFor="let day of days" [value]="day">
+          {{ day }}
+        </mat-option>
+      </mat-select>
+      @if(createClassForm.get('dayAndTimeDTO.day')?.hasError('required')){
+        <mat-error>
+          Wybierz dzień zajęć.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" formGroupName="dayAndTimeDTO">
+      <mat-label>Od godziny</mat-label>
+      <input matInput type="time" formControlName="timeFrom">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" formGroupName="dayAndTimeDTO">
+      <mat-label>Do godziny</mat-label>
+      <input matInput type="time" formControlName="timeTo">
+    </mat-form-field>
+
+    @if (createClassForm.get('dayAndTimeDTO')?.hasError('timeOrderMismatch')) {
+      <mat-error>
+        Czas "Od godziny" musi być wcześniejszy niż "Do godziny".
+      </mat-error>
+    }
+    @if (createClassForm.get('dayAndTimeDTO')?.hasError('minTimeDifference')) {
+      <mat-error>
+        Zajęcia muszą trwać przynajmniej godzinę.
+      </mat-error>
+    }
+
+    <mat-checkbox formControlName="isOnline">Zajęcia zdalne</mat-checkbox>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Anuluj</button>
+  <button mat-raised-button color="primary" [disabled]="!createClassForm.valid" (click)="onSubmit()">
+    Zatwierdź
+  </button>
+</div>

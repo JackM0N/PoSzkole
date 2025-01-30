@@ -13,13 +13,13 @@ import java.util.Set;
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_subject", nullable = false)
+    @Column(name = "subject_id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
-    private String name;
+    @Column(name = "subject_name", nullable = false, length = Integer.MAX_VALUE)
+    private String subjectName;
 
     @ManyToMany(mappedBy = "subjects")
-    private Set<Teacher> teachers;
+    private Set<WebsiteUser> teachers;
 
 }

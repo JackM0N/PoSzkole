@@ -1,0 +1,26 @@
+<div class="week-container">
+  @for(day of daysOfWeek; track day){
+    <div class="day-column">
+      <h3>{{ day.name }}</h3>
+
+      @for(interval of busyIntervalsByDay[day.value]; track interval){
+        <div class="time-card">
+          <mat-card (click)="openEditBusyDay(interval)">
+            <mat-card-content>
+              <span>{{ interval.timeFrom}} - {{ interval.timeTo}}</span>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      }
+
+      @if((busyIntervalsByDay[day.value] === undefined) || busyIntervalsByDay[day.value].length === 0){
+        <div class="no-data">
+          <span>Brak zajętych godzin</span>
+        </div>
+      }
+    </div>
+  }
+</div>
+@if(isOwner || currentUserIsManager){
+  <button mat-raised-button color="primary" (click)="openAddBusyDay()">Dodaj zajęty termin</button>
+}
