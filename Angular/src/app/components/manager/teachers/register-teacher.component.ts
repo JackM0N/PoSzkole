@@ -7,6 +7,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Gender } from '../../../enums/gender.enum';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+function getEnumKeyByValue<T extends object>(enumObject: T, value: string): string | undefined {
+  return Object.keys(enumObject).find(key => enumObject[key as keyof T] === value);
+}
+
 @Component({
   selector: 'app-register-teacher',
   templateUrl: './register-teacher.component.html',
@@ -25,40 +29,42 @@ export class RegisterTeacherComponent {
   ) {
     this.genders = Object.values(Gender);
     this.registerTeacherForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      gender: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
-      hourlyRate: ['', [Validators.required, Validators.min(0)]]
+      username: [null, [Validators.required, Validators.minLength(3)]],
+      password: [null, [Validators.required, Validators.minLength(6)]],
+      firstName: [null, [Validators.required]],
+      lastName: [null, [Validators.required]],
+      gender: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, [Validators.required]],
+      hourlyRate: [null, [Validators.required, Validators.min(0)]]
     });
   }
 
   onSubmit() {
-    if (!this.registerTeacherForm.valid) {
-      const teacherData: WebsiteUser = {
-        ...this.registerTeacherForm.value,
-        gender: Object.keys(Gender).find(
-          key => Gender[key as keyof typeof Gender]
-        )
-      };
-
-      this.authService.registerTeacher(teacherData).subscribe({
-        next: (response) => {
-          const decodedToken = this.jwtHelper.decodeToken(response.token);
-          const userId = decodedToken.id;
-
-          this.toastr.success('Rejestracja zakończona sukcesem.', 'Sukces');
-          this.dialogRef.close(userId);
-        },
-        error: (error) => {
-          this.toastr.error('Wystąpił błąd podczas rejestracji.', 'Błąd');
-          console.error(error);
-        }
-      });
+    if (this.registerTeacherForm.invalid) {
+      this.toastr.error('Formularz zawiera błędy. Popraw dane i spróbuj ponownie.', 'Błąd');
+      return;
     }
+
+    const teacherData: WebsiteUser = {
+      ...this.registerTeacherForm.value,
+      gender: getEnumKeyByValue(Gender, this.registerTeacherForm.value.gender) as Gender,
+    };
+
+    this.authService.registerTeacher(teacherData).subscribe({
+      next: (response) => {
+        const decodedToken = this.jwtHelper.decodeToken(response.token);
+        const userId = decodedToken.id;
+
+        this.toastr.success('Rejestracja zakończona sukcesem.', 'Sukces');
+        this.dialogRef.close(userId);
+      },
+      error: (error) => {
+        this.toastr.error('Wystąpił błąd podczas rejestracji.', 'Błąd');
+        console.error(error);
+      }
+    });
+    
   }
 
   onCancel(): void {
