@@ -56,7 +56,6 @@ public class WebsiteUserController {
 
     @PutMapping("/edit/profile/{userId}")
     public ResponseEntity<WebsiteUserDTO> editUserProfile(@PathVariable Long userId, @RequestBody WebsiteUserDTO userDTO) {
-        System.out.println(userDTO);
         return ResponseEntity.ok(websiteUserService.editChosenUserProfile(userId, userDTO));
     }
 

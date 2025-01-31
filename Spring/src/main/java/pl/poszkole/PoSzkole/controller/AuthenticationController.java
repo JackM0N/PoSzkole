@@ -21,7 +21,6 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody WebsiteUserDTO websiteUser) {
-        System.out.println(websiteUser);
         return ResponseEntity.ok(authenticationService.registerStudent(websiteUser));
     }
 

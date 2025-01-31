@@ -140,8 +140,9 @@ public class WebsiteUserService {
         if (!websiteUser.getId().equals(currentUser.getId()) && !isAdmin) {
             throw new RuntimeException("You dont have permission to edit this teachers subjects");
         }
+
         //Also check if chosen user is a teacher
-        if (currentUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))){
+        if (websiteUser.getRoles().stream().noneMatch(role -> "TEACHER".equals(role.getRoleName()))){
             throw new RuntimeException("This user is not a teacher");
         }
 

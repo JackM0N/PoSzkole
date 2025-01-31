@@ -46,8 +46,8 @@ export class EditUserComponent {
 
     this.userForm = this.fb.group({
       username: [this.data.user.username],
-      password: ['', [Validators.minLength(6)]],
-      confirmPassword: [''],
+      password: [null, [Validators.minLength(6)]],
+      confirmPassword: [null],
       firstName: [this.data.user.firstName],
       lastName: [this.data.user.lastName],
       gender: [this.data.user.gender],
