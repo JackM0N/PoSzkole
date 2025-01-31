@@ -49,6 +49,11 @@
             <strong>Telefon:</strong> {{ account?.phone }}
           </div>
         }
+        @if (account?.gender) {
+          <div>
+            <strong>Płeć:</strong> {{ account?.gender }}
+          </div>
+        }
         @if (account?.hourlyRate) {
           <div>
             <strong>Stawka godzinowa:</strong> {{ account?.hourlyRate | currency:'PLN' }}

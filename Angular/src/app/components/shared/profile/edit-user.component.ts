@@ -11,6 +11,10 @@ import { WebsiteUserService } from '../../../services/website-user.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from '../../../services/auth.service';
 
+function getEnumKeyByValue<T extends object>(enumObject: T, value: string): string | undefined {
+  return Object.keys(enumObject).find(key => enumObject[key as keyof T] === value);
+}
+
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
@@ -60,7 +64,12 @@ export class EditUserComponent {
 
   onSubmit() {
     const originalUser = this.data.user;
-    const updatedUser: WebsiteUser = this.userForm.value;
+
+    const updatedUser: WebsiteUser = {
+      ...this.userForm.value,
+      gender: getEnumKeyByValue(Gender, this.userForm.value.gender) as Gender,
+      level: getEnumKeyByValue(EducationLevel, this.userForm.value.level) as EducationLevel,
+    };
   
     if (this.areUsersEqual(originalUser, updatedUser)) {
       this.toastr.info('Nie wprowadzono żadnych zmian');

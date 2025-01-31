@@ -9,6 +9,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { WebsiteUser } from '../../../models/website-user.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+function getEnumKeyByValue<T extends object>(enumObject: T, value: string): string | undefined {
+  return Object.keys(enumObject).find(key => enumObject[key as keyof T] === value);
+}
+
 @Component({
   selector: 'app-register-student',
   templateUrl: './register-student.component.html',
@@ -16,8 +20,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class RegisterStudentComponent {
   registerStudentForm: FormGroup;
-  educationLevels = Object.entries(EducationLevel);
-  genders = Object.entries(Gender);
+  educationLevels = Object.values(EducationLevel);
+  genders = Object.values(Gender);
   jwtHelper = new JwtHelperService();
 
   constructor(
@@ -51,12 +55,8 @@ export class RegisterStudentComponent {
 
     const studentData: WebsiteUser = {
       ...this.registerStudentForm.value,
-      gender: Object.keys(Gender).find(
-        key => Gender[key as keyof typeof Gender]
-      ),
-      level: Object.keys(EducationLevel).find(
-        key => EducationLevel[key as keyof typeof EducationLevel]
-      )
+      gender: getEnumKeyByValue(Gender, this.registerStudentForm.value.gender) as Gender,
+      level: getEnumKeyByValue(EducationLevel, this.registerStudentForm.value.level) as EducationLevel,
     };
 
     this.authService.registerStudent(studentData).subscribe({
@@ -68,7 +68,7 @@ export class RegisterStudentComponent {
         this.dialogRef.close(userId);
       },
       error: (error) => {
-        this.toastr.error('Wystąpił błąd podczas rejestracji.', 'Błąd');
+        this.toastr.error('Wystąpił błąd podczas rejestracji. Sprawdź czy wszystkie dane są poprawne', 'Błąd');
         console.error('Student registration error',error);
       }
     });

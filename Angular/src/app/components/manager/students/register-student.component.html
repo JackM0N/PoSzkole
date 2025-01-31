@@ -46,11 +46,11 @@
       <input matInput id="lastName" formControlName="lastName" placeholder="Wpisz nazwisko" />
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="full-width">
       <mat-label>Płeć</mat-label>
-      <mat-select id="gender" formControlName="gender">
+      <mat-select formControlName="gender">
         @for (gender of genders; track gender) {
-          <mat-option [value]="gender[0]">{{ gender[1] }}</mat-option>
+          <mat-option [value]="gender">{{ gender }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -60,11 +60,11 @@
       <input matInput id="phone" formControlName="phone" placeholder="Wpisz numer telefonu" type="text" />
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="full-width">
       <mat-label>Poziom kształcenia</mat-label>
-      <mat-select id="level" formControlName="level">
+      <mat-select formControlName="level">
         @for (level of educationLevels; track level) {
-          <mat-option [value]="level[0]">{{ level[1] }}</mat-option>
+          <mat-option [value]="level">{{ level }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
