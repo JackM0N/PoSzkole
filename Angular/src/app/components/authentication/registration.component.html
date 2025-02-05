@@ -11,6 +11,11 @@
             Nazwa użytkownika musi mieć co najmniej 3 znaki
           </mat-error>
         }
+        @if (registrationForm.get('username')?.hasError('usernameTaken')) {
+          <mat-error>
+            Ta nazwa użytkownika jest już zajęta
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field>

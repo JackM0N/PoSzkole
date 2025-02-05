@@ -45,7 +45,7 @@ export class EditUserComponent {
     this.currentUserIsManager = this.checkIfCurrentUserIsManager();
 
     this.userForm = this.fb.group({
-      username: [this.data.user.username],
+      username: [this.data.user.username, [Validators.minLength(3)]],
       password: [null, [Validators.minLength(6)]],
       confirmPassword: [null],
       firstName: [this.data.user.firstName],
@@ -96,7 +96,10 @@ export class EditUserComponent {
           this.dialogRef.close(response);
         },
         error: error => {
-          this.toastr.error('Coś poszło nie tak podczas edycji profilu');
+          if (error.error?.includes('website_user_username_key')) {
+            this.userForm.get('username')?.setErrors({ usernameTaken: true });
+          }
+          this.toastr.error('Coś poszło nie tak podczas edycji profilu. Sprawdź wprowadzone dane');
           console.error("User update error", error)
         }
       })
@@ -107,7 +110,10 @@ export class EditUserComponent {
           this.dialogRef.close(response);
         },
         error: error => {
-          this.toastr.error('Coś poszło nie tak podczas edycji profilu');
+          if (error.error?.includes('website_user_username_key')) {
+            this.userForm.get('username')?.setErrors({ usernameTaken: true });
+          }
+          this.toastr.error('Coś poszło nie tak podczas edycji profiluSprawdź wprowadzone dane');
           console.error("User update error", error)
         }
       })

@@ -4,6 +4,16 @@
     <mat-form-field class="full-width">
       <mat-label>Nazwa użytkownika</mat-label>
       <input matInput formControlName="username" />
+      @if (userForm.get('username')?.hasError('minlength')) {
+        <mat-error>
+          Nazwa użytkownika musi mieć co najmniej 3 znaki
+        </mat-error>
+      }
+      @if (userForm.get('username')?.hasError('usernameTaken')) {
+        <mat-error>
+          Ta nazwa użytkownika jest już zajęta
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field class="full-width">

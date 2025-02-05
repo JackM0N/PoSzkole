@@ -78,6 +78,8 @@ export class AdmitRequestAddComponent implements OnInit{
           this.toastr.error("Nie można dodać ucznia na te zajęcia, ponieważ jest on w ten dzień niedostępny.", "Błąd dodawania do zajęć");
         }else if (error.error === "Class schedule overlaps with existing class of this student") {
           this.toastr.error("Nie można dodać ucznia na te zajęcia, ponieważ nachodzą one na inne zajęcia, na które już uczęszcza.", "Błąd dodawania do zajęć");
+        }else if (error.error === "This class does not have any more schedules") {
+          this.toastr.error("Nie można dodać ucznia na te zajęcia, ponieważ wybrane zajęcia nie mają już terminów zajęć", "Błąd dodawania do zajęć");
         }else{
           this.toastr.error("Nie udało się dodać ucznia na zajęcia", "Błąd");
           console.error("Class update error", error);

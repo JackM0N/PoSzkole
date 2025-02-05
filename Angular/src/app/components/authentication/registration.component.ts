@@ -64,7 +64,10 @@ export class RegistrationComponent {
           this.router.navigate(['/login'])
         },
         error: (error) => {
-          this.toastr.error('Wystąpił błąd podczas rejestracji. Spróbuj ponownie później')
+          if (error.error?.includes('website_user_username_key')) {
+            this.registrationForm.get('username')?.setErrors({ usernameTaken: true });
+          }
+          this.toastr.error('Wystąpił błąd podczas rejestracji. Sprawdź wprowadzone dane i spróbuj ponownie!')
           console.error('Error during registration', error);
         }
       });

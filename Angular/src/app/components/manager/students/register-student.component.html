@@ -9,11 +9,21 @@
           Nazwa użytkownika musi mieć co najmniej 3 znaki
         </mat-error>
       }
+      @if (registerStudentForm.get('username')?.hasError('usernameTaken')) {
+        <mat-error>
+          Ta nazwa użytkownika jest już zajęta
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input matInput id="email" formControlName="email" placeholder="Wpisz adres email" type="email" />
+      @if (registerStudentForm.get('email')?.hasError('emailTaken')) {
+        <mat-error>
+          Ten email jest już zajęty
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field>
@@ -58,6 +68,11 @@
     <mat-form-field>
       <mat-label>Telefon</mat-label>
       <input matInput id="phone" formControlName="phone" placeholder="Wpisz numer telefonu" type="text" />
+      @if (registerStudentForm.get('phone')?.hasError('phoneTaken')) {
+        <mat-error>
+          Ten numer jest już zajęty
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field class="full-width">
