@@ -212,13 +212,17 @@ export class ClassDetailsComponent implements OnInit{
 
   completeClassSchedule(classId: number){
     this.classScheduleService.completeClassSchedule(classId).subscribe({
-      next: response => {
+      next: () => {
         this.toastr.success("Zajęcia zostały oznaczone jako zakończone!","Sukces!")
         this.dialogRef.close(true)
       },
       error: error => {
-        this.toastr.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", "Błąd!")
-        console.error("Class chedule update error", error)
+        if (error.error === "You cant complete a class that has not started yet"){
+          this.toastr.error("Nie można oznaczyć zajęć jako zakończone, jeśli się jeszcze nie zaczęły", "Błąd!")
+        }else{
+          this.toastr.error("Coś poszło nie tak przy próbie zmiany stanu zajęć", "Błąd!")
+          console.error("Class chedule update error", error)
+        }
       }
     })
   }

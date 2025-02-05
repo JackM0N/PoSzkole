@@ -40,8 +40,8 @@ CREATE TABLE website_user
     hourly_rate         MONEY,
 --Uczen
     level_id            VARCHAR(50),
-    guardian_phone      VARCHAR(20) UNIQUE,
-    guardian_email      VARCHAR(200) UNIQUE,
+    guardian_phone      VARCHAR(20),
+    guardian_email      VARCHAR(200),
     price_list_id       BIGINT REFERENCES price_list (price_list_id),
     discount_percentage INT,
     is_cash_payment     BOOLEAN,

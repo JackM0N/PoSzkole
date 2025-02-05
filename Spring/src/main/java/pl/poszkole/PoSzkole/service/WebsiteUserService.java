@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.poszkole.PoSzkole.dto.SimplifiedUserDTO;
 import pl.poszkole.PoSzkole.dto.SubjectDTO;
@@ -35,6 +36,7 @@ public class WebsiteUserService {
     private final SubjectRepository subjectRepository;
     private final SimplifiedUserMapper simplifiedUserMapper;
     private final TutoringClassRepository tutoringClassRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public WebsiteUserDTO getCurrentUserProfile(){
         WebsiteUser currentUser = getCurrentUser();
@@ -110,6 +112,11 @@ public class WebsiteUserService {
     public WebsiteUserDTO editOwnUserProfile(WebsiteUserDTO websiteUserDTO){
         WebsiteUser currentUser = getCurrentUser();
 
+        //Make sure password gets encoded
+        if (websiteUserDTO.getPassword() != null) {
+            websiteUserDTO.setPassword(passwordEncoder.encode(websiteUserDTO.getPassword()));
+        }
+
         //Update all shared rows that user should be able to edit
         websiteUserMapper.partialProfileUpdate(websiteUserDTO, currentUser);
         websiteUserRepository.save(currentUser);
@@ -120,6 +127,11 @@ public class WebsiteUserService {
     public WebsiteUserDTO editChosenUserProfile(Long userId, WebsiteUserDTO websiteUserDTO){
         WebsiteUser websiteUser = websiteUserRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        //Make sure password gets encoded
+        if (websiteUserDTO.getPassword() != null) {
+            websiteUserDTO.setPassword(passwordEncoder.encode(websiteUserDTO.getPassword()));
+        }
 
         //Update all shared rows that manager can edit
         websiteUserMapper.partialFullProfileUpdate(websiteUserDTO, websiteUser);

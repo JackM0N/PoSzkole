@@ -10,6 +10,11 @@
             Login musi mieć co najmniej 4 znaki
           </mat-error>
         }
+        @if (registerTeacherForm.get('username')?.hasError('usernameTaken')) {
+          <mat-error>
+            Ta nazwa użytkownika jest już zajęta
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field>
@@ -18,6 +23,16 @@
         @if (registerTeacherForm.get('password')?.hasError('minlength')) {
           <mat-error>
             Hasło musi mieć co najmniej 6 znaków
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Potwierdź hasło</mat-label>
+        <input matInput id="confirmPassword" formControlName="confirmPassword" placeholder="Potwierdź hasło" type="password" />
+        @if (registerTeacherForm.get('confirmPassword')?.hasError('passwordMismatch')) {
+          <mat-error>
+            Hasła nie są takie same
           </mat-error>
         }
       </mat-form-field>
@@ -51,6 +66,11 @@
             Wprowadź prawidłowy email
           </mat-error>
         }
+        @if (registerTeacherForm.get('email')?.hasError('emailTaken')) {
+          <mat-error>
+            Ten email jest już zajęty
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field>
@@ -59,6 +79,11 @@
         @if (registerTeacherForm.get('phone')?.hasError('pattern')) {
           <mat-error>
             Telefon musi zawierać 9 cyfr
+          </mat-error>
+        }
+        @if (registerTeacherForm.get('phone')?.hasError('phoneTaken')) {
+          <mat-error>
+            Ten numer telefonu jest już zajęty
           </mat-error>
         }
       </mat-form-field>

@@ -31,6 +31,10 @@ public class AuthenticationService {
     private final WebsiteUserMapper websiteUserMapper;
 
     public AuthenticationResponse registerStudent(WebsiteUserDTO request){
+        request.setPhone(request.getPhone().replaceAll("\\s",""));
+        if (request.getGuardianPhone() != null){
+            request.setGuardianPhone(request.getGuardianPhone().replaceAll("\\s",""));
+        }
         WebsiteUser user = websiteUserMapper.toEntity(request);
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -50,6 +54,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse registerTeacher(WebsiteUserDTO request){
+        request.setPhone(request.getPhone().replaceAll("\\s",""));
         WebsiteUser user = websiteUserMapper.toEntity(request);
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -69,6 +74,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse registerManager(WebsiteUserDTO request){
+        request.setPhone(request.getPhone().replaceAll("\\s",""));
         WebsiteUser user = websiteUserMapper.toEntity(request);
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));

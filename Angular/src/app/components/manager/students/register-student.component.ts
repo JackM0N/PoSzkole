@@ -68,8 +68,18 @@ export class RegisterStudentComponent {
         this.dialogRef.close(userId);
       },
       error: (error) => {
+        if (error.error?.includes('website_user_username_key')) {
+          this.registerStudentForm.get('username')?.setErrors({ usernameTaken: true });
+        }else if (error.error?.includes('website_user_email_key')) {
+          this.registerStudentForm.get('email')?.setErrors({ emailTaken: true });
+        }else if (error.error?.includes('website_user_phone_key')) {
+          this.registerStudentForm.get('phone')?.setErrors({ phoneTaken: true });
+        }
+
         this.toastr.error('Wystąpił błąd podczas rejestracji. Sprawdź czy wszystkie dane są poprawne', 'Błąd');
         console.error('Student registration error',error);
+        
+        
       }
     });
   }

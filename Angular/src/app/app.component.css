@@ -94,6 +94,7 @@ html, body {
   background-color: #3366cc;
   text-align: center;
   border-radius: 3px;
+  transition: background-color 0.3s ease;
 }
 
 .vertical-navbar a:hover {
